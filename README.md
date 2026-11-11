@@ -1,119 +1,166 @@
-<p align="center">
-  <strong>English</strong> · <a href="README.zh-CN.md">简体中文</a>
-</p>
+# Thor Ergo 1.0
 
-<p align="center">
-  <img src="assets/icons/armada-dual-screen-input.svg" width="120" height="120" alt="Application icon with the Armada sail, keyboard, touchpad and touch contacts">
-</p>
+**A multilingual touchscreen keyboard and trackpad for the lower screen of the
+AYN Thor running ArmadaOS.**
 
-<h1 align="center">Armada Dual Screen Input</h1>
+An independent fork of [Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input),
+with an ergonomic interface, large touch targets and seven keyboard layouts.
+**Graphic design and keyboard layout: seekingalphacrawler.**
 
-<p align="center">
-  <strong>Turn your lower screen into a keyboard, touchpad and touchscreen.</strong><br>
-  Virtual keyboard, touchpad and multi-touch for ArmadaOS handhelds.
-</p>
+[Português](README-PT.md) · [Download version 1.0](https://github.com/seekingalphacrawler/Thor-Ergo/releases/tag/v1.0) · [Interface guide](docs/INTERFACE.md) · [Credits](CREDITS.md)
 
-<p align="center">
-  <a href="https://github.com/sa1utyeggs/armada-dual-screen-input/releases/latest"><img src="https://img.shields.io/github/v/release/sa1utyeggs/armada-dual-screen-input?label=release&amp;color=1a9fff" alt="Latest stable release"></a>
-  <a href="https://github.com/sa1utyeggs/armada-dual-screen-input/actions/workflows/checks.yml"><img src="https://github.com/sa1utyeggs/armada-dual-screen-input/actions/workflows/checks.yml/badge.svg" alt="Automated checks"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-52677e" alt="Project code license: MIT"></a>
-</p>
+![English keyboard and touchpad](docs/images/keyboard-en.png)
 
-<p align="center">
-  <a href="https://github.com/sa1utyeggs/armada-dual-screen-input/raw/refs/heads/main/Install-Armada-Dual-Screen-Input.desktop"><strong>Download click installer</strong></a> ·
-  <a href="https://github.com/sa1utyeggs/armada-dual-screen-input/releases/latest"><strong>Offline package</strong></a> ·
-  <a href="docs/installation.md">Installation</a> ·
-  <a href="docs/usage.md">Usage</a> ·
-  <a href="docs/compatibility.md">Compatibility</a> ·
-  <a href="https://github.com/sa1utyeggs/armada-dual-screen-input/issues">Report an issue</a>
-</p>
+*Interface previews are rendered from the application's own drawing code. They
+show the app area, not a photograph of a Thor or a simulated Plasma status bar.
+Actual font rendering and available height depend on the device session.*
 
-A standalone Linux application for dual-screen ArmadaOS handhelds. Type, move the pointer and control touch input on the upper screen from the lower screen, without mirroring or continuously streaming the upper display.
+## Tested environment
 
-> **Currently tested: AYN Thor · ArmadaOS · Steam Game Mode.** Desktop Mode is disabled by default; other devices have not been tested. [System versions and validation scope](docs/compatibility.md)
+| Component | Tested setup |
+|---|---|
+| Installation computer | **Windows 11** |
+| Handheld | **AYN Thor Pro — 12 GB RAM** |
+| Operating system | **ArmadaOS 20261109.dfed5d6** (20261109 release) |
+| Upper screen | Steam Game Mode, started and unlocked |
+| Lower screen | **Plasma Mobile enabled** in Armada Control |
 
-The interface supports English / Simplified Chinese selection, defaulting to English when no preference exists; input language is independent. The demo below has bilingual captions; recorded app screens use Chinese. [Language settings and validation scope](docs/i18n.md). General settings also provide a [confirmed uninstall action](docs/installation.md#卸载) that keeps personal configuration.
+**macOS and Linux installers are included, but have not been tested by the
+maintainer on those operating systems.** Other hardware/OS versions and every
+language/game combination are not covered by this test report.
 
-<a id="界面预览"></a>
-
-## Interface previews
-
-**Keyboard and mouse**
-
-![Recorded keyboard input and mouse operation](.github/assets/interface-keyboard-mouse-v10-lite.gif)
-
-**Slay the Spire 2 and gesture demonstration**
-
-![Recorded Slay the Spire 2 gameplay and a cartoon glove lifting and releasing an apple](.github/assets/interface-gameplay-gesture-v10-lite.gif)
-
-The second preview combines recorded gameplay with an illustrated positioning-touch demonstration: the index finger moves the pointer, while the middle finger maintains contact until it curls into the palm to release the apple. Actual multi-touch reception depends on the lower-screen hardware, Steam's touch policy and the receiving application. [Multilingual keyboard](docs/multilingual-keyboard.md) · [Touch controls](docs/usage.md)
-
-[Download the full demo (46 seconds, 720p MP4)](https://raw.githubusercontent.com/sa1utyeggs/armada-dual-screen-input/main/.github/assets/interface-demo.mp4).
-
-<a id="能做什么"></a>
+This is a completed personal project, shared as-is, with no active maintenance
+or support commitment. Community forks are welcome. [Support and limitations](SUPPORT.md).
 
 ## Features
 
-| Feature | What it does |
-| --- | --- |
-| Keyboard and touchpad | Steam-style dark controls for moving, clicking and typing on the lower screen; English US layout and Chinese full-pinyin candidates |
-| Two-finger scrolling | One-finger movement, tap to click and two-finger scrolling; pointer speed and scrolling scale can be adjusted independently |
-| Two touch modes | Choose Positioning (定位) or Direct touch (直接触屏) from a dropdown; upper-screen rings follow smoothly through an independent visual filter and can coexist with Steam's performance overlay; switching pages or closing the panel releases previous contacts |
-| Input settings | Adjust sensitivity, inertia and key repeat; five Icon style tiles preview blue/orange rings (default), white/green rings, the glove, a pixel hand and a sci-fi reticle without name labels; tap the desired tile, save and return to the touch page; marker caps are 30 / 60 / 120 FPS / follow screen, and preferences survive upgrades |
-| Steam keyboard integration | Temporarily suppresses Steam's keyboard on the keyboard/touchpad page; restores it when switching pages, collapsing or exiting, with timeout recovery after an unexpected exit |
-| In-app updates | Manually check stable releases under Settings → General → Update (设置 → 通用 → 更新), then confirm a verified installation; retry failures or roll back to the previous version |
-| Optional Thor touch-driver fix | Settings → Experimental checks compatibility and offers confirmed enable-until-reboot / stock restore, using a separately installed driver component and administrator authentication |
+- Large letter keys, a fixed lower-right touchpad, dedicated mouse buttons,
+  separate numbers/symbols/Fn pages, and arrows on the alternate pages.
+- Lowercase/uppercase labels follow Shift and Caps Lock. Hold an eligible letter,
+  slide to an accented variant, and release to type it.
+- Seven keyboard layouts and translated menus, with independent keyboard and
+  interface-language choices or automatic matching.
+- Optional **AYN button** control: one press turns the lower panel off and the
+  next turns it on, without closing Plasma Mobile or suspending the Thor.
+- Complete user-level installation, SSH deployment, diagnostics and Undo.
 
-The existing one-line status row also shows signed **net battery power** from cached voltage × current: e.g. `Bat. 96% −5.0W` means discharge; `+` means charging. No extra polling is added. While plugged in, this is battery flow, not total device or charger power. See [telemetry limits](docs/usage.md#battery-power).
+## Download and install
 
-<a id="快速开始"></a>
+Download **`Thor-Ergo-1.0.zip`** from [Releases](https://github.com/seekingalphacrawler/Thor-Ergo/releases/tag/v1.0).
+Choose that named asset, not GitHub's automatically generated **Source code** archives.
+Extract the entire folder before running an installer.
 
-## Quick start
+### Prepare the Thor
 
-**[Get the click installer (.desktop)](https://github.com/sa1utyeggs/armada-dual-screen-input/raw/refs/heads/main/Install-Armada-Dual-Screen-Input.desktop) in Armada Desktop Mode.**
+Enable SSH, connect the computer and Thor to the same local network, save your
+work and close games. Keep the Thor awake with all buttons released.
 
-1. Right-click the installer link (or press and hold on the touchscreen), choose **Save Link As** and save `Install-Armada-Dual-Screen-Input.desktop`. If the link opens as text, save it with that filename.
-2. Open the file in **Dolphin**, confirm the system's run prompt and select **Install**. If Firefox added `.download`, remove only that extra suffix first. The window shows the latest stable version and downloads, verifies and installs it for your user.
-3. Open **Virtual Keyboard & Mouse / 虚拟键鼠** from the desktop or application menu, then enter Steam Game Mode.
+**Upper screen: Steam Game Mode started and unlocked. Lower screen: Plasma
+Mobile enabled through Armada Control on the upper screen. Do not switch the
+whole Thor to Desktop Mode.** The installer checks the lower session but does
+not enable it automatically.
 
-No terminal commands are needed. The window defaults to English; choose 简体中文 if preferred. Fresh installs do not open the app or enable autostart; upgrades keep personal settings and the existing autostart choice. [Full steps and troubleshooting](docs/installation.md#click-install)
+### Choose the installer
 
-For an existing installation, use **Settings → General → Update → Check for updates** (设置 → 通用 → 更新 → 检查更新). [Offline installation, source/development builds, rollback and removal](docs/installation.md) are covered in the guide. GitHub's generated **Source code** archives are not the installer bundle. Experimental kernel drivers are installed separately.
+| Computer / execution location | File or command |
+|---|---|
+| **Windows 11 — tested** | Double-click `Install-Windows.cmd`; do not run as administrator |
+| macOS — not tested by the maintainer | In Terminal, inside the extracted folder: `sh Install-macOS.command` |
+| Linux — not tested by the maintainer | In a terminal, inside the extracted folder: `sh Install-Linux.sh` |
+| Directly on the Thor, including an SSH shell | Inside the extracted folder: `sh Install-on-Thor.sh` |
 
-## Thor lower-screen touch fix (experimental)
+The Windows/macOS/Linux scripts install **onto the Thor over SSH**. They do not
+run the keyboard on the computer. Windows needs PowerShell 5.1+ and OpenSSH Client;
+macOS/Linux need OpenSSH and standard POSIX command-line tools. No host Python
+installation is required.
 
-**A driver-level fix helped with stuck touches and missed second-finger taps on the tested Thor.** On 2026-10-22, keeping the app and settings unchanged while switching back to the compatible lower-screen module restored normal operation, confirmed by the user. Changing pointer sensitivity cannot clear a physical touch contact retained by the stock driver.
+Choose **1 — Install / update** and enter the local IP, SSH user (default
+`armada`) and port (default `22`). The installer shows **SSH password (default:
+"armada")**; enter the current password in OpenSSH's prompt. Passwords are not
+stored by the installer. Existing SSH-key authentication is supported. Verify
+new SSH fingerprints; changed host keys are not silently accepted or removed.
 
-v0.1.5 adds **Settings → Experimental** for read-only status, kernel compatibility, explicit enable and stock restore. The optional component is installed separately; the normal app bundle includes no kernel module and never enables one automatically. Actions require confirmation and administrator authentication, briefly restart this panel only, and last until reboot. **Only the tested Thor / Armada 20261010 / matching Linux 7.2.6 build is supported; long sessions and suspend/resume need more validation.** [Evidence](docs/thor-ft5452-contact-lifecycle.md) · [Optional setup and rollback](extras/thor-touch-driver/README.md#settings-controls)
+The archive contains the full app, source, private GtkLayerShell runtime, offline
+Pinyin data and licenses. **No prior application or patch is required.** The
+installer does not download packages, use sudo, unlock the OS or change input
+permissions. It tests a separate complete copy, then requires a live first frame;
+activation failure requests automatic rollback. Existing compatible preferences
+and the prior installation can be retained for Undo.
 
-<a id="文档导航"></a>
+## Keyboard languages
 
-## Documentation
+| Keyboard | Layout and characters |
+|---|---|
+| English (US) | US QWERTY and punctuation |
+| Português (Portugal) | QWERTY, ç and Portuguese accents |
+| Español (España) | QWERTY, ñ, ¿, ¡ and accented vowels |
+| Français (France) | AZERTY and French accents |
+| Deutsch (Deutschland) | QWERTZ, ä, ö, ü and ß |
+| Italiano (Italia) | QWERTY and accented vowels |
+| 简体中文 | Offline Pinyin composition with selectable, paginated candidates |
 
-All first-party guides have English and Simplified Chinese editions. Each guide links to its translation. [Full documentation index](docs/README.md) · [中文文档](docs/zh-CN/README.md).
+Open the gear button → **Languages**. Menu language may follow the keyboard or
+be selected separately. The Chinese composer is a basic offline implementation,
+not a contextual predictive keyboard; it does not learn or store typing history.
+Non-US text uses a private Gamescope text-input interface: support depends on
+the destination application/game. US physical keys assume a US destination layout.
+System-wide keyboard settings are not changed.
 
-| Looking for | Document |
-| --- | --- |
-| Installation, dependencies, upgrades or removal | [Installation guide](docs/installation.md) |
-| Gestures, Chinese input, settings and updates | [Usage guide](docs/usage.md) · [Multilingual keyboard](docs/multilingual-keyboard.md) |
-| Device support and known limitations | [Compatibility](docs/compatibility.md) |
-| Development, packaging and releases | [Development guide](docs/development.md) |
-| Version changes and original test results | [Changelog](CHANGELOG.md) · [中文更新日志](CHANGELOG.zh-CN.md) · [History](docs/history.md) |
-| Stuck physical touch contacts on the Thor lower screen | [Driver investigation and validation](docs/thor-ft5452-contact-lifecycle.md) · [Separate experiment and rollback](extras/thor-touch-driver/README.md) |
+## Menus and controls
 
-Isolated checks and real interaction acceptance are recorded separately for the touch modes. Direct multi-touch gestures, long sessions and suspend/resume still need further validation. Marker rendering was found to cause focus-query timeouts in the *Slay the Spire 2* card viewer; the GL fix passed a short user test. The earlier timeline issue and long-term stability still need observation. Ring/FPS coexistence, touch input and Steam menu round trips passed a short user test on this device and depend on passive decoration-window support in the current Thor Gamescope build. Stuck physical contacts in the Thor's stock FT5452 driver cannot be fixed by changing app sensitivity. [Full limitations and evidence](docs/compatibility.md)
+| Numbers and punctuation | Symbols and accents |
+|---|---|
+| ![Numbers](docs/images/numbers.png) | ![Symbols](docs/images/symbols.png) |
 
-v0.1.3 includes visual ring smoothing installed on the Thor, with the user reporting smoother motion. Eight actual-renderer trials support more even movement and document the additional CPU/GPU cost. [Methods, results and limits](docs/position-touch.md#真实窗口安装用户反馈与八轮资源对比). Color settings also passed temporary-configuration save/reload and real marker-window pixel checks; user acceptance of each palette control is still pending.
+| Function keys | Languages |
+|---|---|
+| ![Fn](docs/images/functions.png) | ![Languages](docs/images/settings-languages.png) |
 
-<a id="开发与致谢"></a>
+| Keyboard settings | Mouse settings |
+|---|---|
+| ![Keyboard settings](docs/images/settings-keyboard.png) | ![Mouse settings](docs/images/settings-mouse.png) |
 
-## Development and credits
+| AYN button | About and credits |
+|---|---|
+| ![AYN button settings](docs/images/settings-ayn.png) | ![Credits](docs/images/settings-about.png) |
 
-```bash
-python3 -B tools/run_tests.py --with-node
-python3 -B tools/build_release.py
-```
+See the [interface guide](docs/INTERFACE.md) for full-size images,
+Portuguese typing, accent selection and Pinyin examples.
 
-Application code lives in `src/armada_dual_screen_input/`, checks in `tests/`, and installation/packaging tools in `tools/`. Linux GTK checks are skipped on Mac; CI runs the full checks on Linux. Pushing a tag that matches `VERSION` triggers CI to build, verify and publish an ARM64 offline bundle. [Release workflow](docs/development.md#发布)
+## AYN button: lower-screen toggle
 
-This project adapts a pinned [Ratatoskr snapshot](vendor/ratatoskr/UPSTREAM) and uses a private gtk-layer-shell runtime. Project code is [MIT licensed](LICENSE); third-party components and the Armada mark retain their own provenance and rights. See [THIRD_PARTY.md](THIRD_PARTY.md). Steam-style controls are independently drawn.
+With games closed and all buttons released, open **Settings → AYN button** and
+enable the option. It defaults to **Off** after installation. Wait for **Ready**
+and the InputPlumber routing indication. Press AYN once to turn the lower panel
+off and again to turn it on. The helper runs independently of the keyboard window.
+
+Only the AYN mapping is temporarily routed through InputPlumber. Disabling the
+option attempts to restore the earlier mapping. Disable it before changing
+controller profiles or assigning AYN to another application. A private recovery
+snapshot remains on the Thor; do not publish it. No raw-device access, global
+keyboard capture, permission changes or Plasma shortcuts are required.
+
+## Undo, diagnostics and recovery
+
+Run the installer again and choose **2 — Undo**, **3 — Diagnostics**, or
+**4 — Wake lower screen**. Dedicated `Diagnose-AYN-*` launchers are also included.
+Undo restores the immediately preceding installation/preferences; on a fresh
+installation it removes the created services and launchers. Review diagnostics
+before sharing them, because live output can contain local names and paths.
+
+The application is installed under the user's `~/.local/share/thor-ergo/`,
+`~/.config/thor-ergo/` and user-level systemd directories, not the immutable OS
+image. Normal ArmadaOS updates should preserve those files, but **continued
+compatibility is not guaranteed**. An actual OTA upgrade has not been validated.
+A reflash/reset that erases user data is different.
+
+## Source and credits
+
+Application source: `distribution/Thor/app/src/`; retained input components: `distribution/Thor/app/vendor/`;
+installers and tests are included. Run isolated checks with
+`python3 -B distribution/Thor/selftest.py` where the test dependencies are available.
+
+See [CREDITS.md](CREDITS.md), [LICENSE](LICENSE), and
+[third-party notices](distribution/Thor/app/THIRD_PARTY.md). Original authors and licenses are
+preserved. This fork is not endorsed by AYN, ArmadaOS, Valve or the upstream
+projects. **Graphic design and keyboard layout: seekingalphacrawler.**

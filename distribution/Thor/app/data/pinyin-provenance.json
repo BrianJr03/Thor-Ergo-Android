@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "source": "xpinyin 3.1 (2022-07-14), derived from Unihan 14.0.0",
+  "source_sha256": "f095f97418e3dec1befaac3be85fd34fc085b9fb6af7c06e4bc952d28026f6ad",
+  "license": "LPPL-1.3c-or-later",
+  "modifications": "Renamed reverse Pinyin index; no tones; v for ü; editorial preferred candidates, not measured frequencies. Separate hand-entered phrase list.",
+  "syllables": 422,
+  "character_reading_pairs": 46851,
+  "common_phrases": 214,
+  "preferred_syllables": 405
+}

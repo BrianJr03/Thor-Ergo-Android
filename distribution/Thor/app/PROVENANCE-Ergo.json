@@ -1,0 +1,27 @@
+{
+  "product": "Thor Ergo",
+  "version": "1.0",
+  "upstream_version": "0.1.7",
+  "upstream_archive_sha256": "36948362258d6af4fcdd80293b5ce0630a1b40980c15ae243fd58cadf9be4b7f",
+  "upstream_url": "https://github.com/sa1utyeggs/armada-dual-screen-input/tree/v0.1.7",
+  "fork_url": "https://github.com/seekingalphacrawler/Thor-Ergo",
+  "graphic_design_and_keyboard_layout": "seekingalphacrawler",
+  "features": [
+    "Ergonomic multilingual keyboard and touchpad interface",
+    "Seven keyboard layouts and matching interface translations",
+    "Accented-character popups and offline Pinyin composition",
+    "Optional AYN-button companion-screen toggle through InputPlumber",
+    "Complete user-level installation and reversible SSH deployment"
+  ],
+  "tested_environment": {
+    "host": "Windows 11",
+    "device": "AYN Thor Pro (12 GB RAM)",
+    "armada_os": "20261109.dfed5d6",
+    "top_screen": "Steam Game Mode",
+    "bottom_screen": "Plasma Mobile"
+  },
+  "untested_host_installers": [
+    "macOS",
+    "Linux"
+  ]
+}

@@ -1,0 +1,647 @@
+{
+  "nihao": [
+    "你好"
+  ],
+  "xiexie": [
+    "谢谢"
+  ],
+  "zaijian": [
+    "再见"
+  ],
+  "bukeqi": [
+    "不客气"
+  ],
+  "duibuqi": [
+    "对不起"
+  ],
+  "meiguanxi": [
+    "没关系"
+  ],
+  "zaoshanghao": [
+    "早上好"
+  ],
+  "wanshanghao": [
+    "晚上好"
+  ],
+  "wanan": [
+    "晚安"
+  ],
+  "wo": [
+    "我"
+  ],
+  "ni": [
+    "你"
+  ],
+  "ta": [
+    "他"
+  ],
+  "women": [
+    "我们"
+  ],
+  "nimen": [
+    "你们"
+  ],
+  "tamen": [
+    "他们"
+  ],
+  "zhongguo": [
+    "中国"
+  ],
+  "zhongwen": [
+    "中文"
+  ],
+  "hanyu": [
+    "汉语"
+  ],
+  "pinyin": [
+    "拼音"
+  ],
+  "jianpan": [
+    "键盘"
+  ],
+  "diannao": [
+    "电脑"
+  ],
+  "shouji": [
+    "手机"
+  ],
+  "youxi": [
+    "游戏"
+  ],
+  "pingmu": [
+    "屏幕"
+  ],
+  "shuru": [
+    "输入"
+  ],
+  "shurufa": [
+    "输入法"
+  ],
+  "shezhi": [
+    "设置"
+  ],
+  "yuyan": [
+    "语言"
+  ],
+  "baocun": [
+    "保存"
+  ],
+  "shanchu": [
+    "删除"
+  ],
+  "quxiao": [
+    "取消"
+  ],
+  "queding": [
+    "确定"
+  ],
+  "bangzhu": [
+    "帮助"
+  ],
+  "shubiao": [
+    "鼠标"
+  ],
+  "chukongban": [
+    "触控板"
+  ],
+  "kongge": [
+    "空格"
+  ],
+  "huiche": [
+    "回车"
+  ],
+  "zimu": [
+    "字母"
+  ],
+  "shuzi": [
+    "数字"
+  ],
+  "fuhao": [
+    "符号"
+  ],
+  "fanyi": [
+    "翻译"
+  ],
+  "ziti": [
+    "字体"
+  ],
+  "xianshi": [
+    "显示"
+  ],
+  "yincang": [
+    "隐藏"
+  ],
+  "kaiqi": [
+    "开启"
+  ],
+  "guanbi": [
+    "关闭"
+  ],
+  "kaishi": [
+    "开始"
+  ],
+  "jieshu": [
+    "结束"
+  ],
+  "fanhui": [
+    "返回"
+  ],
+  "xitong": [
+    "系统"
+  ],
+  "wangluo": [
+    "网络"
+  ],
+  "mima": [
+    "密码"
+  ],
+  "yonghu": [
+    "用户"
+  ],
+  "anzhuang": [
+    "安装"
+  ],
+  "xiezai": [
+    "卸载"
+  ],
+  "banben": [
+    "版本"
+  ],
+  "gengxin": [
+    "更新"
+  ],
+  "wenjian": [
+    "文件"
+  ],
+  "wenben": [
+    "文本"
+  ],
+  "xiazai": [
+    "下载"
+  ],
+  "shangchuan": [
+    "上传"
+  ],
+  "fuzhi": [
+    "复制"
+  ],
+  "zhantie": [
+    "粘贴"
+  ],
+  "lianjie": [
+    "连接"
+  ],
+  "chenggong": [
+    "成功"
+  ],
+  "shibai": [
+    "失败"
+  ],
+  "wenti": [
+    "问题"
+  ],
+  "haode": [
+    "好的"
+  ],
+  "keyi": [
+    "可以"
+  ],
+  "bukeyi": [
+    "不可以"
+  ],
+  "meiyou": [
+    "没有"
+  ],
+  "shide": [
+    "是的"
+  ],
+  "bushi": [
+    "不是"
+  ],
+  "shi": [
+    "是",
+    "十"
+  ],
+  "bu": [
+    "不"
+  ],
+  "hao": [
+    "好"
+  ],
+  "henhao": [
+    "很好"
+  ],
+  "woaini": [
+    "我爱你"
+  ],
+  "xihuan": [
+    "喜欢"
+  ],
+  "pengyou": [
+    "朋友"
+  ],
+  "jia": [
+    "家"
+  ],
+  "jiaren": [
+    "家人"
+  ],
+  "xuexi": [
+    "学习"
+  ],
+  "gongzuo": [
+    "工作"
+  ],
+  "shenghuo": [
+    "生活"
+  ],
+  "shijie": [
+    "世界"
+  ],
+  "shijian": [
+    "时间"
+  ],
+  "jintian": [
+    "今天"
+  ],
+  "mingtian": [
+    "明天"
+  ],
+  "zuotian": [
+    "昨天"
+  ],
+  "xianzai": [
+    "现在"
+  ],
+  "shenme": [
+    "什么"
+  ],
+  "weishenme": [
+    "为什么"
+  ],
+  "zenme": [
+    "怎么"
+  ],
+  "zenmeyang": [
+    "怎么样"
+  ],
+  "nali": [
+    "哪里",
+    "那里"
+  ],
+  "zheli": [
+    "这里"
+  ],
+  "zhege": [
+    "这个"
+  ],
+  "nage": [
+    "那个"
+  ],
+  "duoshao": [
+    "多少"
+  ],
+  "shui": [
+    "谁"
+  ],
+  "shihou": [
+    "时候"
+  ],
+  "shangwu": [
+    "上午"
+  ],
+  "xiawu": [
+    "下午"
+  ],
+  "zhongwu": [
+    "中午"
+  ],
+  "wanshang": [
+    "晚上"
+  ],
+  "xingqi": [
+    "星期"
+  ],
+  "zhoumo": [
+    "周末"
+  ],
+  "nian": [
+    "年"
+  ],
+  "yue": [
+    "月"
+  ],
+  "ri": [
+    "日"
+  ],
+  "beijing": [
+    "北京"
+  ],
+  "shanghai": [
+    "上海"
+  ],
+  "guangzhou": [
+    "广州"
+  ],
+  "shenzhen": [
+    "深圳"
+  ],
+  "chengdu": [
+    "成都"
+  ],
+  "chongqing": [
+    "重庆"
+  ],
+  "nanjing": [
+    "南京"
+  ],
+  "hangzhou": [
+    "杭州"
+  ],
+  "xianggang": [
+    "香港"
+  ],
+  "aomen": [
+    "澳门"
+  ],
+  "taiwan": [
+    "台湾"
+  ],
+  "meiguo": [
+    "美国"
+  ],
+  "yingguo": [
+    "英国"
+  ],
+  "faguo": [
+    "法国"
+  ],
+  "deguo": [
+    "德国"
+  ],
+  "xibanya": [
+    "西班牙"
+  ],
+  "putaoya": [
+    "葡萄牙"
+  ],
+  "yidali": [
+    "意大利"
+  ],
+  "riben": [
+    "日本"
+  ],
+  "hanguo": [
+    "韩国"
+  ],
+  "zhongguoren": [
+    "中国人"
+  ],
+  "yingyu": [
+    "英语"
+  ],
+  "fayu": [
+    "法语"
+  ],
+  "deyu": [
+    "德语"
+  ],
+  "xibanyayu": [
+    "西班牙语"
+  ],
+  "putao": [
+    "葡萄"
+  ],
+  "nihaoma": [
+    "你好吗"
+  ],
+  "wohenhao": [
+    "我很好"
+  ],
+  "zaijianle": [
+    "再见了"
+  ],
+  "huanying": [
+    "欢迎"
+  ],
+  "kuaile": [
+    "快乐"
+  ],
+  "gaoxing": [
+    "高兴"
+  ],
+  "kaixin": [
+    "开心"
+  ],
+  "xinnian": [
+    "新年"
+  ],
+  "shengri": [
+    "生日"
+  ],
+  "shengrikuaile": [
+    "生日快乐"
+  ],
+  "shenti": [
+    "身体"
+  ],
+  "jiankang": [
+    "健康"
+  ],
+  "xiexieni": [
+    "谢谢你"
+  ],
+  "zaima": [
+    "在吗"
+  ],
+  "haojiubujian": [
+    "好久不见"
+  ],
+  "shangxia": [
+    "上下"
+  ],
+  "zuoyou": [
+    "左右"
+  ],
+  "zuojian": [
+    "左键"
+  ],
+  "youjian": [
+    "右键"
+  ],
+  "fuzhupingmu": [
+    "辅助屏幕"
+  ],
+  "qingshuru": [
+    "请输入"
+  ],
+  "qingshaohou": [
+    "请稍候"
+  ],
+  "zidong": [
+    "自动"
+  ],
+  "shoudong": [
+    "手动"
+  ],
+  "chongxin": [
+    "重新"
+  ],
+  "qidong": [
+    "启动"
+  ],
+  "chongqi": [
+    "重启"
+  ],
+  "xuanze": [
+    "选择"
+  ],
+  "houxuan": [
+    "候选"
+  ],
+  "ceshi": [
+    "测试"
+  ],
+  "zhichi": [
+    "支持"
+  ],
+  "ruanjian": [
+    "软件"
+  ],
+  "yingjian": [
+    "硬件"
+  ],
+  "kaifazhe": [
+    "开发者"
+  ],
+  "xieyi": [
+    "协议"
+  ],
+  "xukezheng": [
+    "许可证"
+  ],
+  "banquan": [
+    "版权"
+  ],
+  "mingcheng": [
+    "名称"
+  ],
+  "quancheng": [
+    "全称"
+  ],
+  "weizhi": [
+    "位置"
+  ],
+  "fangxiang": [
+    "方向"
+  ],
+  "liangdu": [
+    "亮度"
+  ],
+  "yinliang": [
+    "音量"
+  ],
+  "pingshi": [
+    "平时"
+  ],
+  "jianhua": [
+    "简化"
+  ],
+  "jiantizhongwen": [
+    "简体中文"
+  ],
+  "fanti": [
+    "繁体"
+  ],
+  "shuangji": [
+    "双击"
+  ],
+  "dianji": [
+    "点击"
+  ],
+  "changan": [
+    "长按",
+    "长安"
+  ],
+  "zhongan": [
+    "重按"
+  ],
+  "kongzhi": [
+    "控制"
+  ],
+  "kuai": [
+    "快"
+  ],
+  "man": [
+    "慢"
+  ],
+  "chang": [
+    "长"
+  ],
+  "duan": [
+    "短"
+  ],
+  "xiao": [
+    "小"
+  ],
+  "da": [
+    "大"
+  ],
+  "bai": [
+    "百"
+  ],
+  "qian": [
+    "千"
+  ],
+  "wan": [
+    "万"
+  ],
+  "ling": [
+    "零"
+  ],
+  "yi": [
+    "一"
+  ],
+  "er": [
+    "二"
+  ],
+  "san": [
+    "三"
+  ],
+  "si": [
+    "四"
+  ],
+  "wu": [
+    "五"
+  ],
+  "liu": [
+    "六"
+  ],
+  "qi": [
+    "七"
+  ],
+  "ba": [
+    "八"
+  ],
+  "jiu": [
+    "九"
+  ],
+  "lv": [
+    "绿"
+  ],
+  "nv": [
+    "女"
+  ],
+  "lvse": [
+    "绿色"
+  ],
+  "nvhai": [
+    "女孩"
+  ],
+  "luse": [
+    "绿色"
+  ],
+  "zhupingmu": [
+    "主屏幕"
+  ]
+}
