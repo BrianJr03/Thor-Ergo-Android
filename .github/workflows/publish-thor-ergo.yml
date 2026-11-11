@@ -27,53 +27,48 @@ jobs:
           fetch-depth: 0
       - name: Verify and prepare the exact publication bundle
         run: python3 .github/scripts/publish_thor_ergo.py prepare
-      - name: Install isolated test dependencies on the GitHub runner
-        timeout-minutes: 6
+      - name: Prepare isolated Python and Cairo without Ubuntu package downloads
+        timeout-minutes: 10
         shell: bash
         run: |
           set -euo pipefail
-
-          # This step runs only on GitHub's disposable Ubuntu runner, never on the Thor.
-          if /usr/bin/python3 -c 'import cairo' >/dev/null 2>&1; then
-            echo 'System Python already has Cairo; no package download is needed.'
-            exit 0
-          fi
-
-          . /etc/os-release
-          if [[ "${ID:-}" != ubuntu || "${VERSION_CODENAME:-}" != noble ]]; then
-            echo '::error::This dependency step requires the Ubuntu 24.04 runner.'
+          # CI-only environment: never installed on the Thor or added to the release.
+          # Miniconda is preinstalled on GitHub's ubuntu-24.04 image.
+          conda_bin="${CONDA:-/usr/share/miniconda}/bin/conda"
+          if [[ ! -x "$conda_bin" ]]; then
+            echo '::error::The runner does not provide the expected Miniconda executable.'
             exit 1
           fi
-
-          # Avoid the runner's Azure mirror list. Use signed, official Ubuntu archives
-          # through a per-job APT configuration without changing system source files.
-          apt_root="${RUNNER_TEMP:?RUNNER_TEMP is required}/thor-ergo-apt"
-          mkdir -p "$apt_root"
-          cat > "$apt_root/sources.list" <<'SOURCES'
-          deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://archive.ubuntu.com/ubuntu noble main
-          deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://archive.ubuntu.com/ubuntu noble-updates main
-          deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://security.ubuntu.com/ubuntu noble-security main
-          SOURCES
-          sudo install -d -m 0755 "$apt_root/lists"
-          apt_options=(
-            -o "Dir::Etc::sourcelist=$apt_root/sources.list"
-            -o 'Dir::Etc::sourceparts=-'
-            -o "Dir::State::lists=$apt_root/lists"
-            -o 'Acquire::Retries=2'
-            -o 'Acquire::http::Timeout=20'
-            -o 'Acquire::https::Timeout=20'
-            -o 'DPkg::Lock::Timeout=60'
-          )
-          # Fail on incomplete indexes rather than silently use stale mirror metadata.
-          sudo apt-get "${apt_options[@]}" update --error-on=any
-          sudo env DEBIAN_FRONTEND=noninteractive apt-get "${apt_options[@]}" install -y --no-install-recommends python3-cairo
-          /usr/bin/python3 -c 'import cairo; print("Cairo dependency ready:", cairo.version)'
+          ci_env="${RUNNER_TEMP:?RUNNER_TEMP is required}/thor-ergo-ci-python"
+          "$conda_bin" create --yes --prefix "$ci_env" \
+            --override-channels --channel conda-forge --strict-channel-priority \
+            'python=3.12' 'pycairo=1.25.1'
+          "$ci_env/bin/python" -B - <<'PY'
+          import cairo
+          import io
+          import sys
+          surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 16, 16)
+          context = cairo.Context(surface)
+          context.set_source_rgb(0.1, 0.2, 0.3)
+          context.paint()
+          output = io.BytesIO()
+          surface.write_to_png(output)
+          assert output.getvalue().startswith(b'\x89PNG\r\n\x1a\n')
+          surface.finish()
+          print('CI Python:', sys.version)
+          print('Real Pycairo:', cairo.version, 'Cairo:', cairo.cairo_version_string())
+          print('Native offscreen PNG drawing: OK')
+          PY
+          printf 'THOR_CI_PYTHON=%s\n' "$ci_env/bin/python" >> "$GITHUB_ENV"
       - name: Run isolated application checks
-        run: /usr/bin/python3 -B distribution/Thor/selftest.py
+        shell: bash
+        run: '"${THOR_CI_PYTHON:?}" -B distribution/Thor/selftest.py'
       - name: Check host installers without connecting to any device
+        shell: bash
         run: |
-          /usr/bin/python3 -B distribution/Documentation/verify_host_transfer.py
-          /usr/bin/python3 -B distribution/Documentation/verify_windows_source.py
+          set -euo pipefail
+          "${THOR_CI_PYTHON:?}" -B distribution/Documentation/verify_host_transfer.py
+          "${THOR_CI_PYTHON:?}" -B distribution/Documentation/verify_windows_source.py
       - name: Verify staged files and publish the release
         env:
           GH_TOKEN: ${{ github.token }}
