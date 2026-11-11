@@ -1,0 +1,41 @@
+name: Publish Thor Ergo 1.0
+
+on:
+  push:
+    branches: [main]
+    paths: [Thor-Ergo-1.0-Publish.zip]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: thor-ergo-publication-1.0
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'seekingalphacrawler/Thor-Ergo' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out this fork
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Verify and prepare the exact publication bundle
+        run: python3 .github/scripts/publish_thor_ergo.py prepare
+      - name: Install isolated test dependencies on the GitHub runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y python3-cairo
+      - name: Run isolated application checks
+        run: /usr/bin/python3 -B distribution/Thor/selftest.py
+      - name: Check host installers without connecting to any device
+        run: |
+          /usr/bin/python3 -B distribution/Documentation/verify_host_transfer.py
+          /usr/bin/python3 -B distribution/Documentation/verify_windows_source.py
+      - name: Verify staged files and publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/scripts/publish_thor_ergo.py publish
