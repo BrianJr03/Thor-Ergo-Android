@@ -3,7 +3,9 @@ name: Publish Thor Ergo 1.0
 on:
   push:
     branches: [main]
-    paths: [Thor-Ergo-1.0-Publish.zip]
+    paths:
+      - Thor-Ergo-1.0-Publish.zip
+      - .github/workflows/publish-thor-ergo.yml
   workflow_dispatch:
 
 permissions:
@@ -26,9 +28,46 @@ jobs:
       - name: Verify and prepare the exact publication bundle
         run: python3 .github/scripts/publish_thor_ergo.py prepare
       - name: Install isolated test dependencies on the GitHub runner
+        timeout-minutes: 6
+        shell: bash
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y python3-cairo
+          set -euo pipefail
+
+          # This step runs only on GitHub's disposable Ubuntu runner, never on the Thor.
+          if /usr/bin/python3 -c 'import cairo' >/dev/null 2>&1; then
+            echo 'System Python already has Cairo; no package download is needed.'
+            exit 0
+          fi
+
+          . /etc/os-release
+          if [[ "${ID:-}" != ubuntu || "${VERSION_CODENAME:-}" != noble ]]; then
+            echo '::error::This dependency step requires the Ubuntu 24.04 runner.'
+            exit 1
+          fi
+
+          # Avoid the runner's Azure mirror list. Use signed, official Ubuntu archives
+          # through a per-job APT configuration without changing system source files.
+          apt_root="${RUNNER_TEMP:?RUNNER_TEMP is required}/thor-ergo-apt"
+          mkdir -p "$apt_root"
+          cat > "$apt_root/sources.list" <<'SOURCES'
+          deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://archive.ubuntu.com/ubuntu noble main
+          deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://archive.ubuntu.com/ubuntu noble-updates main
+          deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://security.ubuntu.com/ubuntu noble-security main
+          SOURCES
+          sudo install -d -m 0755 "$apt_root/lists"
+          apt_options=(
+            -o "Dir::Etc::sourcelist=$apt_root/sources.list"
+            -o 'Dir::Etc::sourceparts=-'
+            -o "Dir::State::lists=$apt_root/lists"
+            -o 'Acquire::Retries=2'
+            -o 'Acquire::http::Timeout=20'
+            -o 'Acquire::https::Timeout=20'
+            -o 'DPkg::Lock::Timeout=60'
+          )
+          # Fail on incomplete indexes rather than silently use stale mirror metadata.
+          sudo apt-get "${apt_options[@]}" update --error-on=any
+          sudo env DEBIAN_FRONTEND=noninteractive apt-get "${apt_options[@]}" install -y --no-install-recommends python3-cairo
+          /usr/bin/python3 -c 'import cairo; print("Cairo dependency ready:", cairo.version)'
       - name: Run isolated application checks
         run: /usr/bin/python3 -B distribution/Thor/selftest.py
       - name: Check host installers without connecting to any device
