@@ -24,6 +24,7 @@ import jr.brian.thorkbm.core.display.DualDisplays
 import jr.brian.thorkbm.core.injection.InputInjector
 import jr.brian.thorkbm.core.injection.PanelPowerController
 import jr.brian.thorkbm.core.injection.di.ApplicationScope
+import jr.brian.thorkbm.core.model.PanelView
 import jr.brian.thorkbm.feature.panel.PanelIntent
 import jr.brian.thorkbm.feature.panel.PanelUiState
 import jr.brian.thorkbm.feature.panel.PanelViewModel
@@ -71,8 +72,11 @@ class PanelService : LifecycleService() {
         lifecycleScope.launch {
             viewModel.state.map { it.windowMode() }.distinctUntilChanged().collect { mode ->
                 panel?.setMode(mode, (COLLAPSED_HEIGHT_DP * resources.displayMetrics.density).toInt())
-                // The pointer belongs to the keyboard: hiding the panel hides it too.
-                if (mode == PanelWindowMode.FULL) pointer?.show() else pointer?.remove()
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.state.map { it.showsPointer() }.distinctUntilChanged().collect { visible ->
+                if (visible) pointer?.show() else pointer?.remove()
             }
         }
     }
@@ -96,7 +100,7 @@ class PanelService : LifecycleService() {
         val upper = manager.getDisplay(pair.upper.id) ?: return
         try {
             pointer = OverlayWindow(this, upper, owner, touchable = false) { CursorOverlay(cursor) }
-                .also { if (viewModel.state.value.windowMode() == PanelWindowMode.FULL) it.show() }
+                .also { if (viewModel.state.value.showsPointer()) it.show() }
             panel = OverlayWindow(this, lower, owner, touchable = true) { PanelRoute(viewModel) }
                 .also { it.setMode(viewModel.state.value.windowMode(), (COLLAPSED_HEIGHT_DP * resources.displayMetrics.density).toInt()) }
         } catch (e: RuntimeException) {
@@ -153,6 +157,9 @@ class PanelService : LifecycleService() {
         internal fun stopIntent(context: Context) = Intent(context, PanelService::class.java).setAction(ACTION_STOP)
 
         internal fun showIntent(context: Context) = Intent(context, PanelService::class.java).setAction(ACTION_SHOW)
+
+        /** The pointer is only shown while a trackpad is on screen: not when hidden, not in keyboard-only view. */
+        private fun PanelUiState.showsPointer() = !collapsed && keyboard.view != PanelView.KEYBOARD
 
         /** Hidden with the restore button turned off means no window at all on the lower screen. */
         private fun PanelUiState.windowMode() = when {
