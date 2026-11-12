@@ -58,16 +58,21 @@ screen touches**.
 
 ## Install
 
-1. Build or download the APK and install it on the Thor (Android 13 or later):
-   `./gradlew :app:assembleDebug`, then
-   `adb install app/build/outputs/apk/debug/app-debug.apk`.
+1. Download `ThorKBM-v2.0.apk` from
+   [Releases](https://github.com/BrianJr03/Thor-Ergo-Android/releases) and
+   install it on the Thor (Android 13 or later). It installs as
+   `jr.brian.thorkbm`:
+   `adb install ThorKBM-v2.0.apk`.
 2. Install and start **Shizuku**.
 3. Open **ThorKBM** and work through the checklist:
    1. Display over other apps.
-   2. Shizuku: allow.
-   3. Accessibility service.
+   2. Shizuku: allow **ThorKBM**.
+   3. Accessibility service: **ThorKBM input**.
    4. Notifications.
 4. Tap **Start keyboard panel**.
+
+Early test builds used the app id `com.thorergo`. ThorKBM can't update those,
+so uninstall them first: `adb uninstall com.thorergo`.
 
 The notification's **Stop** action ends the panel. Stopping always turns the
 lower screen back on and releases any held key or button.

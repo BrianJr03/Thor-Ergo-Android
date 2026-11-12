@@ -50,9 +50,12 @@ mantém o foco. Há duas formas de enviar a entrada:
 
 ## Instalação
 
-1. Instala o APK no Thor (Android 13 ou posterior).
+1. Descarrega `ThorKBM-v2.0.apk` em
+   [Releases](https://github.com/BrianJr03/Thor-Ergo-Android/releases) e
+   instala-o no Thor (Android 13 ou posterior). Instala-se como
+   `jr.brian.thorkbm`.
 2. Instala e inicia o Shizuku.
-3. Abre o Thor Ergo e segue a lista de verificação.
+3. Abre o **ThorKBM** e segue a lista de verificação.
 4. Toca em **Iniciar o painel do teclado**.
 
 ## Licença
