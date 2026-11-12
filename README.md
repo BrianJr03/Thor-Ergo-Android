@@ -76,7 +76,7 @@ lower screen back on and releases any held key or button.
 You need JDK 17 or later and the Android SDK (API 36).
 
 ```sh
-./gradlew test                    # every unit, Robolectric and screenshot test
+./gradlew test                    # every unit and Robolectric test
 ./gradlew recordRoborazziDebug    # refresh feature/panel/src/test/screenshots
 ./gradlew lintDebug
 ./gradlew :app:assembleDebug

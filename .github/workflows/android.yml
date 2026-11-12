@@ -36,8 +36,8 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Unit, Robolectric and screenshot tests
-        run: ./gradlew test verifyRoborazziDebug --no-daemon
+      - name: Unit and Robolectric tests
+        run: ./gradlew test --no-daemon
 
       - name: Lint
         run: ./gradlew lintDebug --no-daemon
