@@ -1,4 +1,18 @@
-__pycache__/
-*.py[cod]
+# Gradle and Kotlin
+.gradle/
+.kotlin/
+build/
+local.properties
+
+# IDE
+.idea/
+*.iml
+captures/
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Python helper (tools/pinyin)
+__pycache__/
+*.py[cod]

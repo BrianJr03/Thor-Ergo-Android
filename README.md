@@ -1,166 +1,92 @@
-# Thor Ergo 1.0
+# Thor Ergo 2.0 for Android
 
 **A multilingual touchscreen keyboard and trackpad for the lower screen of the
-AYN Thor running ArmadaOS.**
+AYN Thor, typing into the game or app on the upper screen.**
 
-An independent fork of [Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input),
-with an ergonomic interface, large touch targets and seven keyboard layouts.
+This is the native Android edition of Thor Ergo. Version 1.0 was a Linux/GTK app
+for ArmadaOS, an independent fork of
+[Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input).
+2.0 rebuilds it in Kotlin and Jetpack Compose with the same layouts and behavior.
 **Graphic design and keyboard layout: seekingalphacrawler.**
 
-[Português](README-PT.md) · [Download version 1.0](https://github.com/seekingalphacrawler/Thor-Ergo/releases/tag/v1.0) · [Interface guide](docs/INTERFACE.md) · [Credits](CREDITS.md)
+[Português](README-PT.md) · [Architecture](docs/ARCHITECTURE.md) · [Credits](CREDITS.md) · [Third-party notices](THIRD_PARTY.md)
 
-![English keyboard and touchpad](docs/images/keyboard-en.png)
+![English keyboard and touchpad](feature/panel/src/test/screenshots/keyboard-en-US.png)
 
-*Interface previews are rendered from the application's own drawing code. They
-show the app area, not a photograph of a Thor or a simulated Plasma status bar.
-Actual font rendering and available height depend on the device session.*
+*Rendered by the app's own Compose code at the Thor's lower-screen size
+(1240 × 1080). These are screenshot-test images, not device photos.*
 
-## Tested environment
-
-| Component | Tested setup |
-|---|---|
-| Installation computer | **Windows 11** |
-| Handheld | **AYN Thor Pro — 12 GB RAM** |
-| Operating system | **ArmadaOS 20261109.dfed5d6** (20261109 release) |
-| Upper screen | Steam Game Mode, started and unlocked |
-| Lower screen | **Plasma Mobile enabled** in Armada Control |
-
-**macOS and Linux installers are included, but have not been tested by the
-maintainer on those operating systems.** Other hardware/OS versions and every
-language/game combination are not covered by this test report.
-
-This is a completed personal project, shared as-is, with no active maintenance
-or support commitment. Community forks are welcome. [Support and limitations](SUPPORT.md).
+> **Status:** builds and passes its automated tests. It has **not yet been
+> tried on an AYN Thor**. See [Support](SUPPORT.md) for what that means.
 
 ## Features
 
-- Large letter keys, a fixed lower-right touchpad, dedicated mouse buttons,
-  separate numbers/symbols/Fn pages, and arrows on the alternate pages.
-- Lowercase/uppercase labels follow Shift and Caps Lock. Hold an eligible letter,
-  slide to an accented variant, and release to type it.
-- Seven keyboard layouts and translated menus, with independent keyboard and
-  interface-language choices or automatic matching.
-- Optional **AYN button** control: one press turns the lower panel off and the
-  next turns it on, without closing Plasma Mobile or suspending the Thor.
-- Complete user-level installation, SSH deployment, diagnostics and Undo.
+- Large keys, a trackpad in the bottom-right corner, header mouse buttons, and
+  number, symbol and Fn pages. The arrow keys are on the alternative pages.
+- Shift and Caps Lock: tap once for the next letter, double-tap to lock. Legends
+  follow the case.
+- Hold a letter, slide to an accent and release to type it.
+- Seven layouts with translated menus: English (US), Português, Español,
+  Français, Deutsch, Italiano and 简体中文 with offline Pinyin. The interface
+  language can follow the keyboard or be set separately, without changing the
+  system language.
+- Trackpad:
+  - pointer acceleration;
+  - tap to click and two-finger right-click;
+  - two-finger scroll with fine scaling;
+  - inertial glide;
+  - drag while holding a header mouse button.
+- Three views: keyboard + touchpad, keyboard only, touchpad only.
+- **Lower screen off.** This replaces 1.0's AYN-button feature. It powers off
+  only the lower panel; the game keeps running. You can trigger it from the menu
+  or from a hardware key you bind.
 
-## Download and install
+## How it works on Android
 
-Download **`Thor-Ergo-1.0.zip`** from [Releases](https://github.com/seekingalphacrawler/Thor-Ergo/releases/tag/v1.0).
-Choose that named asset, not GitHub's automatically generated **Source code** archives.
-Extract the entire folder before running an installer.
+The panel is a non-focusable overlay window on the lower display, so the game
+on the upper display keeps input focus. Input reaches the game in two ways:
 
-### Prepare the Thor
-
-Enable SSH, connect the computer and Thor to the same local network, save your
-work and close games. Keep the Thor awake with all buttons released.
-
-**Upper screen: Steam Game Mode started and unlocked. Lower screen: Plasma
-Mobile enabled through Armada Control on the upper screen. Do not switch the
-whole Thor to Desktop Mode.** The installer checks the lower session but does
-not enable it automatically.
-
-### Choose the installer
-
-| Computer / execution location | File or command |
+| Backend | What it enables |
 |---|---|
-| **Windows 11 — tested** | Double-click `Install-Windows.cmd`; do not run as administrator |
-| macOS — not tested by the maintainer | In Terminal, inside the extracted folder: `sh Install-macOS.command` |
-| Linux — not tested by the maintainer | In a terminal, inside the extracted folder: `sh Install-Linux.sh` |
-| Directly on the Thor, including an SSH shell | Inside the extracted folder: `sh Install-on-Thor.sh` |
+| **[Shizuku](https://shizuku.rikka.app/)** (recommended) | Real key events, mouse movement, clicks and scrolling for any app, including games. It can also power off the lower panel. |
+| **Accessibility service** | Accented and Chinese text in the focused field, plus the hardware-key toggle. Without Shizuku, keys and taps only reach focused text fields. |
 
-The Windows/macOS/Linux scripts install **onto the Thor over SSH**. They do not
-run the keyboard on the computer. Windows needs PowerShell 5.1+ and OpenSSH Client;
-macOS/Linux need OpenSSH and standard POSIX command-line tools. No host Python
-installation is required.
+A glove pointer on the upper screen shows where the trackpad is pointing. Some
+games ignore mouse input. For those, turn on **Settings → Mouse → Clicks as
+screen touches**.
 
-Choose **1 — Install / update** and enter the local IP, SSH user (default
-`armada`) and port (default `22`). The installer shows **SSH password (default:
-"armada")**; enter the current password in OpenSSH's prompt. Passwords are not
-stored by the installer. Existing SSH-key authentication is supported. Verify
-new SSH fingerprints; changed host keys are not silently accepted or removed.
+## Install
 
-The archive contains the full app, source, private GtkLayerShell runtime, offline
-Pinyin data and licenses. **No prior application or patch is required.** The
-installer does not download packages, use sudo, unlock the OS or change input
-permissions. It tests a separate complete copy, then requires a live first frame;
-activation failure requests automatic rollback. Existing compatible preferences
-and the prior installation can be retained for Undo.
+1. Build or download the APK and install it on the Thor (Android 13 or later):
+   `./gradlew :app:assembleDebug`, then
+   `adb install app/build/outputs/apk/debug/app-debug.apk`.
+2. Install and start **Shizuku**.
+3. Open **Thor Ergo** and work through the checklist:
+   1. Display over other apps.
+   2. Shizuku: allow.
+   3. Accessibility service.
+   4. Notifications.
+4. Tap **Start keyboard panel**.
 
-## Keyboard languages
+The notification's **Stop** action ends the panel. Stopping always turns the
+lower screen back on and releases any held key or button.
 
-| Keyboard | Layout and characters |
-|---|---|
-| English (US) | US QWERTY and punctuation |
-| Português (Portugal) | QWERTY, ç and Portuguese accents |
-| Español (España) | QWERTY, ñ, ¿, ¡ and accented vowels |
-| Français (France) | AZERTY and French accents |
-| Deutsch (Deutschland) | QWERTZ, ä, ö, ü and ß |
-| Italiano (Italia) | QWERTY and accented vowels |
-| 简体中文 | Offline Pinyin composition with selectable, paginated candidates |
+## Build and test
 
-Open the gear button → **Languages**. Menu language may follow the keyboard or
-be selected separately. The Chinese composer is a basic offline implementation,
-not a contextual predictive keyboard; it does not learn or store typing history.
-Non-US text uses a private Gamescope text-input interface: support depends on
-the destination application/game. US physical keys assume a US destination layout.
-System-wide keyboard settings are not changed.
+You need JDK 17 or later and the Android SDK (API 36).
 
-## Menus and controls
+```sh
+./gradlew test                    # every unit, Robolectric and screenshot test
+./gradlew recordRoborazziDebug    # refresh feature/panel/src/test/screenshots
+./gradlew lintDebug
+./gradlew :app:assembleDebug
+```
 
-| Numbers and punctuation | Symbols and accents |
-|---|---|
-| ![Numbers](docs/images/numbers.png) | ![Symbols](docs/images/symbols.png) |
+The keyboard, trackpad, Pinyin and dead-key logic are pure Kotlin modules. Their
+tests are ported from the 1.0 test suite.
 
-| Function keys | Languages |
-|---|---|
-| ![Fn](docs/images/functions.png) | ![Languages](docs/images/settings-languages.png) |
+## License
 
-| Keyboard settings | Mouse settings |
-|---|---|
-| ![Keyboard settings](docs/images/settings-keyboard.png) | ![Mouse settings](docs/images/settings-mouse.png) |
-
-| AYN button | About and credits |
-|---|---|
-| ![AYN button settings](docs/images/settings-ayn.png) | ![Credits](docs/images/settings-about.png) |
-
-See the [interface guide](docs/INTERFACE.md) for full-size images,
-Portuguese typing, accent selection and Pinyin examples.
-
-## AYN button: lower-screen toggle
-
-With games closed and all buttons released, open **Settings → AYN button** and
-enable the option. It defaults to **Off** after installation. Wait for **Ready**
-and the InputPlumber routing indication. Press AYN once to turn the lower panel
-off and again to turn it on. The helper runs independently of the keyboard window.
-
-Only the AYN mapping is temporarily routed through InputPlumber. Disabling the
-option attempts to restore the earlier mapping. Disable it before changing
-controller profiles or assigning AYN to another application. A private recovery
-snapshot remains on the Thor; do not publish it. No raw-device access, global
-keyboard capture, permission changes or Plasma shortcuts are required.
-
-## Undo, diagnostics and recovery
-
-Run the installer again and choose **2 — Undo**, **3 — Diagnostics**, or
-**4 — Wake lower screen**. Dedicated `Diagnose-AYN-*` launchers are also included.
-Undo restores the immediately preceding installation/preferences; on a fresh
-installation it removes the created services and launchers. Review diagnostics
-before sharing them, because live output can contain local names and paths.
-
-The application is installed under the user's `~/.local/share/thor-ergo/`,
-`~/.config/thor-ergo/` and user-level systemd directories, not the immutable OS
-image. Normal ArmadaOS updates should preserve those files, but **continued
-compatibility is not guaranteed**. An actual OTA upgrade has not been validated.
-A reflash/reset that erases user data is different.
-
-## Source and credits
-
-Application source: `distribution/Thor/app/src/`; retained input components: `distribution/Thor/app/vendor/`;
-installers and tests are included. Run isolated checks with
-`python3 -B distribution/Thor/selftest.py` where the test dependencies are available.
-
-See [CREDITS.md](CREDITS.md), [LICENSE](LICENSE), and
-[third-party notices](distribution/Thor/app/THIRD_PARTY.md). Original authors and licenses are
-preserved. This fork is not endorsed by AYN, ArmadaOS, Valve or the upstream
-projects. **Graphic design and keyboard layout: seekingalphacrawler.**
+MIT: see [LICENSE](LICENSE). The Pinyin index is derived from xpinyin and is
+distributed under the LPPL 1.3c. Its sources and the builder are in
+`licenses/xpinyin/` and `tools/pinyin/`; see [THIRD_PARTY.md](THIRD_PARTY.md).

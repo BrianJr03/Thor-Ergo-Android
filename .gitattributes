@@ -1,6 +1,6 @@
 * text=auto
-distribution/** -text
-docs/images/** -text
-*.zip -text
 *.png -text
 *.jpg -text
+*.jar -text
+gradlew text eol=lf
+*.bat text eol=crlf

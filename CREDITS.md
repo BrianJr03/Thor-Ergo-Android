@@ -6,36 +6,33 @@ Thor Ergo is an independent fork of
 [Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input).
 It is not an official release of AYN, ArmadaOS, Valve or the upstream projects.
 
-## Original software and platform
+## Original software whose behaviour this edition reimplements
 
 - **sa1utyeggs and contributors — Armada Dual Screen Input 0.1.7 (MIT).**
-  The application foundation, input/session integration and original theme.
+  The application foundation and the original input design.
 - **Ven / venatrix-ritz and Thor Input Contributors — Ratatoskr (MIT).**
-  Its input engine and retained components. The original notices, including
-  lavachemist, Project Barry, the Decky Loader community and cited research,
-  remain in `distribution/Thor/app/vendor/ratatoskr/CREDITS.md`.
-- **ArmadaOS team.** Device integration, the lower-screen Plasma session and
-  companion-screen control.
-- **Valve and Gamescope contributors.** The existing compositor and text-input
-  interfaces used by the application. These interfaces can change with the OS.
-- **ShadowBlip and InputPlumber contributors.** Integration through the existing
-  system D-Bus service; the daemon is not redistributed here.
+  The trackpad gesture engine ported to `core/trackpad`. Its license and
+  credits, including lavachemist, Project Barry, the Decky Loader community and
+  cited research, are in `licenses/ratatoskr/`.
+- **ArmadaOS team.** The platform the 1.0 edition was built for.
 
-## Libraries and language data
+## Android edition
 
-- **gtk-layer-shell contributors** and Fedora packagers. Original runtime
-  licenses and matching source references are retained.
-- **Ingy döt Net, Kirill Simonov and contributors — PyYAML 6.0.3 (MIT).**
-- **Qing Lee — xpinyin 3.1 data**, derived from Unihan 14.0.0, with the LPPL
-  notice, source data and reproducible index builder retained.
-- **Unicode, Inc. and contributors.** Original character-reading data.
-- GTK, Pango, Cairo, Wayland/libei and fonts are supplied by ArmadaOS.
-  **No font files are redistributed.**
+- **Shizuku** by RikkaApps, Apache-2.0, for privileged input injection.
+- **HiddenApiBypass** by LSPosed, Apache-2.0.
+- AndroidX, Jetpack Compose, Dagger/Hilt and kotlinx libraries (Apache-2.0).
 
-The design credit does not reattribute other developers' code, original theme,
-assets, data or libraries. Application extensions and installers use the
-included MIT license; original components retain their own notices and licenses.
-See `distribution/Thor/app/THIRD_PARTY.md` and the license files inside the application.
+## Language data
 
-These credits are also available in **Settings → About & credits** in each
-interface language.
+- **Qing Lee — xpinyin 3.1 data**, derived from Unihan 14.0.0. The LPPL notice,
+  the unmodified source data and the reproducible index builder are retained in
+  `licenses/xpinyin/` and `tools/pinyin/`.
+- **Unicode, Inc. and contributors.** The original character-reading data.
+
+## Artwork
+
+The glove pointer sprites were created for Thor Ergo; their provenance is in
+`licenses/THIRD_PARTY.upstream.md`.
+
+The design credit does not reattribute other developers' code, data or
+libraries. These credits are also shown in **Settings → About & credits**.
