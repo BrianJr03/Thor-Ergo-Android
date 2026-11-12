@@ -33,6 +33,11 @@ android {
         versionName = rootProject.file("VERSION").readText().trim()
     }
 
+    // Ship only the app's seven languages; libraries otherwise bring dozens of unused translations.
+    androidResources {
+        localeFilters += listOf("en", "pt", "es", "fr", "de", "it", "zh-rCN")
+    }
+
     // The interface language is chosen in the app, so every translation must ship in the APK.
     bundle {
         language {
