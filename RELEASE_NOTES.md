@@ -1,10 +1,22 @@
 # ThorKBM
 
+## 2.1
+
+- **OLED black theme:** pure-black backgrounds and near-black keys for AMOLED
+  screens. Settings → Screen → OLED black theme.
+- **Swipe typing (English (US)):** slide across the letters to type a word,
+  then pick an alternative from the suggestion strip if needed. Off by
+  default: Settings → Keyboard → Swipe typing.
+- Keys now press down when touched, except while swipe typing is on.
+- The pointer can hide after 3 s without trackpad use (Settings → Mouse).
+
+## 2.0
+
 The first release of ThorKBM: a native Android fork of Thor Ergo, the ArmadaOS
 version, for the AYN Thor's dual screens. The ArmadaOS version remains in the
 Git history and on its own release page.
 
-## What carries over from the ArmadaOS version
+### What carries over from the ArmadaOS version
 
 - The same keyboard geometry (1240 × 1080 logical layout).
 - The same seven national layouts and accent popups.
@@ -15,7 +27,7 @@ Git history and on its own release page.
   lockout.
 - Every setting, with its range and default.
 
-## What is new or different
+### What is new or different
 
 - Input goes through **Shizuku** (full fidelity) or the **Accessibility
   service** (text into focused fields), instead of Gamescope and uinput.
@@ -28,7 +40,7 @@ Git history and on its own release page.
   - clicks as screen touches, for games that ignore the mouse.
 - No SSH installers or host scripts: install the APK.
 
-## Known limitations
+### Known limitations
 
 - Not yet tested on an AYN Thor. See SUPPORT.md.
 - Without Shizuku, keys and taps only reach focused text fields, and there is
