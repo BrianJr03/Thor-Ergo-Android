@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +28,7 @@ class SetupViewModel @Inject constructor(
     private val panel: PanelControl,
     injector: InputInjector,
     displays: DisplayRepository,
-    settings: SettingsRepository,
+    private val settings: SettingsRepository,
 ) : ViewModel() {
     private data class Granted(val overlay: Boolean, val notifications: Boolean)
 
@@ -70,7 +71,14 @@ class SetupViewModel @Inject constructor(
                 ShizukuState.PermissionRequired -> shizuku.requestPermission()
                 ShizukuState.Connecting, ShizukuState.Ready -> Unit
             }
-            SetupIntent.TogglePanel -> if (state.value.panelRunning) panel.stop() else if (state.value.canStart) panel.start()
+            SetupIntent.TogglePanel -> when {
+                state.value.panelRunning -> panel.stop()
+                state.value.canStart -> viewModelScope.launch {
+                    panel.start()
+                    settings.update { it.copy(setupCompleted = true) }
+                    effects.send(SetupEffect.Close)
+                }
+            }
             SetupIntent.OpenSettings -> effects.trySend(SetupEffect.NavigateToSettings)
         }
     }

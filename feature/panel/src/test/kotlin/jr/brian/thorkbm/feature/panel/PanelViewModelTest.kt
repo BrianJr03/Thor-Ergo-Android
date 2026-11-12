@@ -18,6 +18,7 @@ import jr.brian.thorkbm.core.testing.FakeSettingsRepository
 import jr.brian.thorkbm.core.testing.MainDispatcherRule
 import jr.brian.thorkbm.feature.panel.di.MonotonicClock
 import jr.brian.thorkbm.feature.panel.input.CursorController
+import jr.brian.thorkbm.feature.settings.AppActions
 import jr.brian.thorkbm.feature.settings.SettingsStateHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,6 +29,12 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+
+private object NoAppActions : AppActions {
+    override fun openSetup() = Unit
+
+    override fun stopPanel() = Unit
+}
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PanelViewModelTest {
@@ -53,7 +60,7 @@ class PanelViewModelTest {
         displays = FakeDisplayRepository(),
         router = OutputRouter(PinyinComposer(PinyinDictionary(emptyMap(), emptyMap()))),
         settingsFactory = object : SettingsStateHolder.Factory {
-            override fun create(scope: CoroutineScope) = SettingsStateHolder(scope, repository, bridge, power, injector)
+            override fun create(scope: CoroutineScope) = SettingsStateHolder(scope, repository, bridge, power, NoAppActions, injector)
         },
         background = main.dispatcher,
     ).also {

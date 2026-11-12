@@ -88,6 +88,10 @@
     <string name="setting_haptics">Vibration bei Tastendruck</string>
     <string name="setting_show_restore_button">Schaltfläche „Tastatur öffnen“ beim Ausblenden zeigen</string>
     <string name="restore_button_hint">Aus: Ausblenden entfernt das Feld vollständig. Öffne ThorKBM oder nutze die Benachrichtigung, um es zurückzuholen.</string>
+    <string name="tab_setup">Einrichtung</string>
+    <string name="open_setup">Einrichtung und Berechtigungen öffnen</string>
+    <string name="setup_tab_hint">Überlagerungsberechtigung, Shizuku, Bedienungshilfendienst und Benachrichtigungen.</string>
+    <string name="stop_panel_hint">Schließt die Tastatur, bis du ThorKBM wieder öffnest.</string>
     <string name="setting_pointer_as_touch">Klicks als Bildschirmberührungen (Spiele)</string>
     <string name="error_injection_failed">Eingabe konnte nicht gesendet werden. Prüfe Shizuku oder den Bedienungshilfendienst.</string>
     <string name="about_android">Android-Version: Jetpack Compose; Eingabe über Shizuku oder Bedienungshilfen.</string>

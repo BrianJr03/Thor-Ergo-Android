@@ -39,7 +39,7 @@ import jr.brian.thorkbm.core.injection.ShizukuState
 import jr.brian.thorkbm.core.injection.shizuku.ShizukuConnection
 
 @Composable
-fun SetupRoute(viewModel: SetupViewModel, onOpenSettings: () -> Unit) {
+fun SetupRoute(viewModel: SetupViewModel, onOpenSettings: () -> Unit, onClose: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val notifications = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -60,6 +60,7 @@ fun SetupRoute(viewModel: SetupViewModel, onOpenSettings: () -> Unit) {
                 SetupEffect.OpenShizukuApp ->
                     context.packageManager.getLaunchIntentForPackage(ShizukuConnection.SHIZUKU_PACKAGE)?.let(context::open)
                 SetupEffect.NavigateToSettings -> onOpenSettings()
+                SetupEffect.Close -> onClose()
             }
         }
     }

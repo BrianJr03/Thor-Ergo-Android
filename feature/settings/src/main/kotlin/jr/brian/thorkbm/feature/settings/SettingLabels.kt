@@ -44,6 +44,7 @@ internal fun SettingsTab.label(): String = stringResource(
         SettingsTab.KEYBOARD -> R.string.tab_keyboard
         SettingsTab.MOUSE -> R.string.tab_mouse
         SettingsTab.SCREEN -> R.string.tab_screen
+        SettingsTab.SETUP -> R.string.tab_setup
         SettingsTab.ABOUT -> R.string.tab_about
     },
 )

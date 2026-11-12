@@ -54,4 +54,7 @@ sealed interface SetupEffect {
     data object OpenShizukuApp : SetupEffect
 
     data object NavigateToSettings : SetupEffect
+
+    /** The panel was started from setup; the app gets out of the way. */
+    data object Close : SetupEffect
 }

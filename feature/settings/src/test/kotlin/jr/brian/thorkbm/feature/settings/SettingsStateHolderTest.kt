@@ -27,7 +27,19 @@ class SettingsStateHolderTest {
     private val power = FakePanelPowerController()
     private val injector = FakeInputInjector(InjectorStatus(ShizukuState.NotRunning, accessibility = true))
 
-    private fun TestScope.holder() = SettingsStateHolder(backgroundScope, repository, bridge, power, injector)
+    private val actions = object : AppActions {
+        val calls = mutableListOf<String>()
+
+        override fun openSetup() {
+            calls += "openSetup"
+        }
+
+        override fun stopPanel() {
+            calls += "stopPanel"
+        }
+    }
+
+    private fun TestScope.holder() = SettingsStateHolder(backgroundScope, repository, bridge, power, actions, injector)
 
     @Test
     fun `steppers persist and clamp`() = runTest(UnconfinedTestDispatcher()) {
@@ -92,6 +104,14 @@ class SettingsStateHolderTest {
     fun `turning the screen off goes to the power controller`() = runTest(UnconfinedTestDispatcher()) {
         holder().onIntent(SettingsIntent.TurnScreenOff)
         assertThat(power.power.value).isEqualTo(PanelPower.OFF)
+    }
+
+    @Test
+    fun `the setup tab opens setup and stops the panel`() = runTest(UnconfinedTestDispatcher()) {
+        val holder = holder()
+        holder.onIntent(SettingsIntent.OpenSetup)
+        holder.onIntent(SettingsIntent.StopPanel)
+        assertThat(actions.calls).containsExactly("openSetup", "stopPanel").inOrder()
     }
 
     @Test

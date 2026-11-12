@@ -65,7 +65,9 @@ class SetupViewModelTest {
     private val displays = FakeDisplayRepository()
 
     /** The state is shared while subscribed, as the screen would be. */
-    private fun TestScope.viewModel() = SetupViewModel(permissions, shizuku, panel, injector, displays, FakeSettingsRepository()).also { vm ->
+    private val settings = FakeSettingsRepository()
+
+    private fun TestScope.viewModel() = SetupViewModel(permissions, shizuku, panel, injector, displays, settings).also { vm ->
         backgroundScope.launch { vm.state.collect {} }
         runCurrent()
     }
@@ -90,6 +92,19 @@ class SetupViewModelTest {
         vm.onIntent(SetupIntent.TogglePanel)
         runCurrent()
         assertThat(vm.state.value.panelRunning).isTrue()
+    }
+
+    @Test
+    fun `starting from setup remembers completion and closes setup`() = runTest(main.dispatcher) {
+        permissions.overlay = true
+        injector.setStatus(InjectorStatus(ShizukuState.Ready, accessibility = true))
+        val vm = viewModel()
+        vm.effect.test {
+            vm.onIntent(SetupIntent.TogglePanel)
+            assertThat(awaitItem()).isEqualTo(SetupEffect.Close)
+        }
+        assertThat(panel.running.value).isTrue()
+        assertThat(settings.current.setupCompleted).isTrue()
     }
 
     @Test

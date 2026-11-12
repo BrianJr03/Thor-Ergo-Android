@@ -88,6 +88,10 @@
     <string name="setting_haptics">Vibrar al pulsar teclas</string>
     <string name="setting_show_restore_button">Mostrar el botón «Abrir teclado» al ocultar</string>
     <string name="restore_button_hint">Desactivado: Ocultar quita el panel por completo. Abre ThorKBM o usa la notificación para volver a mostrarlo.</string>
+    <string name="tab_setup">Configuración</string>
+    <string name="open_setup">Abrir configuración y permisos</string>
+    <string name="setup_tab_hint">Permiso de superposición, Shizuku, servicio de accesibilidad y notificaciones.</string>
+    <string name="stop_panel_hint">Cierra el teclado hasta que vuelvas a abrir ThorKBM.</string>
     <string name="setting_pointer_as_touch">Clics como toques en pantalla (juegos)</string>
     <string name="error_injection_failed">No se pudo enviar la entrada. Comprueba Shizuku o el servicio de accesibilidad.</string>
     <string name="about_android">Versión Android: Jetpack Compose; entrada mediante Shizuku o Accesibilidad.</string>

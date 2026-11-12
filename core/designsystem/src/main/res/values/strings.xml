@@ -88,6 +88,10 @@
     <string name="setting_haptics">Vibrate on key press</string>
     <string name="setting_show_restore_button">Show “Open keyboard” button when hidden</string>
     <string name="restore_button_hint">When off, Hide removes the panel completely. Open ThorKBM or use the notification to bring it back.</string>
+    <string name="tab_setup">Setup</string>
+    <string name="open_setup">Open setup and permissions</string>
+    <string name="setup_tab_hint">Overlay permission, Shizuku, the accessibility service and notifications.</string>
+    <string name="stop_panel_hint">Closes the keyboard until you open ThorKBM again.</string>
     <string name="setting_pointer_as_touch">Clicks as screen touches (games)</string>
     <string name="error_injection_failed">Could not send input. Check Shizuku or the accessibility service.</string>
     <string name="about_android">Android port: Jetpack Compose; input through Shizuku or Accessibility.</string>

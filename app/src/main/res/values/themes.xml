@@ -6,5 +6,12 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
+    <!-- Shown on launch while the app decides between opening the keyboard and showing setup. -->
+    <style name="Theme.ThorKbm.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/ergo_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.ThorKbm</item>
+    </style>
+
     <color name="ergo_background">#FF161A21</color>
 </resources>

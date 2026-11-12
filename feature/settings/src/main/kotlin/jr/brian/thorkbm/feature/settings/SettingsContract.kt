@@ -5,7 +5,7 @@ import jr.brian.thorkbm.core.model.NumericSetting
 import jr.brian.thorkbm.core.model.Settings
 import jr.brian.thorkbm.core.model.ToggleSetting
 
-enum class SettingsTab { LANGUAGES, KEYBOARD, MOUSE, SCREEN, ABOUT }
+enum class SettingsTab { LANGUAGES, KEYBOARD, MOUSE, SCREEN, SETUP, ABOUT }
 
 enum class LanguagePicker { KEYBOARD, INTERFACE }
 
@@ -42,4 +42,16 @@ sealed interface SettingsIntent {
     data object ClearKey : SettingsIntent
 
     data object TurnScreenOff : SettingsIntent
+
+    /** Opens the permissions checklist in the app. */
+    data object OpenSetup : SettingsIntent
+
+    data object StopPanel : SettingsIntent
+}
+
+/** App-level actions settings can trigger; implemented by the app module. */
+interface AppActions {
+    fun openSetup()
+
+    fun stopPanel()
 }

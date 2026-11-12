@@ -27,6 +27,7 @@ class SettingsStateHolder @AssistedInject constructor(
     private val repository: SettingsRepository,
     private val bridge: AccessibilityBridge,
     private val power: PanelPowerController,
+    private val actions: AppActions,
     injector: InputInjector,
 ) {
     private data class Local(
@@ -70,6 +71,8 @@ class SettingsStateHolder @AssistedInject constructor(
             SettingsIntent.LearnKey -> learnKey()
             SettingsIntent.ClearKey -> save { it.copy(screenToggleKeyCode = null) }
             SettingsIntent.TurnScreenOff -> scope.launch { power.turnOff() }
+            SettingsIntent.OpenSetup -> actions.openSetup()
+            SettingsIntent.StopPanel -> actions.stopPanel()
         }
     }
 

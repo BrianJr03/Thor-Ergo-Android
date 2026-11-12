@@ -88,6 +88,10 @@
     <string name="setting_haptics">按键振动</string>
     <string name="setting_show_restore_button">隐藏后显示“打开键盘”按钮</string>
     <string name="restore_button_hint">关闭后，“隐藏”会完全移除面板。打开 ThorKBM 或使用通知即可重新显示。</string>
+    <string name="tab_setup">初始设置</string>
+    <string name="open_setup">打开初始设置与权限</string>
+    <string name="setup_tab_hint">悬浮窗权限、Shizuku、无障碍服务和通知。</string>
+    <string name="stop_panel_hint">关闭键盘，直到再次打开 ThorKBM。</string>
     <string name="setting_pointer_as_touch">点击作为屏幕触摸（游戏）</string>
     <string name="error_injection_failed">无法发送输入。请检查 Shizuku 或无障碍服务。</string>
     <string name="about_android">Android 版：Jetpack Compose；通过 Shizuku 或无障碍服务输入。</string>

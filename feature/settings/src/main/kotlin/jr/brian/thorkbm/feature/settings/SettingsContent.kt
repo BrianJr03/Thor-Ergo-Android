@@ -56,6 +56,7 @@ fun SettingsContent(
                     SettingsTab.KEYBOARD -> KeyboardTab(state.settings, onIntent)
                     SettingsTab.MOUSE -> MouseTab(state.settings, onIntent)
                     SettingsTab.SCREEN -> ScreenTab(state, onIntent)
+                    SettingsTab.SETUP -> SetupTab(onIntent)
                     SettingsTab.ABOUT -> AboutTab()
                 }
             }
@@ -153,6 +154,14 @@ private fun ScreenTab(state: SettingsUiState, onIntent: (SettingsIntent) -> Unit
     Hint(stringResource(R.string.screen_hint_wake))
     if (!state.canPowerOff) Hint(stringResource(R.string.screen_hint_shizuku))
     if (!state.canBindKey) Hint(stringResource(R.string.screen_hint_accessibility))
+}
+
+@Composable
+private fun SetupTab(onIntent: (SettingsIntent) -> Unit) {
+    ErgoButton(stringResource(R.string.open_setup), { onIntent(SettingsIntent.OpenSetup) }, Modifier.fillMaxWidth(), tone = KeyTone.ACCENT)
+    Hint(stringResource(R.string.setup_tab_hint))
+    ErgoButton(stringResource(R.string.stop_panel), { onIntent(SettingsIntent.StopPanel) }, Modifier.fillMaxWidth().padding(top = 12.dp))
+    Hint(stringResource(R.string.stop_panel_hint))
 }
 
 @Composable
