@@ -1,5 +1,13 @@
 # ThorKBM
 
+<p align="center">
+  <a href="https://github.com/BrianJr03/Thor-Ergo-Android/releases"><img src="https://img.shields.io/github/downloads/BrianJr03/Thor-Ergo-Android/total?style=flat&label=downloads&color=4F8FD0" alt="Total downloads"/></a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/BrianJr03/Thor-Ergo-Android/releases/latest"><img src="https://img.shields.io/github/downloads/BrianJr03/Thor-Ergo-Android/latest/total?style=flat&label=downloads%20%40%20latest&color=4F8FD0" alt="Downloads for the latest release"/></a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/BrianJr03/Thor-Ergo-Android/releases/latest"><img src="https://img.shields.io/github/v/release/BrianJr03/Thor-Ergo-Android?style=flat&label=latest&color=C46A2A" alt="Latest release"/></a>
+</p>
+
 **A multilingual touchscreen keyboard and trackpad for the lower screen of the
 AYN Thor, typing into the game or app on the upper screen.**
 
