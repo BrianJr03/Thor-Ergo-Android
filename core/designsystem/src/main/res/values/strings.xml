@@ -21,7 +21,7 @@
     <string name="tab_languages">Languages</string>
     <string name="tab_keyboard">Keyboard</string>
     <string name="tab_mouse">Mouse</string>
-    <string name="tab_about">About &amp; credits</string>
+    <string name="tab_about">About</string>
     <string name="setting_keyboard_language">Keyboard layout</string>
     <string name="setting_ui_language">Interface language</string>
     <string name="follow_keyboard">Follow keyboard</string>
@@ -75,8 +75,9 @@
     <string name="state_ready">Ready</string>
     <string name="state_unavailable">Unavailable</string>
     <string name="state_screen_off">Screen off</string>
-    <string name="tab_screen">Lower screen</string>
+    <string name="tab_screen">Screen</string>
     <string name="setting_screen_toggle">Hardware key toggles the lower screen</string>
+    <string name="setting_oled_black">OLED black theme</string>
     <string name="setting_screen_key">Bound key</string>
     <string name="screen_key_none">None</string>
     <string name="screen_key_learn">Press a key…</string>
@@ -93,6 +94,9 @@
     <string name="setup_tab_hint">Overlay permission, Shizuku, the accessibility service and notifications.</string>
     <string name="stop_panel_hint">Closes the keyboard until you open ThorKBM again.</string>
     <string name="setting_auto_hide_pointer">Hide pointer after 3 s without movement</string>
+    <string name="setting_swipe_typing">Swipe typing</string>
+    <string name="keyboard_hint_swipe">Swipe typing: slide across the letters, then lift. English (US) layout only.</string>
+    <string name="about_swipe">Swipe words: FrequencyWords / OpenSubtitles data, CC BY-SA 4.0.</string>
     <string name="setting_pointer_as_touch">Clicks as screen touches (games)</string>
     <string name="error_injection_failed">Could not send input. Check Shizuku or the accessibility service.</string>
     <string name="about_android">Android port: Jetpack Compose; input through Shizuku or Accessibility.</string>

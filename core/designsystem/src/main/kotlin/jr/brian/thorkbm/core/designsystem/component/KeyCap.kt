@@ -27,6 +27,8 @@ fun KeyCap(
     pressed: Boolean = false,
     tone: KeyTone = KeyTone.NORMAL,
     corner: Dp = 12.dp,
+    /** Off while swipe typing, so keys under a sliding finger stay put and line up with its trail. */
+    animatePress: Boolean = true,
     content: @Composable BoxScope.() -> Unit,
 ) {
     val colors = ErgoTheme.colors
@@ -38,8 +40,9 @@ fun KeyCap(
     }
     val border = if (tone == KeyTone.NORMAL) colors.keyBorder else colors.accentBorder
     // Press-down: the key shrinks slightly and sinks a few dp, then eases back on release.
-    val pressScale by animateFloatAsState(if (pressed) 0.92f else 1f, tween(PRESS_MILLIS), label = "pressScale")
-    val pressOffset by animateDpAsState(if (pressed) 3.dp else 0.dp, tween(PRESS_MILLIS), label = "pressOffset")
+    val sink = pressed && animatePress
+    val pressScale by animateFloatAsState(if (sink) 0.92f else 1f, tween(PRESS_MILLIS), label = "pressScale")
+    val pressOffset by animateDpAsState(if (sink) 3.dp else 0.dp, tween(PRESS_MILLIS), label = "pressOffset")
     Box(
         modifier = modifier
             .graphicsLayer {

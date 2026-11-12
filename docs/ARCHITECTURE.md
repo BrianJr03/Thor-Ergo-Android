@@ -11,6 +11,7 @@ core/model          Settings and setting specs, Language, KeyCode, Modifier, Dea
 core/keyboard       LayoutEngine, profiles, KeyboardReducer, OutputRouter, DeadKeyComposer (pure Kotlin)
 core/trackpad       TrackpadGestureDetector, Glide (pure Kotlin)
 core/pinyin         PinyinDictionary, PinyinComposer (pure Kotlin)
+core/swipe          SwipeLexicon, SwipeDecoder for swipe typing (pure Kotlin)
 core/data           SettingsRepository on DataStore (strict JSON)
 core/display        Upper/lower display pairing as a Flow
 core/injection      InputInjector: Shizuku user service and Accessibility service; PanelPowerController
@@ -43,6 +44,14 @@ touch into an event:
    - shortcuts: the US key position, and Caps Lock never adds Shift.
 
    Anything still queued after 750 ms is dropped rather than sent late.
+5. **Swipe typing** (optional, English (US)). When a lone finger leaves an
+   unmodified letter, the reducer records a `SwipeTrace` instead of cancelling
+   the key. On release it emits `DecodeSwipe`. The ViewModel runs
+   `SwipeDecoder` at once on the main thread (under a millisecond) and replies
+   with `SwipeDecoded`. The reducer then emits the best word as
+   `OutputEvent.Word` and keeps the rest as `Suggestions` for the candidate
+   strip. Any other input clears them, so picking one only ever deletes the
+   word it replaces.
 
 Drawing and hit-testing use the same `LayoutEngine` rectangles in a logical
 1240 × 1080 space. Compose only scales and draws them, so there are no

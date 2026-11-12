@@ -24,7 +24,7 @@ import jr.brian.thorkbm.feature.panel.output.PanelMessage
 @Composable
 internal fun legend(key: KeySpec, state: KeyboardState): String {
     val action = key.action
-    if (action is KeyAction.Candidate) return state.ime.candidateAt(action.slot).orEmpty()
+    if (action is KeyAction.Candidate) return state.stripCandidateAt(action.slot).orEmpty()
     return when (val label = key.label) {
         is KeyLabel.Localized -> stringResource(label.id.resource())
         is KeyLabel.Literal ->

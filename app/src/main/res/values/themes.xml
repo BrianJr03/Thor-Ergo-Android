@@ -13,5 +13,13 @@
         <item name="postSplashScreenTheme">@style/Theme.ThorKbm</item>
     </style>
 
+    <!-- The starting window when the OLED black theme is on; MainActivity hands it to the system splash. -->
+    <style name="Theme.ThorKbm.Starting.Oled">
+        <item name="windowSplashScreenBackground">@color/ergo_background_oled</item>
+        <item name="android:windowSplashScreenBackground">@color/ergo_background_oled</item>
+        <item name="android:windowBackground">@color/ergo_background_oled</item>
+    </style>
+
     <color name="ergo_background">#FF161A21</color>
+    <color name="ergo_background_oled">#FF000000</color>
 </resources>

@@ -77,6 +77,7 @@
     <string name="state_screen_off">Bildschirm aus</string>
     <string name="tab_screen">Unterer Bildschirm</string>
     <string name="setting_screen_toggle">Hardwaretaste schaltet den unteren Bildschirm</string>
+    <string name="setting_oled_black">OLED-Schwarz-Design</string>
     <string name="setting_screen_key">Zugewiesene Taste</string>
     <string name="screen_key_none">Keine</string>
     <string name="screen_key_learn">Taste drücken…</string>
@@ -93,6 +94,9 @@
     <string name="setup_tab_hint">Überlagerungsberechtigung, Shizuku, Bedienungshilfendienst und Benachrichtigungen.</string>
     <string name="stop_panel_hint">Schließt die Tastatur, bis du ThorKBM wieder öffnest.</string>
     <string name="setting_auto_hide_pointer">Zeiger nach 3 s ohne Bewegung ausblenden</string>
+    <string name="setting_swipe_typing">Wischen zum Schreiben</string>
+    <string name="keyboard_hint_swipe">Wischen zum Schreiben: über die Buchstaben gleiten und loslassen. Nur Layout English (US).</string>
+    <string name="about_swipe">Wischwörter: FrequencyWords-/OpenSubtitles-Daten, CC BY-SA 4.0.</string>
     <string name="setting_pointer_as_touch">Klicks als Bildschirmberührungen (Spiele)</string>
     <string name="error_injection_failed">Eingabe konnte nicht gesendet werden. Prüfe Shizuku oder den Bedienungshilfendienst.</string>
     <string name="about_android">Android-Version: Jetpack Compose; Eingabe über Shizuku oder Bedienungshilfen.</string>

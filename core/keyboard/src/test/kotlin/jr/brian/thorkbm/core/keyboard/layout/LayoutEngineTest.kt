@@ -137,6 +137,16 @@ class LayoutEngineTest {
     }
 
     @Test
+    fun `swipe typing adds the candidate strip to the english letters only`() {
+        assertThat(build(language = Language.EN_US).keys.none { it.id.startsWith("ime:") }).isTrue()
+        val swipe = LayoutEngine.build(Page.ABC, PanelView.COMBINED, Language.EN_US, suggestions = true)
+        assertThat(swipe.keys.filter { it.id.startsWith("ime:") }).hasSize(8)
+        assertThat(swipe.find("char:q")!!.rect.y).isEqualTo(220f)
+        val numbers = LayoutEngine.build(Page.NUMBERS, PanelView.COMBINED, Language.EN_US, suggestions = true)
+        assertThat(numbers.keys.none { it.id.startsWith("ime:") }).isTrue()
+    }
+
+    @Test
     fun `accent popups stay on screen and contain their options`() {
         val profile = LanguageProfile.of(Language.FR_FR)
         for (language in Language.entries) {

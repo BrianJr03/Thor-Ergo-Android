@@ -77,6 +77,7 @@
     <string name="state_screen_off">Ecrã apagado</string>
     <string name="tab_screen">Ecrã inferior</string>
     <string name="setting_screen_toggle">Tecla física liga/desliga o ecrã inferior</string>
+    <string name="setting_oled_black">Tema preto OLED</string>
     <string name="setting_screen_key">Tecla associada</string>
     <string name="screen_key_none">Nenhuma</string>
     <string name="screen_key_learn">Prime uma tecla…</string>
@@ -93,6 +94,9 @@
     <string name="setup_tab_hint">Permissão de sobreposição, Shizuku, serviço de acessibilidade e notificações.</string>
     <string name="stop_panel_hint">Fecha o teclado até voltares a abrir o ThorKBM.</string>
     <string name="setting_auto_hide_pointer">Ocultar o ponteiro após 3 s sem movimento</string>
+    <string name="setting_swipe_typing">Escrita deslizante</string>
+    <string name="keyboard_hint_swipe">Escrita deslizante: deslize pelas letras e levante o dedo. Apenas no esquema English (US).</string>
+    <string name="about_swipe">Palavras para deslizar: dados FrequencyWords / OpenSubtitles, CC BY-SA 4.0.</string>
     <string name="setting_pointer_as_touch">Cliques como toques no ecrã (jogos)</string>
     <string name="error_injection_failed">Não foi possível enviar a entrada. Verifica o Shizuku ou o serviço de acessibilidade.</string>
     <string name="about_android">Versão Android: Jetpack Compose; entrada via Shizuku ou Acessibilidade.</string>

@@ -35,6 +35,9 @@ It is rebuilt in Kotlin and Jetpack Compose with the same layouts and behavior.
 - Shift and Caps Lock: tap once for the next letter, double-tap to lock. Legends
   follow the case.
 - Hold a letter, slide to an accent and release to type it.
+- Optional swipe typing (English (US) layout): slide across the letters to
+  type a word, then pick an alternative from the suggestion strip. Turn it on
+  in **Settings → Keyboard → Swipe typing**.
 - Seven layouts with translated menus: English (US), Português, Español,
   Français, Deutsch, Italiano and 简体中文 with offline Pinyin. The interface
   language can follow the keyboard or be set separately, without changing the

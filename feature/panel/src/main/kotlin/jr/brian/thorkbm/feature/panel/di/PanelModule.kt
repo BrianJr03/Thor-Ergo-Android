@@ -4,6 +4,8 @@ import android.os.SystemClock
 import jr.brian.thorkbm.core.keyboard.output.OutputRouter
 import jr.brian.thorkbm.core.pinyin.PinyinComposer
 import jr.brian.thorkbm.core.pinyin.PinyinDictionary
+import jr.brian.thorkbm.core.swipe.SwipeDecoder
+import jr.brian.thorkbm.core.swipe.SwipeLexicon
 import jr.brian.thorkbm.feature.panel.PanelViewModel
 import jr.brian.thorkbm.feature.panel.service.PanelControl
 import jr.brian.thorkbm.feature.panel.service.PanelLauncher
@@ -42,6 +44,10 @@ internal object PanelModule {
     @Provides
     @Singleton
     fun pinyinDictionary(): PinyinDictionary = PinyinDictionary.bundled()
+
+    @Provides
+    @Singleton
+    fun swipeDecoder(): SwipeDecoder = SwipeDecoder(SwipeLexicon.bundled())
 
     @Provides
     fun outputRouter(dictionary: PinyinDictionary): OutputRouter = OutputRouter(PinyinComposer(dictionary))

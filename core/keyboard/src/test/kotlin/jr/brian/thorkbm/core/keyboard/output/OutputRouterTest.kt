@@ -33,6 +33,25 @@ class OutputRouterTest {
     }
 
     @Test
+    fun `a swiped word is typed key by key on us`() {
+        assertThat(route(OutputEvent.Word(" Don't"), Language.EN_US).injections).containsExactly(
+            Injection.Chord(KeyCode.SPACE),
+            Injection.Chord(KeyCode.D, setOf(Modifier.SHIFT)),
+            Injection.Chord(KeyCode.O),
+            Injection.Chord(KeyCode.N),
+            Injection.Chord(KeyCode.APOSTROPHE),
+            Injection.Chord(KeyCode.T),
+        ).inOrder()
+    }
+
+    @Test
+    fun `a word with a character missing from the us map types nothing`() {
+        val result = route(OutputEvent.Word("café"), Language.EN_US)
+        assertThat(result.injections).isEmpty()
+        assertThat(result.error).isEqualTo(OutputError.NOT_ON_US_KEYBOARD)
+    }
+
+    @Test
     fun `us never silently maps an accented letter`() {
         val result = route(text("á"), Language.EN_US)
         assertThat(result.injections).isEmpty()

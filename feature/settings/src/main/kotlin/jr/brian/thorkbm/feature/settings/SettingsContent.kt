@@ -110,11 +110,13 @@ private fun KeyboardTab(settings: Settings, onIntent: (SettingsIntent) -> Unit) 
     Stepper(NumericSetting.REPEAT_INTERVAL_MS, settings, onIntent)
     Stepper(NumericSetting.CAPS_WINDOW_MS, settings, onIntent)
     Toggle(ToggleSetting.HAPTICS, settings, onIntent)
+    Toggle(ToggleSetting.SWIPE_TYPING, settings, onIntent)
     Toggle(ToggleSetting.SHOW_RESTORE_BUTTON, settings, onIntent)
     if (!settings.showRestoreButton) Hint(stringResource(R.string.restore_button_hint))
     Hint(stringResource(R.string.keyboard_hint_accents))
     Hint(stringResource(R.string.keyboard_hint_shift))
     Hint(stringResource(R.string.keyboard_hint_arrows))
+    Hint(stringResource(R.string.keyboard_hint_swipe))
 }
 
 @Composable
@@ -133,6 +135,7 @@ private fun MouseTab(settings: Settings, onIntent: (SettingsIntent) -> Unit) {
 private fun ScreenTab(state: SettingsUiState, onIntent: (SettingsIntent) -> Unit) {
     val settings = state.settings
     ErgoButton(stringResource(R.string.screen_turn_off), { onIntent(SettingsIntent.TurnScreenOff) }, Modifier.fillMaxWidth(), tone = KeyTone.ACCENT)
+    Toggle(ToggleSetting.OLED_BLACK, settings, onIntent)
     ValueRow(
         ToggleSetting.SCREEN_TOGGLE.label(),
         onOff(settings.screenToggleEnabled),
@@ -169,7 +172,7 @@ private fun SetupTab(onIntent: (SettingsIntent) -> Unit) {
 private fun AboutTab() {
     for (line in listOf(
         R.string.about_design, R.string.about_base, R.string.about_input,
-        R.string.about_pinyin, R.string.about_android, R.string.about_independent,
+        R.string.about_pinyin, R.string.about_swipe, R.string.about_android, R.string.about_independent,
     )) {
         Text(stringResource(line), style = MaterialTheme.typography.bodyLarge, color = ErgoTheme.colors.text, modifier = Modifier.padding(vertical = 6.dp))
     }

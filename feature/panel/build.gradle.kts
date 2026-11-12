@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":core:keyboard"))
     implementation(project(":core:trackpad"))
     implementation(project(":core:pinyin"))
+    implementation(project(":core:swipe"))
     implementation(project(":core:data"))
     implementation(project(":core:display"))
     implementation(project(":core:injection"))

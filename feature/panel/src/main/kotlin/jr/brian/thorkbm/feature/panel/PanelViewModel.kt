@@ -15,12 +15,17 @@ import jr.brian.thorkbm.core.keyboard.KeyboardReducer
 import jr.brian.thorkbm.core.keyboard.KeyboardState
 import jr.brian.thorkbm.core.keyboard.KeyboardTimer
 import jr.brian.thorkbm.core.keyboard.Overlay
+import jr.brian.thorkbm.core.keyboard.layout.KeyAction
+import jr.brian.thorkbm.core.keyboard.layout.Point
 import jr.brian.thorkbm.core.keyboard.output.ComposerState
 import jr.brian.thorkbm.core.keyboard.output.OutputRouter
 import jr.brian.thorkbm.core.model.Language
 import jr.brian.thorkbm.core.model.MouseButton
 import jr.brian.thorkbm.core.model.Settings
 import jr.brian.thorkbm.core.pinyin.PinyinDictionary
+import jr.brian.thorkbm.core.swipe.KeyBox
+import jr.brian.thorkbm.core.swipe.SwipeDecoder
+import jr.brian.thorkbm.core.swipe.SwipePoint
 import jr.brian.thorkbm.core.trackpad.Glide
 import jr.brian.thorkbm.core.trackpad.TrackpadConfig
 import jr.brian.thorkbm.core.trackpad.TrackpadGestureDetector
@@ -62,6 +67,7 @@ class PanelViewModel @Inject constructor(
     private val cursor: CursorController,
     private val clock: MonotonicClock,
     private val dictionary: PinyinDictionary,
+    private val swipeDecoder: SwipeDecoder,
     displays: DisplayRepository,
     router: OutputRouter,
     settingsFactory: SettingsStateHolder.Factory,
@@ -184,6 +190,8 @@ class PanelViewModel @Inject constructor(
     private fun execute(command: KeyboardCommand) {
         when (command) {
             is KeyboardCommand.Emit -> output.submit(command.event)
+            // Decoded right away on this thread so the word keeps its place among the keys typed around it.
+            is KeyboardCommand.DecodeSwipe -> reduce(KeyboardEvent.SwipeDecoded(command.serial, decodeSwipe(command.points)))
             is KeyboardCommand.StartTimer -> {
                 timers.remove(command.timer)?.cancel()
                 timers[command.timer] = viewModelScope.launch {
@@ -222,10 +230,13 @@ class PanelViewModel @Inject constructor(
                     val c = cursor.cursor.value
                     injector.scroll(out.vertical, out.horizontal, c.x, c.y)
                 }
-                is TrackpadOutput.Click -> pointer {
-                    button(out.button, true)
-                    delay(CLICK_MS)
-                    button(out.button, false)
+                is TrackpadOutput.Click -> {
+                    reduce(KeyboardEvent.PointerClicked)
+                    pointer {
+                        button(out.button, true)
+                        delay(CLICK_MS)
+                        button(out.button, false)
+                    }
                 }
                 is TrackpadOutput.StartGlide -> startGlide(out.glide)
             }
@@ -295,15 +306,27 @@ class PanelViewModel @Inject constructor(
         reduce(KeyboardEvent.ImeChanged(composer.preedit, composer.pinyin.candidates, composer.pinyin.revision))
     }
 
+    private fun decodeSwipe(points: List<Point>): List<String> {
+        val letters = keyboard.layout.keys.mapNotNull { key ->
+            val char = (key.action as? KeyAction.Text)?.char?.singleOrNull()?.takeIf { it in 'a'..'z' } ?: return@mapNotNull null
+            char to KeyBox(key.rect.centerX, key.rect.centerY, key.rect.w, key.rect.h)
+        }.toMap()
+        return swipeDecoder.decode(points.map { SwipePoint(it.x, it.y) }, letters)
+    }
+
     private fun applySettings(settings: Settings) {
         if (settings.language == Language.ZH_CN && keyboard.settings.language != Language.ZH_CN) {
             viewModelScope.launch { withContext(background) { dictionary.warmUp() } }
+        }
+        if (settings.swipeTyping && !keyboard.settings.swipeTyping) {
+            viewModelScope.launch { withContext(background) { swipeDecoder.warmUp() } }
         }
         trackpad.config = TrackpadConfig.from(settings)
         pointerMode.pointerAsTouch = settings.pointerAsTouch
         bridge.boundKeyCode = settings.screenToggleKeyCode.takeIf { settings.screenToggleEnabled }
         val autoHideChanged = settings.autoHidePointer != keyboard.settings.autoHidePointer
         reduce(KeyboardEvent.SettingsChanged(settings))
+        _state.update { it.copy(settingsLoaded = true) }
         if (autoHideChanged) pointerActivity()
     }
 

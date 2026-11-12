@@ -13,7 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-/** The slate-and-blue palette of the ThorKBM panel. The panel is always dark. */
+/** The slate-and-blue palette of the ThorKBM panel. The panel is always dark; [Oled] goes all the way to black. */
 @Immutable
 data class ErgoColors(
     val background: Color = Color(0xFF161A21),
@@ -37,9 +37,26 @@ data class ErgoColors(
     val keyPressed: Brush get() = Brush.verticalGradient(listOf(keyPressedTop, keyPressedBottom))
     val accent: Brush get() = Brush.verticalGradient(listOf(accentTop, accentBottom))
     val pad: Brush get() = Brush.linearGradient(listOf(padTop, padBottom))
+
+    companion object {
+        val Slate = ErgoColors()
+
+        /** True-black background and near-black keys, so unlit AMOLED pixels stay off; borders keep keys readable. */
+        val Oled = ErgoColors(
+            background = Color.Black,
+            keyTop = Color(0xFF16181C),
+            keyBottom = Color(0xFF0F1114),
+            keyPressedTop = Color(0xFF30353F),
+            keyPressedBottom = Color(0xFF262A32),
+            keyBorder = Color(0xFF30353F),
+            padTop = Color.Black,
+            padBottom = Color.Black,
+            padBorder = Color(0xFF5C6475),
+        )
+    }
 }
 
-val LocalErgoColors = staticCompositionLocalOf { ErgoColors() }
+val LocalErgoColors = staticCompositionLocalOf { ErgoColors.Slate }
 
 object ErgoTheme {
     val colors: ErgoColors
@@ -54,9 +71,10 @@ private val typography = Typography(
     labelLarge = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 17.sp),
 )
 
+/** [oledBlack] swaps in the [ErgoColors.Oled] palette; everything below reads it through [LocalErgoColors]. */
 @Composable
-fun ErgoTheme(content: @Composable () -> Unit) {
-    val colors = ErgoColors()
+fun ErgoTheme(oledBlack: Boolean = false, content: @Composable () -> Unit) {
+    val colors = if (oledBlack) ErgoColors.Oled else ErgoColors.Slate
     val scheme = darkColorScheme(
         primary = colors.accentBorder,
         onPrimary = colors.text,

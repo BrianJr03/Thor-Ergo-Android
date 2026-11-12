@@ -50,7 +50,9 @@ import kotlinx.coroutines.flow.Flow
 fun PanelRoute(viewModel: PanelViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     HapticEffects(viewModel.effect, enabled = state.keyboard.settings.haptics)
-    ErgoTheme {
+    // The overlay is translucent, so drawing nothing until settings load shows nothing at all.
+    if (!state.settingsLoaded) return
+    ErgoTheme(oledBlack = state.keyboard.settings.oledBlack) {
         LocalizedContent(state.keyboard.settings.effectiveUiLanguage) {
             PanelScreen(state, viewModel::onIntent)
         }

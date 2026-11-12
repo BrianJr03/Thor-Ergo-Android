@@ -1,5 +1,6 @@
 package jr.brian.thorkbm.feature.panel.ui
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.changedToDownIgnoreConsumed
 import androidx.compose.ui.input.pointer.changedToUpIgnoreConsumed
 import androidx.compose.ui.input.pointer.pointerInput
@@ -27,6 +32,7 @@ import jr.brian.thorkbm.core.designsystem.component.KeyTone
 import jr.brian.thorkbm.core.designsystem.theme.ErgoTheme
 import jr.brian.thorkbm.core.keyboard.AccentPopup
 import jr.brian.thorkbm.core.keyboard.KeyboardState
+import jr.brian.thorkbm.core.keyboard.SwipeTrace
 import jr.brian.thorkbm.core.keyboard.layout.KeyIcon
 import jr.brian.thorkbm.core.keyboard.layout.KeyLabel
 import jr.brian.thorkbm.core.keyboard.layout.KeySpec
@@ -67,6 +73,23 @@ internal fun KeyboardSurface(state: KeyboardState, scale: LogicalScale, onTouch:
             Key(key, state, pressed = key.id in pressed, scale = scale)
         }
         state.popup?.let { AccentPopupView(it, scale) }
+        state.swipe?.let { SwipeTrail(it, scale) }
+    }
+}
+
+@Composable
+private fun SwipeTrail(swipe: SwipeTrace, scale: LogicalScale) {
+    val color = ErgoTheme.colors.latched.copy(alpha = 0.7f)
+    val density = LocalDensity.current
+    val width = with(density) { 10.dp.toPx() }
+    Canvas(Modifier.fillMaxSize()) {
+        val path = Path()
+        swipe.points.forEachIndexed { i, p ->
+            val x = p.x * scale.sx
+            val y = p.y * scale.sy
+            if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
+        }
+        drawPath(path, color, style = Stroke(width = width, cap = StrokeCap.Round, join = StrokeJoin.Round))
     }
 }
 
@@ -75,7 +98,7 @@ private fun Key(key: KeySpec, state: KeyboardState, pressed: Boolean, scale: Log
     val density = LocalDensity.current
     val text = legend(key, state)
     val image = icon(key, state)
-    KeyCap(Modifier.place(key.rect, scale), pressed = pressed, tone = tone(key, state), corner = KEY_CORNER) {
+    KeyCap(Modifier.place(key.rect, scale), pressed = pressed, tone = tone(key, state), corner = KEY_CORNER, animatePress = !state.swipeActive) {
         val iconSize = with(density) { (minOf(key.rect.h * 0.42f, 64f) * minOf(scale.sx, scale.sy)).toDp() }
         val glyph: @Composable () -> Unit = {
             if (image != null) Icon(image, contentDescription = text.ifEmpty { null }, tint = ErgoTheme.colors.text, modifier = Modifier.size(iconSize))

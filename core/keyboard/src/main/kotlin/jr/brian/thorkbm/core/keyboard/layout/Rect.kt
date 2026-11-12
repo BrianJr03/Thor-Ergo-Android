@@ -3,6 +3,9 @@ package jr.brian.thorkbm.core.keyboard.layout
 import kotlin.math.max
 import kotlin.math.min
 
+/** A point in logical panel units. */
+data class Point(val x: Float, val y: Float)
+
 /** A rectangle in logical panel units (see [LayoutEngine.WIDTH] × [LayoutEngine.HEIGHT]). */
 data class Rect(val x: Float, val y: Float, val w: Float, val h: Float) {
     val right: Float get() = x + w

@@ -2,6 +2,7 @@ package jr.brian.thorkbm
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
@@ -40,9 +41,14 @@ import jr.brian.thorkbm.feature.settings.SettingsContent
 import jr.brian.thorkbm.feature.settings.SettingsViewModel
 import jr.brian.thorkbm.feature.setup.SetupRoute
 import jr.brian.thorkbm.feature.setup.SetupViewModel
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import jr.brian.thorkbm.R as AppR
 
 /**
  * The launcher entry point. Once setup is done it only opens the keyboard and closes, so nothing
@@ -54,22 +60,45 @@ class MainActivity : ComponentActivity() {
     @Inject lateinit var panel: PanelControl
 
     private var screen by mutableStateOf(Screen.SETUP)
+    private var oledBlack by mutableStateOf(false)
     private var showingUi = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
-        if (intent.wantsSetup() || savedInstanceState != null) return showUi()
+        // Follows changes made in settings; the stored value is also applied below before anything draws.
+        settings.settings.map { it.oledBlack }.distinctUntilChanged().onEach(::applyAppearance).launchIn(lifecycleScope)
+        if (savedInstanceState != null) {
+            applyAppearance(savedInstanceState.getBoolean(STATE_OLED_BLACK))
+            return showUi()
+        }
         var deciding = true
         splash.setKeepOnScreenCondition { deciding }
         lifecycleScope.launch {
-            if (settings.settings.first().setupCompleted && Settings.canDrawOverlays(this@MainActivity)) {
+            val stored = settings.settings.first()
+            applyAppearance(stored.oledBlack)
+            if (!intent.wantsSetup() && stored.setupCompleted && Settings.canDrawOverlays(this@MainActivity)) {
                 openKeyboard()
             } else {
                 showUi()
             }
             deciding = false
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(STATE_OLED_BLACK, oledBlack)
+    }
+
+    /**
+     * Themes the window behind Compose and the system splash for the next launch, so neither shows
+     * the slate background before the first frame. The system persists the splash theme itself.
+     */
+    private fun applyAppearance(oled: Boolean) {
+        oledBlack = oled
+        window.setBackgroundDrawable(ColorDrawable(getColor(if (oled) AppR.color.ergo_background_oled else AppR.color.ergo_background)))
+        splashScreen.setSplashScreenTheme(if (oled) AppR.style.Theme_ThorKbm_Starting_Oled else AppR.style.Theme_ThorKbm_Starting)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -98,7 +127,7 @@ class MainActivity : ComponentActivity() {
         showingUi = true
         enableEdgeToEdge()
         hideSystemBars()
-        setContent { ThorKbmApp(screen, onScreen = { screen = it }, onClose = ::finish) }
+        setContent { ThorKbmApp(screen, oledBlack, onScreen = { screen = it }, onClose = ::finish) }
     }
 
     /** Immersive full screen: the status and navigation bars appear only briefly on a swipe. */
@@ -111,6 +140,7 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         private const val EXTRA_SHOW_SETUP = "jr.brian.thorkbm.extra.SHOW_SETUP"
+        private const val STATE_OLED_BLACK = "oled_black"
 
         private fun Intent.wantsSetup() = getBooleanExtra(EXTRA_SHOW_SETUP, false)
 
@@ -123,10 +153,10 @@ class MainActivity : ComponentActivity() {
 internal enum class Screen { SETUP, SETTINGS }
 
 @Composable
-private fun ThorKbmApp(screen: Screen, onScreen: (Screen) -> Unit, onClose: () -> Unit) {
+private fun ThorKbmApp(screen: Screen, oledBlack: Boolean, onScreen: (Screen) -> Unit, onClose: () -> Unit) {
     val setup: SetupViewModel = hiltViewModel()
     val setupState by setup.state.collectAsStateWithLifecycle()
-    ErgoTheme {
+    ErgoTheme(oledBlack = oledBlack) {
         LocalizedContent(setupState.uiLanguage) {
             Box(
                 Modifier

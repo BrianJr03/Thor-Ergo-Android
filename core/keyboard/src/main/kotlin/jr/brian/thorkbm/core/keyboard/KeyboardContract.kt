@@ -3,8 +3,10 @@ package jr.brian.thorkbm.core.keyboard
 import jr.brian.thorkbm.core.keyboard.layout.KeySpec
 import jr.brian.thorkbm.core.keyboard.layout.KeyboardLayout
 import jr.brian.thorkbm.core.keyboard.layout.LayoutEngine
+import jr.brian.thorkbm.core.keyboard.layout.Point
 import jr.brian.thorkbm.core.keyboard.layout.Rect
 import jr.brian.thorkbm.core.keyboard.output.OutputEvent
+import jr.brian.thorkbm.core.model.Language
 import jr.brian.thorkbm.core.model.Modifier
 import jr.brian.thorkbm.core.model.ModifierState
 import jr.brian.thorkbm.core.model.MouseButton
@@ -43,6 +45,35 @@ data class ImeState(
     fun candidateAt(slot: Int): String? = candidates.getOrNull(page * LayoutEngine.CANDIDATES_PER_PAGE + slot)
 }
 
+/** A finger sliding across letters for swipe typing; the press it started from is cancelled. */
+data class SwipeTrace(
+    val pointerId: Long,
+    /** The press the swipe started from; its latched Shift decides the word's case. */
+    val press: Press,
+    val points: List<Point>,
+    /** Letter keys the finger has crossed, in order, without repeats in a row. */
+    val keyIds: List<String>,
+    /** The finger has lifted and the host is decoding the trace. */
+    val lifted: Boolean = false,
+)
+
+/**
+ * Words offered after a swipe. [typed] is exactly what was sent for the chosen word (without any
+ * auto-space), so picking another can delete it first. Cleared by any other input.
+ */
+data class Suggestions(
+    val words: List<String>,
+    val typed: String,
+    /** The case the swipe was typed in, applied to any word picked instead. */
+    val upper: Boolean,
+    val caps: Boolean,
+    val page: Int = 0,
+) {
+    val pageCount: Int get() = maxOf(1, (words.size + LayoutEngine.CANDIDATES_PER_PAGE - 1) / LayoutEngine.CANDIDATES_PER_PAGE)
+
+    fun wordAt(slot: Int): String? = words.getOrNull(page * LayoutEngine.CANDIDATES_PER_PAGE + slot)
+}
+
 enum class Overlay { NONE, MENU, SETTINGS }
 
 data class KeyboardState(
@@ -55,11 +86,16 @@ data class KeyboardState(
     val presses: Map<Long, Press> = emptyMap(),
     val popup: AccentPopup? = null,
     val ime: ImeState = ImeState(),
+    val swipe: SwipeTrace? = null,
+    val suggestions: Suggestions? = null,
     val nextSerial: Long = 0,
 ) {
     val view: PanelView get() = settings.view
 
-    val layout: KeyboardLayout get() = LayoutEngine.build(page, view, settings.language)
+    /** Swipe typing is on and the layout supports it. */
+    val swipeActive: Boolean get() = settings.swipeTyping && settings.language == Language.EN_US
+
+    val layout: KeyboardLayout get() = LayoutEngine.build(page, view, settings.language, suggestions = swipeActive)
 
     /** Keys that currently accept touches: only the header while settings cover the keyboard. */
     val activeKeys: List<KeySpec> get() = if (overlay == Overlay.SETTINGS) LayoutEngine.header() else layout.keys
@@ -70,6 +106,10 @@ data class KeyboardState(
 
     val pressedKeyIds: Set<String>
         get() = presses.values.filter { it.inside && !it.cancelled }.mapTo(mutableSetOf()) { it.key.id }
+
+    /** The word in candidate-strip [slot]: swipe suggestions, or Pinyin candidates. */
+    fun stripCandidateAt(slot: Int): String? =
+        if (swipeActive) suggestions?.wordAt(slot) else ime.candidateAt(slot)
 
     fun modifier(modifier: Modifier): ModifierState = modifiers[modifier] ?: ModifierState.OFF
 
@@ -98,11 +138,17 @@ sealed interface KeyboardEvent {
 
     data class TimerFired(val timer: KeyboardTimer) : KeyboardEvent
 
+    /** Words for the swipe that started as press [serial], best first. */
+    data class SwipeDecoded(val serial: Long, val words: List<String>) : KeyboardEvent
+
     data class ImeChanged(val preedit: String, val candidates: List<String>, val revision: Int) : KeyboardEvent
 
     data class SettingsChanged(val settings: Settings) : KeyboardEvent
 
     data class SelectView(val view: PanelView) : KeyboardEvent
+
+    /** A trackpad click may have moved the caret, so swipe suggestions can no longer replace text. */
+    data object PointerClicked : KeyboardEvent
 
     data object DismissMenu : KeyboardEvent
 
@@ -116,6 +162,9 @@ sealed interface KeyboardEvent {
 /** Side effects requested by the reducer; the host executes them in order. */
 sealed interface KeyboardCommand {
     data class Emit(val event: OutputEvent) : KeyboardCommand
+
+    /** Decode the swipe [points] into words; the host answers with [KeyboardEvent.SwipeDecoded]. */
+    data class DecodeSwipe(val serial: Long, val points: List<Point>) : KeyboardCommand
 
     data class StartTimer(val timer: KeyboardTimer, val delayMs: Long) : KeyboardCommand
 

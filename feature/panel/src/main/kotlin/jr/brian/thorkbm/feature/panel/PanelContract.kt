@@ -15,6 +15,8 @@ data class PanelUiState(
     val collapsed: Boolean = false,
     val message: PanelMessage? = null,
     val status: InjectorStatus = InjectorStatus(),
+    /** False until the stored settings arrive; the panel draws nothing before then, never the default theme or language. */
+    val settingsLoaded: Boolean = false,
 )
 
 /** Raw multi-touch in logical panel units (1240 × 1080). */

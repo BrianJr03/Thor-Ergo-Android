@@ -17,6 +17,8 @@ data class Settings(
     val repeatIntervalMs: Int = 60,
     val capsWindowMs: Int = 350,
     val haptics: Boolean = true,
+    /** Slide across letters to type a word (English (US) only); off keeps "leaving a key cancels it". */
+    val swipeTyping: Boolean = false,
     val sensitivity: Double = 1.5,
     val scrollSpeed: Int = 3,
     val scrollScale: Double = 1.0,
@@ -27,6 +29,8 @@ data class Settings(
     val pointerAsTouch: Boolean = false,
     /** Fade the upper-screen pointer out after a few seconds without trackpad use. */
     val autoHidePointer: Boolean = false,
+    /** Pure-black backgrounds and near-black keys for AMOLED screens. */
+    val oledBlack: Boolean = false,
     /** Show the small "Open keyboard" button while the panel is hidden; off means reopen from the app. */
     val showRestoreButton: Boolean = true,
     /** Set once the panel has been started from setup; the launcher icon then opens the keyboard directly. */
@@ -91,10 +95,12 @@ enum class ToggleSetting(
 ) {
     REPEAT_ENABLED({ it.repeatEnabled }, { s, v -> s.copy(repeatEnabled = v) }),
     HAPTICS({ it.haptics }, { s, v -> s.copy(haptics = v) }),
+    SWIPE_TYPING({ it.swipeTyping }, { s, v -> s.copy(swipeTyping = v) }),
     TAP_TO_CLICK({ it.tapToClick }, { s, v -> s.copy(tapToClick = v) }),
     GLIDE({ it.glide }, { s, v -> s.copy(glide = v) }),
     POINTER_AS_TOUCH({ it.pointerAsTouch }, { s, v -> s.copy(pointerAsTouch = v) }),
     AUTO_HIDE_POINTER({ it.autoHidePointer }, { s, v -> s.copy(autoHidePointer = v) }),
     SHOW_RESTORE_BUTTON({ it.showRestoreButton }, { s, v -> s.copy(showRestoreButton = v) }),
     SCREEN_TOGGLE({ it.screenToggleEnabled }, { s, v -> s.copy(screenToggleEnabled = v) }),
+    OLED_BLACK({ it.oledBlack }, { s, v -> s.copy(oledBlack = v) }),
 }

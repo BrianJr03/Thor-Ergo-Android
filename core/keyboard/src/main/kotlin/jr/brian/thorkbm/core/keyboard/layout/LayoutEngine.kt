@@ -28,10 +28,13 @@ object LayoutEngine {
     val PAD_COMBINED = Rect(764f, 716f, 464f, 340f)
     val PAD_FULL = Rect(12f, 142f, 1216f, 914f)
 
-    private val cache = ConcurrentHashMap<Triple<Page, PanelView, Language>, KeyboardLayout>()
+    private data class LayoutKey(val page: Page, val view: PanelView, val language: Language, val suggestions: Boolean)
 
-    fun build(page: Page, view: PanelView, language: Language): KeyboardLayout =
-        cache.getOrPut(Triple(page, view, language)) { compute(page, view, language) }
+    private val cache = ConcurrentHashMap<LayoutKey, KeyboardLayout>()
+
+    /** [suggestions] adds the candidate strip to the letters page (swipe typing); Pinyin always has it. */
+    fun build(page: Page, view: PanelView, language: Language, suggestions: Boolean = false): KeyboardLayout =
+        cache.getOrPut(LayoutKey(page, view, language, suggestions)) { compute(page, view, language, suggestions) }
 
     /** The keys present on every view, including while settings are open. */
     fun header(): List<KeySpec> = row(
@@ -65,7 +68,7 @@ object LayoutEngine {
         return Rect(x, y, w, h) to options
     }
 
-    private fun compute(page: Page, view: PanelView, language: Language): KeyboardLayout {
+    private fun compute(page: Page, view: PanelView, language: Language, suggestions: Boolean): KeyboardLayout {
         val keys = header().toMutableList()
         if (view == PanelView.PAD) return KeyboardLayout(keys, PAD_FULL)
 
@@ -76,7 +79,7 @@ object LayoutEngine {
             Page.SYMBOLS -> symbolRows(language, profile)
             Page.FN -> fnRows()
         }
-        if (language == Language.ZH_CN && page == Page.ABC) {
+        if ((language == Language.ZH_CN || suggestions) && page == Page.ABC) {
             keys += body.map { it.copy(rect = squeezeForCandidates(it.rect)) }
             keys += candidateStrip()
         } else {
@@ -192,7 +195,7 @@ object LayoutEngine {
         154f, 54f, weights = listOf(0.5f) + List(CANDIDATES_PER_PAGE) { 1f } + 0.5f, gap = 8f,
     )
 
-    /** Letter rows move down to make room for the Pinyin candidate strip. */
+    /** Letter rows move down to make room for the candidate strip. */
     private fun squeezeForCandidates(rect: Rect): Rect {
         val scale = 470f / 548f
         return rect.copy(y = 220f + (rect.y - 142f) * scale, h = rect.h * scale)

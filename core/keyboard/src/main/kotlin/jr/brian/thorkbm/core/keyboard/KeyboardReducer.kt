@@ -3,12 +3,15 @@ package jr.brian.thorkbm.core.keyboard
 import jr.brian.thorkbm.core.keyboard.layout.KeyAction
 import jr.brian.thorkbm.core.keyboard.layout.KeySpec
 import jr.brian.thorkbm.core.keyboard.layout.KeyText
+import jr.brian.thorkbm.core.keyboard.layout.Point
 import jr.brian.thorkbm.core.keyboard.layout.LayoutEngine
 import jr.brian.thorkbm.core.keyboard.output.OutputEvent
 import jr.brian.thorkbm.core.keyboard.profile.LanguageProfile
+import jr.brian.thorkbm.core.model.KeyCode
 import jr.brian.thorkbm.core.model.Modifier
 import jr.brian.thorkbm.core.model.ModifierState
 import jr.brian.thorkbm.core.model.Page
+import kotlin.math.hypot
 
 /**
  * The keyboard state machine as a pure function. Timers, output and persistence are requested
@@ -16,6 +19,10 @@ import jr.brian.thorkbm.core.model.Page
  */
 object KeyboardReducer {
     private val SHORTCUT_MODIFIERS = setOf(Modifier.CTRL, Modifier.ALT, Modifier.SUPER, Modifier.ALTGR)
+
+    /** Swipe points closer than this (logical units) add nothing to the shape. */
+    private const val MIN_SWIPE_STEP = 4f
+    private const val MAX_SWIPE_POINTS = 600
 
     fun reduce(state: KeyboardState, event: KeyboardEvent): Transition =
         Step(state).apply { handle(event) }.toTransition()
@@ -39,6 +46,7 @@ object KeyboardReducer {
                 is KeyboardEvent.SettingsChanged -> {
                     val languageChanged = event.settings.language != state.settings.language
                     state = state.copy(settings = event.settings)
+                    if (!state.swipeActive) state = state.copy(swipe = null, suggestions = null)
                     if (languageChanged) {
                         state = state.copy(ime = ImeState())
                         resetContacts(clearModifiers = true)
@@ -51,6 +59,8 @@ object KeyboardReducer {
                     emit(KeyboardCommand.ResetInput)
                     emit(KeyboardCommand.PersistView(event.view))
                 }
+                is KeyboardEvent.SwipeDecoded -> swipeDecoded(event)
+                KeyboardEvent.PointerClicked -> clearSuggestions()
                 KeyboardEvent.DismissMenu -> if (state.overlay == Overlay.MENU) state = state.copy(overlay = Overlay.NONE)
                 KeyboardEvent.CloseSettings -> closeSettings()
                 KeyboardEvent.ReleaseAll -> {
@@ -70,8 +80,9 @@ object KeyboardReducer {
 
         private fun down(event: KeyboardEvent.Down) {
             if (event.pointerId in state.presses) return
-            // A second finger must not type through an open accent menu.
+            // A second finger must not type through an open accent menu, nor finish someone's swipe.
             state.popup?.let { cancelContact(it.pointerId) }
+            if (state.swipe != null) state = state.copy(swipe = null)
             if (state.overlay == Overlay.MENU) {
                 state = state.copy(overlay = Overlay.NONE)
                 return
@@ -80,6 +91,7 @@ object KeyboardReducer {
             val action = key.action
             if (action is KeyAction.Mouse) {
                 if (state.overlay != Overlay.SETTINGS) {
+                    clearSuggestions()
                     state = state.copy(presses = state.presses + (event.pointerId to newPress(key)))
                     emit(KeyboardCommand.Mouse(action.button, event.pointerId, down = true))
                 }
@@ -134,8 +146,21 @@ object KeyboardReducer {
                 state = state.copy(popup = popup.copy(selected = selected))
                 return
             }
+            val swipe = state.swipe
+            if (swipe != null && swipe.pointerId == event.pointerId) {
+                if (!swipe.lifted) extendSwipe(swipe, event)
+                return
+            }
             val inside = press.key.rect.contains(event.x, event.y)
             if (press.key.action is KeyAction.Mouse) return
+            if (!inside && canStartSwipe(press)) {
+                cancelTimers(press)
+                updatePress(event.pointerId) { it.copy(inside = false, cancelled = true) }
+                val start = Point(press.key.rect.centerX, press.key.rect.centerY)
+                state = state.copy(swipe = SwipeTrace(event.pointerId, press, listOf(start), listOf(press.key.id)))
+                extendSwipe(state.swipe!!, event)
+                return
+            }
             if (!inside) {
                 // No sliding onto a different key: leaving the key cancels it.
                 if (!press.cancelled) cancelTimers(press)
@@ -147,6 +172,16 @@ object KeyboardReducer {
             val press = state.presses[event.pointerId] ?: return
             state = state.copy(presses = state.presses - event.pointerId)
             cancelTimers(press)
+            val swipe = state.swipe
+            if (swipe != null && swipe.pointerId == event.pointerId) {
+                if (swipe.keyIds.size >= 2) {
+                    state = state.copy(swipe = swipe.copy(lifted = true))
+                    emit(KeyboardCommand.DecodeSwipe(swipe.press.serial, swipe.points))
+                } else {
+                    state = state.copy(swipe = null)
+                }
+                return
+            }
             val action = press.key.action
             val popup = state.popup
             when {
@@ -155,6 +190,7 @@ object KeyboardReducer {
                     state = state.copy(popup = null)
                     popup.selected?.let { index ->
                         val accent = popup.options[index].action as KeyAction.Accent
+                        clearSuggestions()
                         emit(KeyboardCommand.Emit(OutputEvent.Literal(accent.char)))
                         consumeModifiers(press.mods)
                     }
@@ -172,6 +208,7 @@ object KeyboardReducer {
                 (press.key.action as? KeyAction.Mouse)?.let { emit(KeyboardCommand.Mouse(it.button, pointerId, down = false)) }
             }
             if (state.popup?.pointerId == pointerId) state = state.copy(popup = null)
+            if (state.swipe?.pointerId == pointerId) state = state.copy(swipe = null)
         }
 
         private fun timerFired(event: KeyboardEvent.TimerFired) {
@@ -201,6 +238,7 @@ object KeyboardReducer {
             when (val action = press.key.action) {
                 is KeyAction.Text, is KeyAction.Key -> send(press)
                 is KeyAction.Dead -> {
+                    clearSuggestions()
                     emit(KeyboardCommand.Emit(OutputEvent.Dead(action.dead)))
                     changePage(Page.ABC)
                 }
@@ -236,12 +274,18 @@ object KeyboardReducer {
                     emit(KeyboardCommand.ResetInput)
                     emit(KeyboardCommand.Hide)
                 }
-                is KeyAction.Candidate -> {
+                is KeyAction.Candidate -> if (state.swipeActive) {
+                    replaceSwipedWord(action.slot)
+                } else {
                     val ime = state.ime
                     val index = ime.page * LayoutEngine.CANDIDATES_PER_PAGE + action.slot
                     if (index in ime.candidates.indices) emit(KeyboardCommand.Emit(OutputEvent.Choose(index, ime.revision)))
                 }
-                is KeyAction.CandidatePage -> {
+                is KeyAction.CandidatePage -> if (state.swipeActive) {
+                    state.suggestions?.let { s ->
+                        state = state.copy(suggestions = s.copy(page = (s.page + action.delta).coerceIn(0, s.pageCount - 1)))
+                    }
+                } else {
                     val ime = state.ime
                     state = state.copy(ime = ime.copy(page = (ime.page + action.delta).coerceIn(0, ime.pageCount - 1)))
                 }
@@ -263,6 +307,8 @@ object KeyboardReducer {
         }
 
         private fun send(press: Press, consume: Boolean = true) {
+            // Anything typed after a swiped word means picking a suggestion could delete the wrong text.
+            clearSuggestions()
             when (val action = press.key.action) {
                 is KeyAction.Text -> {
                     val shift = when {
@@ -309,9 +355,61 @@ object KeyboardReducer {
             state = state.copy(
                 presses = emptyMap(),
                 popup = null,
+                swipe = null,
+                suggestions = null,
                 overlay = if (state.overlay == Overlay.MENU) Overlay.NONE else state.overlay,
             )
             if (clearModifiers) state = state.copy(modifiers = KeyboardState.NO_MODIFIERS, lastModifierTap = emptyMap())
+        }
+
+        private fun isLetter(key: KeySpec): Boolean =
+            (key.action as? KeyAction.Text)?.char?.singleOrNull()?.let { it in 'a'..'z' } == true
+
+        /** A lone finger leaving an unmodified letter turns into a swipe instead of cancelling. */
+        private fun canStartSwipe(press: Press): Boolean =
+            state.swipeActive && state.page == Page.ABC && state.overlay == Overlay.NONE && state.popup == null &&
+                state.presses.size == 1 && !press.cancelled && !press.committed && isLetter(press.key) &&
+                press.mods.none { it in SHORTCUT_MODIFIERS }
+
+        private fun extendSwipe(swipe: SwipeTrace, event: KeyboardEvent.Move) {
+            val last = swipe.points.last()
+            if (hypot(event.x - last.x, event.y - last.y) < MIN_SWIPE_STEP || swipe.points.size >= MAX_SWIPE_POINTS) return
+            val key = state.activeKeys.lastOrNull { it.rect.contains(event.x, event.y) }?.takeIf(::isLetter)
+            val keyIds = if (key != null && key.id != swipe.keyIds.last()) swipe.keyIds + key.id else swipe.keyIds
+            state = state.copy(swipe = swipe.copy(points = swipe.points + Point(event.x, event.y), keyIds = keyIds))
+        }
+
+        private fun swipeDecoded(event: KeyboardEvent.SwipeDecoded) {
+            val swipe = state.swipe?.takeIf { it.lifted && it.press.serial == event.serial } ?: return
+            state = state.copy(swipe = null)
+            val best = event.words.firstOrNull() ?: return
+            val press = swipe.press
+            val typed = cased(best, press.upper, press.caps)
+            // Consecutive swiped words get a space between them, as if Space had been tapped.
+            val space = if (state.suggestions != null) " " else ""
+            emit(KeyboardCommand.Emit(OutputEvent.Word(space + typed)))
+            consumeModifiers(press.mods)
+            state = state.copy(suggestions = Suggestions(event.words, typed, press.upper, press.caps))
+        }
+
+        /** Deletes the swiped word and types the suggestion in [slot] instead. */
+        private fun replaceSwipedWord(slot: Int) {
+            val suggestions = state.suggestions ?: return
+            val word = cased(suggestions.wordAt(slot) ?: return, suggestions.upper, suggestions.caps)
+            if (word == suggestions.typed) return
+            repeat(suggestions.typed.length) { emit(KeyboardCommand.Emit(OutputEvent.Key(KeyCode.BACKSPACE, emptySet()))) }
+            emit(KeyboardCommand.Emit(OutputEvent.Word(word)))
+            state = state.copy(suggestions = suggestions.copy(typed = word))
+        }
+
+        private fun cased(word: String, upper: Boolean, caps: Boolean): String = when {
+            caps -> word.uppercase()
+            upper -> word.replaceFirstChar { it.uppercaseChar() }
+            else -> word
+        }
+
+        private fun clearSuggestions() {
+            if (state.suggestions != null) state = state.copy(suggestions = null)
         }
 
         private fun cancelTimers(press: Press) {

@@ -16,6 +16,14 @@
   * `pinyin-provenance.json` records its origin and modifications.
   * Original sources: https://ctan.org/pkg/xpinyin
   * Unicode permission notice: `licenses/xpinyin/Unicode-License.txt`.
+* **FrequencyWords** (Hermit Dave), from OpenSubtitles 2018.
+  * `core/swipe/src/main/resources/swipe/en_US.tsv` is a modified derivative of
+    `en_50k.txt`, distributed under CC-BY-SA-4.0.
+  * The unmodified source list, the CC-BY-SA-4.0 text and the project's MIT
+    license (for its code) are in `licenses/frequencywords/`.
+  * `tools/swipe/build_swipe_lexicon.py` rebuilds the list from them, offline.
+  * `swipe-provenance.json` records its origin and modifications.
+  * Original source: https://github.com/hermitdave/FrequencyWords
 * The curated phrase list and candidate preferences were hand-entered for Thor
   Ergo. They are not a commercial dictionary or collected text.
 * **Shizuku API** (RikkaApps) and **HiddenApiBypass** (LSPosed): Apache-2.0,

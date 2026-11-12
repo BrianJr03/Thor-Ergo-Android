@@ -14,6 +14,7 @@ import jr.brian.thorkbm.core.keyboard.KeyboardReducer
 import jr.brian.thorkbm.core.keyboard.KeyboardState
 import jr.brian.thorkbm.core.keyboard.KeyboardTimer
 import jr.brian.thorkbm.core.keyboard.Overlay
+import jr.brian.thorkbm.core.keyboard.Suggestions
 import jr.brian.thorkbm.core.model.Language
 import jr.brian.thorkbm.core.model.Modifier
 import jr.brian.thorkbm.core.model.ModifierState
@@ -42,7 +43,7 @@ class PanelScreenshotTest {
         if (shown == null) {
             compose.setContent {
                 shown?.let { current ->
-                    ErgoTheme {
+                    ErgoTheme(oledBlack = current.keyboard.settings.oledBlack) {
                         LocalizedContent(current.keyboard.settings.effectiveUiLanguage) { PanelScreen(current) {} }
                     }
                 }
@@ -85,6 +86,26 @@ class PanelScreenshotTest {
         capture("settings-mouse", PanelUiState(keyboard = keyboard(Language.EN_US).copy(overlay = Overlay.SETTINGS), settings = settings))
         val screen = SettingsUiState(settings = Settings(language = Language.DE_DE), tab = SettingsTab.SCREEN, canBindKey = true)
         capture("settings-screen-de", PanelUiState(keyboard = keyboard(Language.DE_DE).copy(overlay = Overlay.SETTINGS), settings = screen))
+    }
+
+    @Test
+    fun oledBlack() {
+        val oled = KeyboardState(settings = Settings(oledBlack = true))
+        capture("keyboard-oled", PanelUiState(keyboard = oled))
+        capture("settings-screen-oled", PanelUiState(keyboard = oled.copy(overlay = Overlay.SETTINGS), settings = SettingsUiState(settings = oled.settings, tab = SettingsTab.SCREEN)))
+    }
+
+    @Test
+    fun swipeTyping() {
+        var state = KeyboardState(settings = Settings(language = Language.EN_US, swipeTyping = true))
+        val keys = "hello".map { c -> state.layout.find("char:$c")!!.rect }
+        state = KeyboardReducer.reduce(state, KeyboardEvent.Down(1, keys[0].centerX, keys[0].centerY, 0)).state
+        for (rect in keys.drop(1)) state = KeyboardReducer.reduce(state, KeyboardEvent.Move(1, rect.centerX, rect.centerY)).state
+        val p = state.layout.find("char:p")!!.rect
+        state = KeyboardReducer.reduce(state, KeyboardEvent.Move(1, p.centerX, p.centerY)).state
+        // An earlier swipe left its suggestions in the strip while this one is still being drawn.
+        state = state.copy(suggestions = Suggestions(listOf("swipe", "wipe", "swiped", "snipe", "spine", "swine", "sweep"), "swipe", upper = false, caps = false))
+        capture("swipe-en-US", PanelUiState(keyboard = state))
     }
 
     @Test

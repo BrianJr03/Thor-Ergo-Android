@@ -62,6 +62,7 @@ class OutputRouter(
             language.usesPhysicalKeys -> usText(state, event.text)
             else -> compose(state, language, Compose.Literal(event.text))
         }
+        is OutputEvent.Word -> word(state, event.text, language)
         is OutputEvent.Dead ->
             if (language.supportsDeadKeys) compose(state, language, Compose.Dead(event.dead)) else RouteResult(state, error = OutputError.NOT_ON_US_KEYBOARD)
         is OutputEvent.Choose ->
@@ -105,6 +106,14 @@ class OutputRouter(
         }
         val next = if (language.usesPhysicalKeys) state else reset(state)
         return RouteResult(next, listOf(Injection.Chord(code, mods.sortedBy { it.ordinal }.toSet())))
+    }
+
+    private fun word(state: ComposerState, text: String, language: Language): RouteResult {
+        if (text.isEmpty()) return RouteResult(state)
+        if (!language.usesPhysicalKeys) return RouteResult(reset(state), listOf(Injection.Commit(text)))
+        // Check every character first so a word is typed whole or not at all.
+        val strokes = text.map { UsKeymap[it.toString()] ?: return RouteResult(state, error = OutputError.NOT_ON_US_KEYBOARD) }
+        return RouteResult(state, strokes.map { Injection.Chord(it.code, if (it.shift) setOf(Modifier.SHIFT) else emptySet()) })
     }
 
     private fun usText(state: ComposerState, text: String): RouteResult {

@@ -16,7 +16,7 @@ class SettingsSerializerTest {
 
     @Test
     fun `round trips every field`() = runTest {
-        val settings = Settings(language = Language.DE_DE, uiLanguage = Language.FR_FR, view = PanelView.PAD, friction = 2, screenToggleKeyCode = 131)
+        val settings = Settings(language = Language.DE_DE, uiLanguage = Language.FR_FR, view = PanelView.PAD, friction = 2, swipeTyping = true, screenToggleKeyCode = 131)
         val out = ByteArrayOutputStream()
         SettingsSerializer.writeTo(settings, out)
         assertThat(read(out.toString())).isEqualTo(settings)

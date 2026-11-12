@@ -25,6 +25,9 @@ sealed interface OutputEvent {
 
     data class Dead(val dead: DeadKey) : OutputEvent
 
+    /** A whole word from swipe typing, typed exactly as given (case resolved, may start with a space). */
+    data class Word(val text: String) : OutputEvent
+
     /** Pick Pinyin candidate [index]; ignored if [revision] is stale. */
     data class Choose(val index: Int, val revision: Int) : OutputEvent
 }

@@ -25,6 +25,9 @@ comportamento.
 - Shift e Caps Lock com legendas a acompanhar.
 - Mantém uma letra premida, desliza até ao acento e levanta o dedo para o
   escrever.
+- Escrita deslizante opcional (esquema English (US)): desliza pelas letras
+  para escrever uma palavra e escolhe uma alternativa na faixa de sugestões.
+  Ativa-a em **Definições → Teclado → Escrita deslizante**.
 - Sete disposições, com o idioma da interface independente do idioma do
   sistema.
 - Pinyin offline.

@@ -77,6 +77,7 @@
     <string name="state_screen_off">Écran éteint</string>
     <string name="tab_screen">Écran inférieur</string>
     <string name="setting_screen_toggle">Une touche physique allume/éteint l\'écran inférieur</string>
+    <string name="setting_oled_black">Thème noir OLED</string>
     <string name="setting_screen_key">Touche associée</string>
     <string name="screen_key_none">Aucune</string>
     <string name="screen_key_learn">Appuyez sur une touche…</string>
@@ -93,6 +94,9 @@
     <string name="setup_tab_hint">Autorisation de superposition, Shizuku, service d\'accessibilité et notifications.</string>
     <string name="stop_panel_hint">Ferme le clavier jusqu\'à la prochaine ouverture de ThorKBM.</string>
     <string name="setting_auto_hide_pointer">Masquer le pointeur après 3 s sans mouvement</string>
+    <string name="setting_swipe_typing">Saisie par glissement</string>
+    <string name="keyboard_hint_swipe">Saisie par glissement : glissez sur les lettres puis relevez le doigt. Disposition English (US) uniquement.</string>
+    <string name="about_swipe">Mots pour le glissement : données FrequencyWords / OpenSubtitles, CC BY-SA 4.0.</string>
     <string name="setting_pointer_as_touch">Clics comme touchers d\'écran (jeux)</string>
     <string name="error_injection_failed">Impossible d\'envoyer la saisie. Vérifiez Shizuku ou le service d\'accessibilité.</string>
     <string name="about_android">Version Android : Jetpack Compose ; saisie via Shizuku ou l\'Accessibilité.</string>

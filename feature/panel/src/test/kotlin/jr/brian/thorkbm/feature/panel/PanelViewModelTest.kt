@@ -10,6 +10,8 @@ import jr.brian.thorkbm.core.model.PanelView
 import jr.brian.thorkbm.core.model.Settings
 import jr.brian.thorkbm.core.pinyin.PinyinComposer
 import jr.brian.thorkbm.core.pinyin.PinyinDictionary
+import jr.brian.thorkbm.core.swipe.SwipeDecoder
+import jr.brian.thorkbm.core.swipe.SwipeLexicon
 import jr.brian.thorkbm.core.testing.FakeDisplayRepository
 import jr.brian.thorkbm.core.testing.FakeInputInjector
 import jr.brian.thorkbm.core.testing.FakePanelPowerController
@@ -57,6 +59,7 @@ class PanelViewModelTest {
         cursor = cursor,
         clock = MonotonicClock { currentTime },
         dictionary = PinyinDictionary(emptyMap(), emptyMap()),
+        swipeDecoder = SwipeDecoder(SwipeLexicon(listOf("hello" to 10L, "help" to 5L))),
         displays = FakeDisplayRepository(),
         router = OutputRouter(PinyinComposer(PinyinDictionary(emptyMap(), emptyMap()))),
         settingsFactory = object : SettingsStateHolder.Factory {
@@ -84,6 +87,20 @@ class PanelViewModelTest {
         vm.tapKey("char:ç")
         runCurrent()
         assertThat(injector.calls).containsExactly("text:ç")
+    }
+
+    @Test
+    fun `a swipe across the letters types the decoded word`() = runTest(main.dispatcher) {
+        repository.update { it.copy(language = Language.EN_US, swipeTyping = true) }
+        val vm = viewModel()
+        val keys = vm.state.value.keyboard.layout
+        val path = "helo".map { keys.find("char:$it")!!.rect }
+        vm.onIntent(PanelIntent.Touch(PanelTouch.Down(1, path[0].centerX, path[0].centerY, 0)))
+        path.drop(1).forEachIndexed { i, r -> vm.onIntent(PanelIntent.Touch(PanelTouch.Move(1, r.centerX, r.centerY, 20L * (i + 1)))) }
+        vm.onIntent(PanelIntent.Touch(PanelTouch.Up(1, 100)))
+        runCurrent()
+        assertThat(injector.calls).containsExactly("H", "E", "L", "L", "O").inOrder()
+        assertThat(vm.state.value.keyboard.stripCandidateAt(0)).isEqualTo("hello")
     }
 
     @Test
@@ -182,6 +199,14 @@ class PanelViewModelTest {
         vm.onIntent(PanelIntent.Touch(PanelTouch.Move(1, pad.x + 150, pad.y + 50, 40)))
         advanceTimeBy(10_000)
         assertThat(cursor.cursor.value.idle).isFalse()
+    }
+
+    @Test
+    fun `the panel waits for stored settings before drawing`() = runTest(main.dispatcher) {
+        val vm = viewModel()
+        runCurrent()
+        assertThat(vm.state.value.settingsLoaded).isTrue()
+        assertThat(vm.state.value.keyboard.settings.language).isEqualTo(Language.PT_PT)
     }
 
     @Test

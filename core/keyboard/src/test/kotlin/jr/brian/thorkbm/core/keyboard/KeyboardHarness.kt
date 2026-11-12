@@ -57,7 +57,8 @@ class KeyboardHarness(settings: Settings = Settings()) {
         up(pointer)
     }
 
-    val texts: List<String> get() = outputs.mapNotNull { (it as? OutputEvent.Text)?.text ?: (it as? OutputEvent.Literal)?.text }
+    val texts: List<String>
+        get() = outputs.mapNotNull { (it as? OutputEvent.Text)?.text ?: (it as? OutputEvent.Literal)?.text ?: (it as? OutputEvent.Word)?.text }
 
     val activeTimers: Set<KeyboardTimer> get() = timers.keys
 }
