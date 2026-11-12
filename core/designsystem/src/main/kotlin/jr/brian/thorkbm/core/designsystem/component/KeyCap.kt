@@ -1,14 +1,19 @@
 package jr.brian.thorkbm.core.designsystem.component
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jr.brian.thorkbm.core.designsystem.theme.ErgoTheme
@@ -32,8 +37,16 @@ fun KeyCap(
         else -> colors.key
     }
     val border = if (tone == KeyTone.NORMAL) colors.keyBorder else colors.accentBorder
+    // Press-down: the key shrinks slightly and sinks a few dp, then eases back on release.
+    val pressScale by animateFloatAsState(if (pressed) 0.92f else 1f, tween(PRESS_MILLIS), label = "pressScale")
+    val pressOffset by animateDpAsState(if (pressed) 3.dp else 0.dp, tween(PRESS_MILLIS), label = "pressOffset")
     Box(
         modifier = modifier
+            .graphicsLayer {
+                scaleX = pressScale
+                scaleY = pressScale
+                translationY = pressOffset.toPx()
+            }
             .clip(shape)
             .background(brush)
             .border(1.dp, border, shape),
@@ -41,3 +54,5 @@ fun KeyCap(
         content = content,
     )
 }
+
+private const val PRESS_MILLIS = 100
