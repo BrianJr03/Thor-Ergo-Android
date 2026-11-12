@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":feature:settings"))
     implementation(project(":feature:setup"))
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
 }

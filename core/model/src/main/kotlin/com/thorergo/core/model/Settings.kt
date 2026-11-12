@@ -25,6 +25,8 @@ data class Settings(
     val friction: Int = 5,
     /** Inject clicks and drags as screen touches, for games that ignore mouse input. */
     val pointerAsTouch: Boolean = false,
+    /** Show the small "Open keyboard" button while the panel is hidden; off means reopen from the app. */
+    val showRestoreButton: Boolean = true,
     val screenToggleEnabled: Boolean = false,
     /** Android key code bound to the lower-screen toggle, or `null` for on-screen control only. */
     val screenToggleKeyCode: Int? = null,
@@ -88,5 +90,6 @@ enum class ToggleSetting(
     TAP_TO_CLICK({ it.tapToClick }, { s, v -> s.copy(tapToClick = v) }),
     GLIDE({ it.glide }, { s, v -> s.copy(glide = v) }),
     POINTER_AS_TOUCH({ it.pointerAsTouch }, { s, v -> s.copy(pointerAsTouch = v) }),
+    SHOW_RESTORE_BUTTON({ it.showRestoreButton }, { s, v -> s.copy(showRestoreButton = v) }),
     SCREEN_TOGGLE({ it.screenToggleEnabled }, { s, v -> s.copy(screenToggleEnabled = v) }),
 }

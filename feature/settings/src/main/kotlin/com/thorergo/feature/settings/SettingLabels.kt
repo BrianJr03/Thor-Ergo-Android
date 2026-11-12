@@ -32,6 +32,7 @@ internal fun ToggleSetting.label(): String = stringResource(
         ToggleSetting.TAP_TO_CLICK -> R.string.setting_tap_to_click
         ToggleSetting.GLIDE -> R.string.setting_glide
         ToggleSetting.POINTER_AS_TOUCH -> R.string.setting_pointer_as_touch
+        ToggleSetting.SHOW_RESTORE_BUTTON -> R.string.setting_show_restore_button
         ToggleSetting.SCREEN_TOGGLE -> R.string.setting_screen_toggle
     },
 )

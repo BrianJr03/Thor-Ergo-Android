@@ -86,12 +86,14 @@
     <string name="screen_hint_shizuku">Without Shizuku the screen is blacked out instead of powered off.</string>
     <string name="screen_hint_accessibility">Binding a hardware key needs the Thor Ergo accessibility service.</string>
     <string name="setting_haptics">Vibrate on key press</string>
+    <string name="setting_show_restore_button">Show “Open keyboard” button when hidden</string>
+    <string name="restore_button_hint">When off, Hide removes the panel completely. Open Thor Ergo or use the notification to bring it back.</string>
     <string name="setting_pointer_as_touch">Clicks as screen touches (games)</string>
     <string name="error_injection_failed">Could not send input. Check Shizuku or the accessibility service.</string>
     <string name="about_android">Android port: Jetpack Compose; input through Shizuku or Accessibility.</string>
     <string name="notification_channel">Keyboard panel</string>
     <string name="notification_title">Thor Ergo is running</string>
-    <string name="notification_text">The keyboard is on the lower screen.</string>
+    <string name="notification_text">The keyboard is running. Tap to display on bottom screen.</string>
     <string name="action_stop">Stop</string>
     <string name="setup_title">Set up Thor Ergo</string>
     <string name="setup_subtitle">A keyboard and touchpad on the lower screen that type into the app on the upper screen.</string>

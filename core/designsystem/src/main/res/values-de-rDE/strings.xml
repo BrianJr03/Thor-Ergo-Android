@@ -86,12 +86,14 @@
     <string name="screen_hint_shizuku">Ohne Shizuku wird der Bildschirm nur schwarz statt ausgeschaltet.</string>
     <string name="screen_hint_accessibility">Für eine Hardwaretaste wird der Thor-Ergo-Bedienungshilfendienst benötigt.</string>
     <string name="setting_haptics">Vibration bei Tastendruck</string>
+    <string name="setting_show_restore_button">Schaltfläche „Tastatur öffnen“ beim Ausblenden zeigen</string>
+    <string name="restore_button_hint">Aus: Ausblenden entfernt das Feld vollständig. Öffne Thor Ergo oder nutze die Benachrichtigung, um es zurückzuholen.</string>
     <string name="setting_pointer_as_touch">Klicks als Bildschirmberührungen (Spiele)</string>
     <string name="error_injection_failed">Eingabe konnte nicht gesendet werden. Prüfe Shizuku oder den Bedienungshilfendienst.</string>
     <string name="about_android">Android-Version: Jetpack Compose; Eingabe über Shizuku oder Bedienungshilfen.</string>
     <string name="notification_channel">Tastaturfeld</string>
     <string name="notification_title">Thor Ergo läuft</string>
-    <string name="notification_text">Die Tastatur ist auf dem unteren Bildschirm.</string>
+    <string name="notification_text">Die Tastatur läuft. Tippe, um sie auf dem unteren Bildschirm anzuzeigen.</string>
     <string name="action_stop">Beenden</string>
     <string name="setup_title">Thor Ergo einrichten</string>
     <string name="setup_subtitle">Tastatur und Touchpad auf dem unteren Bildschirm, die in die App auf dem oberen Bildschirm schreiben.</string>

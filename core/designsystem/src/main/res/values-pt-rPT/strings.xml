@@ -86,12 +86,14 @@
     <string name="screen_hint_shizuku">Sem Shizuku, o ecrã fica preto em vez de desligado.</string>
     <string name="screen_hint_accessibility">Associar uma tecla física requer o serviço de acessibilidade Thor Ergo.</string>
     <string name="setting_haptics">Vibrar ao premir teclas</string>
+    <string name="setting_show_restore_button">Mostrar o botão “Abrir teclado” ao ocultar</string>
+    <string name="restore_button_hint">Desligado: Ocultar retira o painel por completo. Abre o Thor Ergo ou usa a notificação para o voltar a mostrar.</string>
     <string name="setting_pointer_as_touch">Cliques como toques no ecrã (jogos)</string>
     <string name="error_injection_failed">Não foi possível enviar a entrada. Verifica o Shizuku ou o serviço de acessibilidade.</string>
     <string name="about_android">Versão Android: Jetpack Compose; entrada via Shizuku ou Acessibilidade.</string>
     <string name="notification_channel">Painel do teclado</string>
     <string name="notification_title">O Thor Ergo está ativo</string>
-    <string name="notification_text">O teclado está no ecrã inferior.</string>
+    <string name="notification_text">O teclado está ativo. Toca para o mostrar no ecrã inferior.</string>
     <string name="action_stop">Parar</string>
     <string name="setup_title">Configurar o Thor Ergo</string>
     <string name="setup_subtitle">Um teclado e um touchpad no ecrã inferior que escrevem na aplicação do ecrã superior.</string>

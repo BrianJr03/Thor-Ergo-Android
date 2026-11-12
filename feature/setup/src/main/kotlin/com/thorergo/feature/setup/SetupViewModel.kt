@@ -56,9 +56,10 @@ class SetupViewModel @Inject constructor(
 
     fun onIntent(intent: SetupIntent) {
         when (intent) {
-            SetupIntent.Refresh -> {
-                granted.value = readPermissions()
-                shizuku.refresh()
+            SetupIntent.Refresh -> refresh()
+            SetupIntent.Resumed -> {
+                refresh()
+                panel.show()
             }
             SetupIntent.GrantOverlay -> effects.trySend(SetupEffect.OpenOverlaySettings)
             SetupIntent.GrantNotifications -> effects.trySend(SetupEffect.RequestNotificationPermission)
@@ -72,6 +73,11 @@ class SetupViewModel @Inject constructor(
             SetupIntent.TogglePanel -> if (state.value.panelRunning) panel.stop() else if (state.value.canStart) panel.start()
             SetupIntent.OpenSettings -> effects.trySend(SetupEffect.NavigateToSettings)
         }
+    }
+
+    private fun refresh() {
+        granted.value = readPermissions()
+        shizuku.refresh()
     }
 
     private fun readPermissions() = Granted(permissions.canDrawOverlays(), permissions.canPostNotifications())

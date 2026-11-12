@@ -1,6 +1,8 @@
 package com.thorergo.core.designsystem.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -117,14 +119,13 @@ fun <T> ErgoTabs(tabs: List<T>, selected: T, label: @Composable (T) -> String, o
                     .clickable(role = Role.Tab) { onSelect(tab) },
                 tone = if (tab == selected) KeyTone.ACCENT else KeyTone.NORMAL,
             ) {
-                // Long translations ("Unterer Bildschirm") wrap instead of being cut off.
-                Text(
+                // Always one line: long translations ("Unterer Bildschirm") shrink to fit instead of wrapping.
+                BasicText(
                     label(tab),
-                    style = MaterialTheme.typography.labelLarge.copy(lineHeight = 18.sp),
-                    color = ErgoTheme.colors.text,
-                    textAlign = TextAlign.Center,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.labelLarge.copy(color = ErgoTheme.colors.text, textAlign = TextAlign.Center),
+                    maxLines = 1,
+                    softWrap = false,
+                    autoSize = TextAutoSize.StepBased(minFontSize = 11.sp, maxFontSize = MaterialTheme.typography.labelLarge.fontSize),
                     modifier = Modifier.padding(horizontal = 6.dp),
                 )
             }

@@ -26,6 +26,9 @@ sealed interface SetupIntent {
     /** Permissions can change in system settings while the app is paused. */
     data object Refresh : SetupIntent
 
+    /** The user opened the app: re-check permissions and bring a hidden panel back. */
+    data object Resumed : SetupIntent
+
     data object GrantOverlay : SetupIntent
 
     data object GrantNotifications : SetupIntent

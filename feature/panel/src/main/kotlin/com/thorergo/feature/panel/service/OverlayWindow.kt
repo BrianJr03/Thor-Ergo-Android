@@ -21,6 +21,8 @@ import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 
+internal enum class PanelWindowMode { FULL, HANDLE, GONE }
+
 /** The owners a ComposeView needs when it lives in a window instead of an Activity. */
 internal class OverlayOwner : LifecycleOwner, SavedStateRegistryOwner, ViewModelStoreOwner {
     private val registry = LifecycleRegistry(this)
@@ -68,31 +70,48 @@ internal class OverlayWindow(
         WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED or
             (if (touchable) WindowManager.LayoutParams.FLAG_SPLIT_TOUCH else WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE),
         PixelFormat.TRANSLUCENT,
     ).apply {
         gravity = Gravity.BOTTOM or Gravity.START
         layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+        // Fill the whole display: overlays otherwise stop short of the system bars.
+        fitInsetsTypes = 0
+        isFitInsetsIgnoringVisibility = true
         // Android blocks touches through untrusted overlays above this opacity.
         if (!touchable) alpha = PASS_THROUGH_ALPHA
         title = if (touchable) "ThorErgoPanel" else "ThorErgoCursor"
     }
 
-    fun show() {
-        windowManager.addView(view, params)
-    }
+    /**
+     * Whether the view is in the window manager. Tracked here because
+     * [android.view.View.isAttachedToWindow] only turns true on the next frame.
+     */
+    private var added = false
 
-    /** Shrinks the panel to a handle at the bottom, or restores it to the full display. */
-    fun setCollapsed(collapsed: Boolean, collapsedHeightPx: Int) {
-        val height = if (collapsed) collapsedHeightPx else WindowManager.LayoutParams.MATCH_PARENT
-        if (params.height == height) return
+    fun show() = add()
+
+    /** Full display, a handle-sized strip at the bottom, or no window at all. */
+    fun setMode(mode: PanelWindowMode, handleHeightPx: Int) {
+        if (mode == PanelWindowMode.GONE) return remove()
+        val height = if (mode == PanelWindowMode.HANDLE) handleHeightPx else WindowManager.LayoutParams.MATCH_PARENT
+        val resized = params.height != height
         params.height = height
-        if (view.isAttachedToWindow) windowManager.updateViewLayout(view, params)
+        if (!added) add() else if (resized) windowManager.updateViewLayout(view, params)
     }
 
     fun remove() {
-        if (view.isAttachedToWindow) windowManager.removeViewImmediate(view)
+        if (!added) return
+        added = false
+        windowManager.removeViewImmediate(view)
+    }
+
+    private fun add() {
+        if (added) return
+        windowManager.addView(view, params)
+        added = true
     }
 
     private companion object {

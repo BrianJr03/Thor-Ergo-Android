@@ -50,6 +50,12 @@ class SetupViewModelTest {
         override fun stop() {
             running.value = false
         }
+
+        var shown = 0
+
+        override fun show() {
+            shown++
+        }
     }
 
     private val permissions = FakePermissions()
@@ -103,6 +109,15 @@ class SetupViewModelTest {
         val vm = viewModel()
         assertThat(vm.state.value.canStart).isFalse()
         assertThat(vm.state.value.hasSecondDisplay).isFalse()
+    }
+
+    @Test
+    fun `opening the app brings a hidden panel back`() = runTest(main.dispatcher) {
+        val vm = viewModel()
+        vm.onIntent(SetupIntent.Resumed)
+        assertThat(panel.shown).isEqualTo(1)
+        vm.onIntent(SetupIntent.Refresh)
+        assertThat(panel.shown).isEqualTo(1)
     }
 
     @Test

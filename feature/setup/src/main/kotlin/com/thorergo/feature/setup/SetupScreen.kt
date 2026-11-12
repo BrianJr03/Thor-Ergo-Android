@@ -46,7 +46,7 @@ fun SetupRoute(viewModel: SetupViewModel, onOpenSettings: () -> Unit) {
         viewModel.onIntent(SetupIntent.Refresh)
     }
     LifecycleResumeEffect(Unit) {
-        viewModel.onIntent(SetupIntent.Refresh)
+        viewModel.onIntent(SetupIntent.Resumed)
         onPauseOrDispose { }
     }
     LaunchedEffect(viewModel) {

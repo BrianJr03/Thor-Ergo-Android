@@ -24,6 +24,8 @@ import com.thorergo.core.display.DualDisplays
 import com.thorergo.core.injection.InputInjector
 import com.thorergo.core.injection.PanelPowerController
 import com.thorergo.core.injection.di.ApplicationScope
+import com.thorergo.feature.panel.PanelIntent
+import com.thorergo.feature.panel.PanelUiState
 import com.thorergo.feature.panel.PanelViewModel
 import com.thorergo.feature.panel.R
 import com.thorergo.feature.panel.input.CursorController
@@ -67,15 +69,18 @@ class PanelService : LifecycleService() {
 
         lifecycleScope.launch { displays.displays.collect(::attach) }
         lifecycleScope.launch {
-            viewModel.state.map { it.collapsed }.distinctUntilChanged().collect { collapsed ->
-                panel?.setCollapsed(collapsed, (COLLAPSED_HEIGHT_DP * resources.displayMetrics.density).toInt())
+            viewModel.state.map { it.windowMode() }.distinctUntilChanged().collect { mode ->
+                panel?.setMode(mode, (COLLAPSED_HEIGHT_DP * resources.displayMetrics.density).toInt())
             }
         }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        if (intent?.action == ACTION_STOP) stopSelf()
+        when (intent?.action) {
+            ACTION_STOP -> stopSelf()
+            ACTION_SHOW -> viewModel.onIntent(PanelIntent.Expand)
+        }
         return START_NOT_STICKY
     }
 
@@ -89,7 +94,8 @@ class PanelService : LifecycleService() {
         val upper = manager.getDisplay(pair.upper.id) ?: return
         try {
             pointer = OverlayWindow(this, upper, owner, touchable = false) { CursorOverlay(cursor) }.also { it.show() }
-            panel = OverlayWindow(this, lower, owner, touchable = true) { PanelRoute(viewModel) }.also { it.show() }
+            panel = OverlayWindow(this, lower, owner, touchable = true) { PanelRoute(viewModel) }
+                .also { it.setMode(viewModel.state.value.windowMode(), (COLLAPSED_HEIGHT_DP * resources.displayMetrics.density).toInt()) }
         } catch (e: RuntimeException) {
             Log.e("ThorErgo", "Could not show the panel windows", e)
             detach()
@@ -121,12 +127,15 @@ class PanelService : LifecycleService() {
             NotificationChannel(CHANNEL_ID, getString(DesignR.string.notification_channel), NotificationManager.IMPORTANCE_LOW),
         )
         val stop = PendingIntent.getService(this, 0, stopIntent(this), PendingIntent.FLAG_IMMUTABLE)
+        val show = PendingIntent.getService(this, 1, showIntent(this), PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_panel_notification)
             .setContentTitle(getString(DesignR.string.notification_title))
             .setContentText(getString(DesignR.string.notification_text))
             .setOngoing(true)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .setContentIntent(show)
+            .addAction(0, getString(DesignR.string.open_keyboard), show)
             .addAction(0, getString(DesignR.string.action_stop), stop)
             .build()
     }
@@ -135,8 +144,18 @@ class PanelService : LifecycleService() {
         private const val CHANNEL_ID = "panel"
         private const val NOTIFICATION_ID = 1
         private const val ACTION_STOP = "com.thorergo.action.STOP_PANEL"
+        private const val ACTION_SHOW = "com.thorergo.action.SHOW_PANEL"
         private const val COLLAPSED_HEIGHT_DP = 96
 
         internal fun stopIntent(context: Context) = Intent(context, PanelService::class.java).setAction(ACTION_STOP)
+
+        internal fun showIntent(context: Context) = Intent(context, PanelService::class.java).setAction(ACTION_SHOW)
+
+        /** Hidden with the restore button turned off means no window at all on the lower screen. */
+        private fun PanelUiState.windowMode() = when {
+            !collapsed -> PanelWindowMode.FULL
+            keyboard.settings.showRestoreButton -> PanelWindowMode.HANDLE
+            else -> PanelWindowMode.GONE
+        }
     }
 }

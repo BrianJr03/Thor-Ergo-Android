@@ -16,6 +16,9 @@ interface PanelControl {
     fun start()
 
     fun stop()
+
+    /** Brings a hidden panel back; does nothing if the panel is not running. */
+    fun show()
 }
 
 @Singleton
@@ -29,6 +32,10 @@ class PanelLauncher @Inject constructor(@ApplicationContext private val context:
 
     override fun stop() {
         context.startService(PanelService.stopIntent(context))
+    }
+
+    override fun show() {
+        if (_running.value) context.startService(PanelService.showIntent(context))
     }
 
     internal fun setRunning(running: Boolean) {
