@@ -162,6 +162,29 @@ class PanelViewModelTest {
     }
 
     @Test
+    fun `the pointer fades after three idle seconds when auto-hide is on`() = runTest(main.dispatcher) {
+        repository.update { it.copy(autoHidePointer = true) }
+        val vm = viewModel()
+        vm.onIntent(PanelIntent.Touch(PanelTouch.Down(1, pad.x + 50, pad.y + 50, 0)))
+        vm.onIntent(PanelIntent.Touch(PanelTouch.Move(1, pad.x + 150, pad.y + 50, 40)))
+        advanceTimeBy(PanelViewModel.POINTER_IDLE_MS - 100)
+        assertThat(cursor.cursor.value.idle).isFalse()
+        advanceTimeBy(200)
+        assertThat(cursor.cursor.value.idle).isTrue()
+        vm.onIntent(PanelIntent.Touch(PanelTouch.Move(1, pad.x + 250, pad.y + 50, 4000)))
+        assertThat(cursor.cursor.value.idle).isFalse()
+    }
+
+    @Test
+    fun `the pointer never fades with auto-hide off`() = runTest(main.dispatcher) {
+        val vm = viewModel()
+        vm.onIntent(PanelIntent.Touch(PanelTouch.Down(1, pad.x + 50, pad.y + 50, 0)))
+        vm.onIntent(PanelIntent.Touch(PanelTouch.Move(1, pad.x + 150, pad.y + 50, 40)))
+        advanceTimeBy(10_000)
+        assertThat(cursor.cursor.value.idle).isFalse()
+    }
+
+    @Test
     fun `touch mode follows the setting`() = runTest(main.dispatcher) {
         viewModel()
         repository.update { it.copy(pointerAsTouch = true) }

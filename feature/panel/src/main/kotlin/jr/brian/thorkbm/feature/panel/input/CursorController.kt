@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
 
-data class Cursor(val x: Float, val y: Float, val pressed: Boolean = false)
+/** [idle] means the pointer has faded out after a period without trackpad use. */
+data class Cursor(val x: Float, val y: Float, val pressed: Boolean = false, val idle: Boolean = false)
 
 /** The pointer position on the upper display, clamped to its bounds. Drawn by the cursor overlay. */
 @Singleton
@@ -32,6 +33,8 @@ class CursorController @Inject constructor() {
     }
 
     fun setPressed(pressed: Boolean) = _cursor.update { it.copy(pressed = pressed) }
+
+    fun setIdle(idle: Boolean) = _cursor.update { it.copy(idle = idle) }
 
     private fun clamp(c: Cursor) = c.copy(x = c.x.coerceIn(0f, width - 1), y = c.y.coerceIn(0f, height - 1))
 }

@@ -92,6 +92,7 @@
     <string name="open_setup">Einrichtung und Berechtigungen öffnen</string>
     <string name="setup_tab_hint">Überlagerungsberechtigung, Shizuku, Bedienungshilfendienst und Benachrichtigungen.</string>
     <string name="stop_panel_hint">Schließt die Tastatur, bis du ThorKBM wieder öffnest.</string>
+    <string name="setting_auto_hide_pointer">Zeiger nach 3 s ohne Bewegung ausblenden</string>
     <string name="setting_pointer_as_touch">Klicks als Bildschirmberührungen (Spiele)</string>
     <string name="error_injection_failed">Eingabe konnte nicht gesendet werden. Prüfe Shizuku oder den Bedienungshilfendienst.</string>
     <string name="about_android">Android-Version: Jetpack Compose; Eingabe über Shizuku oder Bedienungshilfen.</string>

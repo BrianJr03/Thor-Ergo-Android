@@ -92,6 +92,7 @@
     <string name="open_setup">打开初始设置与权限</string>
     <string name="setup_tab_hint">悬浮窗权限、Shizuku、无障碍服务和通知。</string>
     <string name="stop_panel_hint">关闭键盘，直到再次打开 ThorKBM。</string>
+    <string name="setting_auto_hide_pointer">无操作 3 秒后隐藏指针</string>
     <string name="setting_pointer_as_touch">点击作为屏幕触摸（游戏）</string>
     <string name="error_injection_failed">无法发送输入。请检查 Shizuku 或无障碍服务。</string>
     <string name="about_android">Android 版：Jetpack Compose；通过 Shizuku 或无障碍服务输入。</string>

@@ -92,6 +92,7 @@
     <string name="open_setup">Abrir configuración y permisos</string>
     <string name="setup_tab_hint">Permiso de superposición, Shizuku, servicio de accesibilidad y notificaciones.</string>
     <string name="stop_panel_hint">Cierra el teclado hasta que vuelvas a abrir ThorKBM.</string>
+    <string name="setting_auto_hide_pointer">Ocultar el puntero tras 3 s sin movimiento</string>
     <string name="setting_pointer_as_touch">Clics como toques en pantalla (juegos)</string>
     <string name="error_injection_failed">No se pudo enviar la entrada. Comprueba Shizuku o el servicio de accesibilidad.</string>
     <string name="about_android">Versión Android: Jetpack Compose; entrada mediante Shizuku o Accesibilidad.</string>

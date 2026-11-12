@@ -126,6 +126,7 @@ private fun MouseTab(settings: Settings, onIntent: (SettingsIntent) -> Unit) {
     Toggle(ToggleSetting.GLIDE, settings, onIntent)
     Stepper(NumericSetting.FRICTION, settings, onIntent)
     Toggle(ToggleSetting.POINTER_AS_TOUCH, settings, onIntent)
+    Toggle(ToggleSetting.AUTO_HIDE_POINTER, settings, onIntent)
 }
 
 @Composable

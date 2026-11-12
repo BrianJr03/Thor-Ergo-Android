@@ -81,6 +81,7 @@ class PanelViewModel @Inject constructor(
     private val trackpad = TrackpadGestureDetector()
     private val timers = HashMap<KeyboardTimer, Job>()
     private var glide: Job? = null
+    private var idlePointer: Job? = null
 
     /** Pointer actions run strictly in order: a click must never overtake the move before it. */
     private val pointerQueue = Channel<suspend () -> Unit>(Channel.UNLIMITED)
@@ -145,6 +146,7 @@ class PanelViewModel @Inject constructor(
                 when (touches.down(touch.pointerId, touch.x, touch.y, if (padActive) keyboard.pad else null)) {
                     TouchOwner.TRACKPAD -> {
                         stopGlide()
+                        pointerActivity()
                         handle(trackpad.down(touch.pointerId, touch.x, touch.y, touch.timeMs))
                         if (holds.any) trackpad.suppressTapsForCurrentGroup()
                     }
@@ -192,6 +194,7 @@ class PanelViewModel @Inject constructor(
             }
             is KeyboardCommand.CancelTimer -> timers.remove(command.timer)?.cancel()
             is KeyboardCommand.Mouse -> if (command.down) {
+                pointerActivity()
                 trackpad.suppressTapsForCurrentGroup()
                 if (holds.press(command.pointerId, command.button)) pointer { button(command.button, true) }
             } else {
@@ -211,6 +214,7 @@ class PanelViewModel @Inject constructor(
     }
 
     private fun handle(outputs: List<TrackpadOutput>) {
+        if (outputs.isNotEmpty()) pointerActivity()
         for (out in outputs) {
             when (out) {
                 is TrackpadOutput.Move -> moveCursor(out.dx, out.dy)
@@ -244,7 +248,10 @@ class PanelViewModel @Inject constructor(
         glide = viewModelScope.launch {
             while (true) {
                 val (dx, dy) = motion.step() ?: break
-                if (dx != 0 || dy != 0) moveCursor(dx, dy)
+                if (dx != 0 || dy != 0) {
+                    pointerActivity()
+                    moveCursor(dx, dy)
+                }
                 delay(Glide.FRAME_MS)
             }
         }
@@ -253,6 +260,17 @@ class PanelViewModel @Inject constructor(
     private fun stopGlide() {
         glide?.cancel()
         glide = null
+    }
+
+    /** Shows the pointer and, if auto-hide is on, fades it out after [POINTER_IDLE_MS] without trackpad use. */
+    private fun pointerActivity() {
+        idlePointer?.cancel()
+        cursor.setIdle(false)
+        if (!keyboard.settings.autoHidePointer) return
+        idlePointer = viewModelScope.launch {
+            delay(POINTER_IDLE_MS)
+            cursor.setIdle(true)
+        }
     }
 
     private fun pointer(action: suspend () -> Unit) {
@@ -284,11 +302,14 @@ class PanelViewModel @Inject constructor(
         trackpad.config = TrackpadConfig.from(settings)
         pointerMode.pointerAsTouch = settings.pointerAsTouch
         bridge.boundKeyCode = settings.screenToggleKeyCode.takeIf { settings.screenToggleEnabled }
+        val autoHideChanged = settings.autoHidePointer != keyboard.settings.autoHidePointer
         reduce(KeyboardEvent.SettingsChanged(settings))
+        if (autoHideChanged) pointerActivity()
     }
 
     override fun onCleared() {
         stopGlide()
+        idlePointer?.cancel()
         timers.values.forEach(Job::cancel)
         bridge.boundKeyCode = null
     }
@@ -296,5 +317,6 @@ class PanelViewModel @Inject constructor(
     companion object {
         const val BACKGROUND = "panel-background"
         private const val CLICK_MS = 20L
+        const val POINTER_IDLE_MS = 3_000L
     }
 }

@@ -25,6 +25,8 @@ data class Settings(
     val friction: Int = 5,
     /** Inject clicks and drags as screen touches, for games that ignore mouse input. */
     val pointerAsTouch: Boolean = false,
+    /** Fade the upper-screen pointer out after a few seconds without trackpad use. */
+    val autoHidePointer: Boolean = false,
     /** Show the small "Open keyboard" button while the panel is hidden; off means reopen from the app. */
     val showRestoreButton: Boolean = true,
     /** Set once the panel has been started from setup; the launcher icon then opens the keyboard directly. */
@@ -92,6 +94,7 @@ enum class ToggleSetting(
     TAP_TO_CLICK({ it.tapToClick }, { s, v -> s.copy(tapToClick = v) }),
     GLIDE({ it.glide }, { s, v -> s.copy(glide = v) }),
     POINTER_AS_TOUCH({ it.pointerAsTouch }, { s, v -> s.copy(pointerAsTouch = v) }),
+    AUTO_HIDE_POINTER({ it.autoHidePointer }, { s, v -> s.copy(autoHidePointer = v) }),
     SHOW_RESTORE_BUTTON({ it.showRestoreButton }, { s, v -> s.copy(showRestoreButton = v) }),
     SCREEN_TOGGLE({ it.screenToggleEnabled }, { s, v -> s.copy(screenToggleEnabled = v) }),
 }
