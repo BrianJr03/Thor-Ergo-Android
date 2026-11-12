@@ -95,9 +95,9 @@ The two are separate apps, so both can be installed together. Each needs its
 own permissions, Shizuku grant and accessibility service.
 
 To sign release builds, copy `keystore.properties.example` to
-`keystore.properties` and fill in your key. That file is git-ignored. On CI, set
-`THOR_ERGO_KEYSTORE`, `THOR_ERGO_KEYSTORE_PASSWORD` and `THOR_ERGO_KEY_ALIAS`
-instead. Without a key, release builds are left unsigned.
+`keystore.properties` and fill in your key. That file is git-ignored. On CI the key comes from the repository
+secrets `KEYSTORE_B64` (`base64 -i thor-ergo-release.jks`), `KEYSTORE_PASSWORD`
+and `KEY_ALIAS`; see `.github/workflows/`. Without a key, release builds are left unsigned.
 
 The keyboard, trackpad, Pinyin and dead-key logic are pure Kotlin modules. Their
 tests are ported from the 1.0 test suite.
