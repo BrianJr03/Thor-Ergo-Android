@@ -1,34 +1,41 @@
 # Support and testing scope
 
-Thor Ergo 1.0 is a completed personal project shared as an independent fork of
-[Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input).
+## What has been verified
 
-## Tested setup
+- The pure logic modules have ported versions of the 1.0 tests:
+  - keyboard layout and reducer;
+  - output routing;
+  - dead keys;
+  - Pinyin;
+  - trackpad;
+  - settings.
+- The ViewModels are tested against fakes.
+- Screenshot tests render every layout at 1240 × 1080.
+- Lint is clean apart from library-update notices.
+- The debug APK builds.
 
-The maintainer tested installation from **Windows 11**, using an **AYN Thor Pro
-with 12 GB RAM**, on **ArmadaOS 20261109.dfed5d6** (20261109 release).
-The upper screen runs Steam Game Mode. **Plasma Mobile must be enabled on the
-lower screen** through Armada Control.
+## What has not
 
-The macOS and Linux host installers are included but **have not been tested by
-the maintainer on macOS or Linux computers**. Automated checks are not a
-substitute for real-machine testing. Other models, OS releases, every language
-and all games/applications have not been comprehensively tested.
+- Nothing has been run on an AYN Thor yet. These points need a real device:
+  - That touching the non-focusable lower-screen overlay leaves input focus
+    with the game on the upper screen.
+  - That Shizuku-injected mouse and key events reach specific games. If a game
+    ignores the mouse, try **Clicks as screen touches**.
+  - That the lower panel is a separate physical display, so it can be powered
+    off on its own.
+  - Whether the AYN key (or another button) reaches Android as a key the
+    Accessibility service can bind.
+
+Please report device results, including Android build, Shizuku version and the
+game, as GitHub issues.
 
 ## Maintenance
 
-This is a completed personal project, shared as-is. There is no active maintenance
-commitment, update schedule, technical-support service or guarantee of
-compatibility with future ArmadaOS versions. Community forks are welcome.
-
-Use the included Undo, Diagnostics and Wake lower screen operations when needed.
-Review diagnostic output before sharing: it can contain local machine details.
-Never publish passwords, SSH private keys or private controller-profile snapshots.
+This is a personal project shared as-is, with no support commitment or update
+schedule. Community forks are welcome.
 
 ## Attribution
 
-**Graphic design and keyboard layout: seekingalphacrawler.** Original software,
-libraries and data retain their authorship and licenses; see CREDITS.md and the
-bundled notices. This is not an official AYN, ArmadaOS, Valve, Armada Dual Screen
-Input or Ratatoskr release. Do not direct support requests for this fork to the
-upstream developers.
+**Graphic design and keyboard layout: seekingalphacrawler.** This is not an
+official AYN, ArmadaOS, Armada Dual Screen Input or Ratatoskr release. Please do
+not send support requests for this edition to the upstream developers.

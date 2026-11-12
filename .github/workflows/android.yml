@@ -1,0 +1,143 @@
+name: Android
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # ------------------------------------------------------------------
+  # Check: tests, lint and a debug APK on every push and pull request.
+  # ------------------------------------------------------------------
+  check:
+    name: Test, lint, debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platforms;android-36 build-tools;36.0.0
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit and Robolectric tests
+        run: ./gradlew test --no-daemon
+
+      - name: Lint
+        run: ./gradlew lintDebug --no-daemon
+
+      - name: Debug APK
+        run: ./gradlew :app:assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ThorErgo-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: reports
+          path: '**/build/reports/'
+
+  # ------------------------------------------------------------------
+  # Release: on a `v*` tag, build the release APK signed with the
+  # keystore secrets and attach it to a GitHub Release.
+  # ------------------------------------------------------------------
+  release:
+    name: Signed release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platforms;android-36 build-tools;36.0.0
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Decode release keystore
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "::error::KEYSTORE_B64 secret is empty; cannot sign release"
+            exit 1
+          fi
+          # Strip any whitespace picked up when the secret was pasted; GNU base64 is strict.
+          printf '%s' "$KEYSTORE_B64" \
+            | tr -d '[:space:]' \
+            | base64 -d > "$RUNNER_TEMP/release.jks"
+          sz=$(stat -c '%s' "$RUNNER_TEMP/release.jks")
+          echo "decoded keystore size: $sz bytes"
+          if [ "$sz" -lt 1024 ]; then
+            echo "::error::decoded keystore is suspiciously small ($sz bytes)"
+            exit 1
+          fi
+          echo "KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+
+      - name: Build release APK (signed)
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: ./gradlew :app:assembleRelease --no-daemon --stacktrace
+
+      - name: Verify signature and stage APK
+        run: |
+          set -e
+          apk=app/build/outputs/apk/release/app-release.apk
+          if [ ! -f "$apk" ]; then
+            echo "::error::signed release APK missing (signing secrets incomplete?)"
+            ls -l app/build/outputs/apk/release/
+            exit 1
+          fi
+          apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | tail -1)
+          "$apksigner" verify --print-certs "$apk" | grep -E "DN|SHA-256"
+          mkdir -p dist
+          cp "$apk" "dist/ThorErgo-${GITHUB_REF_NAME}.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ThorErgo-release.apk
+          path: dist/*.apk
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Create / update release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.apk
+          body_path: RELEASE_NOTES.md
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+
+      - name: Cleanup release keystore
+        if: always()
+        run: rm -f "${RUNNER_TEMP}/release.jks"

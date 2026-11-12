@@ -1,4 +1,24 @@
-__pycache__/
-*.py[cod]
+# Gradle and Kotlin
+.gradle/
+.kotlin/
+build/
+local.properties
+
+# Release signing: never commit keys or their passwords
+keystore.properties
+*.jks
+*.keystore
+*.password
+
+# IDE
+.idea/
+*.iml
+captures/
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Python helper (tools/pinyin)
+__pycache__/
+*.py[cod]

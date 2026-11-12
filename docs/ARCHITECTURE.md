@@ -1,43 +1,75 @@
 # Architecture
 
-The complete runtime lives in `Thor/app/`. The independent user-level installer
-is `Thor/install.py`. Host launchers transfer the prebuilt `Payload/Thor.zip`
-over OpenSSH; no package download or root filesystem change is required.
+## Modules
 
-## Application
+```
+app                 Application, MainActivity (setup + settings), Hilt root
+feature/panel       Overlay service, panel UI, cursor overlay, PanelViewModel, output pipeline
+feature/settings    Settings UI and SettingsStateHolder (shared by the panel and the app)
+feature/setup       Permission checklist, SetupViewModel
+core/model          Settings and setting specs, Language, KeyCode, Modifier, DeadKey (pure Kotlin)
+core/keyboard       LayoutEngine, profiles, KeyboardReducer, OutputRouter, DeadKeyComposer (pure Kotlin)
+core/trackpad       TrackpadGestureDetector, Glide (pure Kotlin)
+core/pinyin         PinyinDictionary, PinyinComposer (pure Kotlin)
+core/data           SettingsRepository on DataStore (strict JSON)
+core/display        Upper/lower display pairing as a Flow
+core/injection      InputInjector: Shizuku user service and Accessibility service; PanelPowerController
+core/designsystem   Theme, key caps, icons, setting rows, all UI strings (7 languages)
+core/testing        Fakes and the main-dispatcher rule
+```
 
-`ergo_layout.py` defines geometry shared by drawing and touch hit testing.
-`ergo_controller.py` handles contact ownership, modifiers, repeats, page selection
-and accent popups. `ergo_render.py` draws using the upstream Pango/Noto text path.
-`ergo_profiles.py`, catalogs in `locales/`, and the Pinyin data implement the
-national layouts and language choices. Keyboard/input adapters retain upstream
-Gamescope and Ratatoskr integration.
+The build logic lives in `build-logic/` as convention plugins, and the versions
+in `gradle/libs.versions.toml`.
 
-The app receives the lower Plasma session's available allocation; it does not
-simulate a Plasma status bar or change the compositor's window geometry.
+## State and data flow
 
-## Installation
+The panel follows MVI. `PanelViewModel` holds a `KeyboardState` and turns each
+touch into an event:
 
-Each install writes a separate complete release inside the user's persistent
-home. Hash manifests reject missing, changed, extra and symbolic-link payload
-files. Tests run before stopping an existing panel. The recorded service command
-includes `tools/run.py --run`. Activation requires a first-frame receipt.
-Transactions snapshot managed files, settings and user service state for Undo.
+1. **Ownership.** `TouchRouter` decides at touch-down whether a finger belongs
+   to the keyboard or the trackpad, and that never changes.
+2. **Keyboard.** Keyboard touches go to `KeyboardReducer.reduce(state, event)`.
+   It is a pure function that returns the new state plus `KeyboardCommand`s
+   (emit output, start or cancel a timer, mouse button, reset, persist view).
+   The ViewModel carries out those commands: timers are coroutines, and output
+   goes to the pipeline.
+3. **Trackpad.** Trackpad touches go to `TrackpadGestureDetector`. Its outputs
+   (move, scroll, click, glide) update `CursorController` and are queued, in
+   order, to the `InputInjector`.
+4. **Output.** `OutputPipeline` takes the keyboard's output first in, first out.
+   For each event, `OutputRouter` picks the route for the current language:
+   - US: physical keys;
+   - other languages: Unicode through the dead-key or Pinyin composer;
+   - shortcuts: the US key position, and Caps Lock never adds Shift.
 
-Host passwords belong to OpenSSH's prompt and are not stored. Runtime receipts
-and private recovery state stay on the device and are not redistributed.
+   Anything still queued after 750 ms is dropped rather than sent late.
 
-## AYN helper
+Drawing and hit-testing use the same `LayoutEngine` rectangles in a logical
+1240 × 1080 space. Compose only scales and draws them, so there are no
+per-key click handlers.
 
-The optional user service discovers the dedicated AYN source, validates its
-mapping to QuickAccess2, and uses InputPlumber's D-Bus profile API to route only
-that event. It temporarily owns a narrowly scoped mapping and maintains a
-private recovery journal. It does not bypass device permissions, capture an
-entire controller, change intercept mode or create target controllers.
+## Windows
 
-The panel toggles through `GAMESCOPE_COMPANION_LOCKED` while Plasma stays alive.
-Disabling/stopping the helper attempts restoration of its own mapping and lock.
-Conflicting external profile/lock controllers are not supported; externally
-changed profiles are respected rather than repeatedly overwritten.
+`PanelService` is a foreground service that opens two `TYPE_APPLICATION_OVERLAY`
+windows with `FLAG_NOT_FOCUSABLE`:
+- the touchable panel on the lower display;
+- a pass-through cursor on the upper display, at alpha 0.8 so Android's
+  untrusted-touch rule lets touches through.
 
-See AYN-INPUTPLUMBER.md and the test scope for recovery limits.
+The game therefore keeps input focus.
+
+## Injection
+
+`CompositeInjector` picks a backend for each capability:
+
+| Capability | Shizuku | Accessibility |
+|---|---|---|
+| Keys and chords | `InputManager.injectInputEvent` | `InputMethod.sendKeyEvent` (focused editor only) |
+| Unicode text | — | `InputMethod.commitText` |
+| Pointer and scroll | `SOURCE_MOUSE` motion events on the upper display | taps at the cursor |
+| Clicks as touches | `SOURCE_TOUCHSCREEN` events | — |
+| Lower panel power | `SurfaceControl` / `DisplayControl.setDisplayPowerMode` | black overlay |
+| Hardware toggle key | — | key-event filter |
+
+The Shizuku side, `PrivilegedInputService`, runs as the shell user in its own
+process and is reached over AIDL (`IPrivilegedInput`).
