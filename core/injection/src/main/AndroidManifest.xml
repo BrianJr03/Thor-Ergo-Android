@@ -17,7 +17,7 @@
         <service
             android:name=".accessibility.ErgoAccessibilityService"
             android:exported="false"
-            android:label="@string/accessibility_label"
+            android:label="${appLabel} input"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />

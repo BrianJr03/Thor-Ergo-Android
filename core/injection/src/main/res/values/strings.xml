@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="accessibility_label">Thor Ergo input</string>
     <string name="accessibility_description">Lets the Thor Ergo keyboard type text into apps on the upper screen when Shizuku is unavailable, and lets a hardware key you choose turn the lower screen off and on. Thor Ergo does not read screen content and stores nothing you type.</string>
 </resources>

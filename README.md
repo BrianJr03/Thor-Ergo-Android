@@ -82,6 +82,23 @@ You need JDK 17 or later and the Android SDK (API 36).
 ./gradlew :app:assembleDebug
 ```
 
+### Debug and release
+
+| | Debug | Release |
+|---|---|---|
+| App id | `com.thorergo.debug` | `com.thorergo` |
+| Name | Thor Ergo Debug | Thor Ergo |
+| Signed with | the Android debug key | your release key |
+| Build | `./gradlew :app:assembleDebug` | `./gradlew :app:assembleRelease` |
+
+The two are separate apps, so both can be installed together. Each needs its
+own permissions, Shizuku grant and accessibility service.
+
+To sign release builds, copy `keystore.properties.example` to
+`keystore.properties` and fill in your key. That file is git-ignored. On CI, set
+`THOR_ERGO_KEYSTORE`, `THOR_ERGO_KEYSTORE_PASSWORD` and `THOR_ERGO_KEY_ALIAS`
+instead. Without a key, release builds are left unsigned.
+
 The keyboard, trackpad, Pinyin and dead-key logic are pure Kotlin modules. Their
 tests are ported from the 1.0 test suite.
 

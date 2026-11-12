@@ -4,6 +4,12 @@
 build/
 local.properties
 
+# Release signing: never commit keys or their passwords
+keystore.properties
+*.jks
+*.keystore
+*.password
+
 # IDE
 .idea/
 *.iml
