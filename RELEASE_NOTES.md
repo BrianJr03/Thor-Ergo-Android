@@ -1,10 +1,10 @@
-# Thor Ergo 2.0 — Android
+# Thor KBM
 
-A native Android rewrite of Thor Ergo for the AYN Thor's dual screens.
-It replaces the ArmadaOS/Linux edition; 1.0 remains available in the Git
-history and on its release page.
+The first release of Thor KBM: a native Android fork of Thor Ergo, the ArmadaOS
+version, for the AYN Thor's dual screens. The ArmadaOS version remains in the
+Git history and on its own release page.
 
-## What carries over from 1.0
+## What carries over from the ArmadaOS version
 
 - The same keyboard geometry (1240 × 1080 logical layout).
 - The same seven national layouts and accent popups.

@@ -6,9 +6,9 @@ import org.gradle.kotlin.dsl.project
 /** A UI feature: Android library + Compose + Hilt + the shared core modules every feature needs. */
 class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        pluginManager.apply("thorergo.android.library")
-        pluginManager.apply("thorergo.android.compose")
-        pluginManager.apply("thorergo.android.hilt")
+        pluginManager.apply("thorkbm.android.library")
+        pluginManager.apply("thorkbm.android.compose")
+        pluginManager.apply("thorkbm.android.hilt")
         dependencies {
             add("implementation", project(":core:model"))
             add("implementation", project(":core:designsystem"))

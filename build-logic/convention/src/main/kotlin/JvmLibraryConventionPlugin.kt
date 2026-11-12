@@ -8,8 +8,8 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("org.jetbrains.kotlin.jvm")
         extensions.configure<JavaPluginExtension> {
-            sourceCompatibility = ThorErgoSdk.JAVA
-            targetCompatibility = ThorErgoSdk.JAVA
+            sourceCompatibility = ThorKbmSdk.JAVA
+            targetCompatibility = ThorKbmSdk.JAVA
         }
         configureKotlin()
         addUnitTestDependencies()

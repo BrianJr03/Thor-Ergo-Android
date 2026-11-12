@@ -8,7 +8,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         pluginManager.apply("com.android.application")
         extensions.configure<ApplicationExtension> {
             configureAndroidCommon(this)
-            defaultConfig.targetSdk = ThorErgoSdk.TARGET
+            defaultConfig.targetSdk = ThorKbmSdk.TARGET
         }
     }
 }

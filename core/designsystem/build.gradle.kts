@@ -1,10 +1,10 @@
 plugins {
-    alias(libs.plugins.thorergo.android.library)
-    alias(libs.plugins.thorergo.android.compose)
+    alias(libs.plugins.thorkbm.android.library)
+    alias(libs.plugins.thorkbm.android.compose)
 }
 
 android {
-    namespace = "com.thorergo.core.designsystem"
+    namespace = "jr.brian.thorkbm.core.designsystem"
 }
 
 dependencies {

@@ -14,7 +14,7 @@ internal val Project.libs: VersionCatalog
 
 internal fun VersionCatalog.lib(alias: String) = findLibrary(alias).get()
 
-internal object ThorErgoSdk {
+internal object ThorKbmSdk {
     const val COMPILE = 36
     const val MIN = 33
     const val TARGET = 36
@@ -25,17 +25,17 @@ internal object ThorErgoSdk {
 internal fun Project.configureKotlin() {
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(ThorErgoSdk.JVM_TARGET)
+            jvmTarget.set(ThorKbmSdk.JVM_TARGET)
         }
     }
 }
 
 internal fun Project.configureAndroidCommon(extension: CommonExtension) {
     extension.apply {
-        compileSdk = ThorErgoSdk.COMPILE
-        defaultConfig.minSdk = ThorErgoSdk.MIN
-        compileOptions.sourceCompatibility = ThorErgoSdk.JAVA
-        compileOptions.targetCompatibility = ThorErgoSdk.JAVA
+        compileSdk = ThorKbmSdk.COMPILE
+        defaultConfig.minSdk = ThorKbmSdk.MIN
+        compileOptions.sourceCompatibility = ThorKbmSdk.JAVA
+        compileOptions.targetCompatibility = ThorKbmSdk.JAVA
         testOptions.unitTests.isIncludeAndroidResources = true
         testOptions.unitTests.isReturnDefaultValues = true
     }

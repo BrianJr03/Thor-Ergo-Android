@@ -2,7 +2,7 @@
 
 ## What has been verified
 
-- The pure logic modules have ported versions of the 1.0 tests:
+- The pure logic modules have ported versions of the ArmadaOS version's tests:
   - keyboard layout and reducer;
   - output routing;
   - dead keys;

@@ -1,12 +1,12 @@
 plugins {
-    alias(libs.plugins.thorergo.android.library)
-    alias(libs.plugins.thorergo.android.hilt)
+    alias(libs.plugins.thorkbm.android.library)
+    alias(libs.plugins.thorkbm.android.hilt)
 }
 
 android {
-    namespace = "com.thorergo.core.injection"
+    namespace = "jr.brian.thorkbm.core.injection"
     // The app sets the real label per build type; this default only serves the library's own builds.
-    defaultConfig.manifestPlaceholders["appLabel"] = "Thor Ergo"
+    defaultConfig.manifestPlaceholders["appLabel"] = "Thor KBM"
     buildFeatures {
         aidl = true
         buildConfig = true

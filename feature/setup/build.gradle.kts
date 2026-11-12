@@ -1,9 +1,9 @@
 plugins {
-    alias(libs.plugins.thorergo.android.feature)
+    alias(libs.plugins.thorkbm.android.feature)
 }
 
 android {
-    namespace = "com.thorergo.feature.setup"
+    namespace = "jr.brian.thorkbm.feature.setup"
 }
 
 dependencies {

@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.thorergo.android.feature)
+    alias(libs.plugins.thorkbm.android.feature)
     alias(libs.plugins.roborazzi)
 }
 
@@ -8,7 +8,7 @@ roborazzi {
 }
 
 android {
-    namespace = "com.thorergo.feature.panel"
+    namespace = "jr.brian.thorkbm.feature.panel"
 }
 
 dependencies {

@@ -21,7 +21,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ThorErgo"
+rootProject.name = "ThorKBM"
 
 include(":app")
 include(":core:model")

@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.thorergo.jvm.library)
+    alias(libs.plugins.thorkbm.jvm.library)
 }
 
 dependencies {

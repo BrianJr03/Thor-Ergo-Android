@@ -1,10 +1,10 @@
 plugins {
-    alias(libs.plugins.thorergo.android.library)
-    alias(libs.plugins.thorergo.android.hilt)
+    alias(libs.plugins.thorkbm.android.library)
+    alias(libs.plugins.thorkbm.android.hilt)
 }
 
 android {
-    namespace = "com.thorergo.core.data"
+    namespace = "jr.brian.thorkbm.core.data"
 }
 
 dependencies {

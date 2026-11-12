@@ -1,9 +1,9 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.thorergo.android.application)
-    alias(libs.plugins.thorergo.android.compose)
-    alias(libs.plugins.thorergo.android.hilt)
+    alias(libs.plugins.thorkbm.android.application)
+    alias(libs.plugins.thorkbm.android.compose)
+    alias(libs.plugins.thorkbm.android.hilt)
 }
 
 /**
@@ -26,10 +26,10 @@ val releaseKey: ReleaseKey? = run {
 }
 
 android {
-    namespace = "com.thorergo"
+    namespace = "jr.brian.thorkbm"
 
     defaultConfig {
-        applicationId = "com.thorergo"
+        applicationId = "jr.brian.thorkbm"
         versionCode = 2
         versionName = rootProject.file("VERSION").readText().trim()
     }
@@ -62,13 +62,13 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            manifestPlaceholders["appLabel"] = "Thor Ergo Debug"
+            manifestPlaceholders["appLabel"] = "Thor KBM Debug"
         }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
-            manifestPlaceholders["appLabel"] = "Thor Ergo"
+            manifestPlaceholders["appLabel"] = "Thor KBM"
             signingConfig = signingConfigs.findByName("release")
         }
     }

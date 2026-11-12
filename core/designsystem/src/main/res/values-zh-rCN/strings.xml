@@ -84,18 +84,18 @@
     <string name="screen_hint_keeps_running">上屏幕和游戏会继续运行。</string>
     <string name="screen_hint_wake">触摸下屏幕或按下绑定的按键即可重新点亮。</string>
     <string name="screen_hint_shizuku">未连接 Shizuku 时，屏幕只会变黑而不会断电。</string>
-    <string name="screen_hint_accessibility">绑定实体按键需要启用 Thor Ergo 无障碍服务。</string>
+    <string name="screen_hint_accessibility">绑定实体按键需要启用 Thor KBM 无障碍服务。</string>
     <string name="setting_haptics">按键振动</string>
     <string name="setting_show_restore_button">隐藏后显示“打开键盘”按钮</string>
-    <string name="restore_button_hint">关闭后，“隐藏”会完全移除面板。打开 Thor Ergo 或使用通知即可重新显示。</string>
+    <string name="restore_button_hint">关闭后，“隐藏”会完全移除面板。打开 Thor KBM 或使用通知即可重新显示。</string>
     <string name="setting_pointer_as_touch">点击作为屏幕触摸（游戏）</string>
     <string name="error_injection_failed">无法发送输入。请检查 Shizuku 或无障碍服务。</string>
     <string name="about_android">Android 版：Jetpack Compose；通过 Shizuku 或无障碍服务输入。</string>
     <string name="notification_channel">键盘面板</string>
-    <string name="notification_title">Thor Ergo 正在运行</string>
+    <string name="notification_title">Thor KBM 正在运行</string>
     <string name="notification_text">键盘正在运行。点按即可在下屏幕显示。</string>
     <string name="action_stop">停止</string>
-    <string name="setup_title">设置 Thor Ergo</string>
+    <string name="setup_title">设置 Thor KBM</string>
     <string name="setup_subtitle">下屏幕上的键盘和触控板，可向上屏幕的应用输入。</string>
     <string name="step_overlay_title">显示在其他应用上层</string>
     <string name="step_overlay_body">在下屏幕显示面板，且不抢走游戏的焦点。</string>
@@ -113,5 +113,5 @@
     <string name="stop_panel">停止键盘面板</string>
     <string name="setup_need_backend">请启用 Shizuku 或无障碍服务以发送输入。</string>
     <string name="setup_limited">受限模式：未连接 Shizuku 时，按键和文字只能进入焦点输入框。</string>
-    <string name="setup_no_second_display">未检测到下屏幕。Thor Ergo 需要第二块屏幕。</string>
+    <string name="setup_no_second_display">未检测到下屏幕。Thor KBM 需要第二块屏幕。</string>
 </resources>

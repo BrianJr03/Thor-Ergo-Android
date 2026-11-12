@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.thorergo.buildlogic"
+group = "jr.brian.thorkbm.buildlogic"
 
 dependencies {
     compileOnly(libs.android.gradlePlugin)
@@ -14,27 +14,27 @@ dependencies {
 gradlePlugin {
     plugins {
         register("jvmLibrary") {
-            id = "thorergo.jvm.library"
+            id = "thorkbm.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
         register("androidApplication") {
-            id = "thorergo.android.application"
+            id = "thorkbm.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidLibrary") {
-            id = "thorergo.android.library"
+            id = "thorkbm.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("androidCompose") {
-            id = "thorergo.android.compose"
+            id = "thorkbm.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
         }
         register("androidHilt") {
-            id = "thorergo.android.hilt"
+            id = "thorkbm.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
         register("androidFeature") {
-            id = "thorergo.android.feature"
+            id = "thorkbm.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
     }

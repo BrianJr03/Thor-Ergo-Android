@@ -74,9 +74,9 @@ hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
-thorergo-jvm-library = { id = "thorergo.jvm.library" }
-thorergo-android-library = { id = "thorergo.android.library" }
-thorergo-android-compose = { id = "thorergo.android.compose" }
-thorergo-android-feature = { id = "thorergo.android.feature" }
-thorergo-android-hilt = { id = "thorergo.android.hilt" }
-thorergo-android-application = { id = "thorergo.android.application" }
+thorkbm-jvm-library = { id = "thorkbm.jvm.library" }
+thorkbm-android-library = { id = "thorkbm.android.library" }
+thorkbm-android-compose = { id = "thorkbm.android.compose" }
+thorkbm-android-feature = { id = "thorkbm.android.feature" }
+thorkbm-android-hilt = { id = "thorkbm.android.hilt" }
+thorkbm-android-application = { id = "thorkbm.android.application" }

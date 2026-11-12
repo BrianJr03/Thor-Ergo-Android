@@ -1,13 +1,14 @@
-# Thor Ergo 2.0 para Android
+# Thor KBM
 
 **Teclado tátil multilingue e trackpad para o ecrã inferior do AYN Thor. Escreve
 no jogo ou na aplicação do ecrã superior.**
 
-Esta é a edição Android nativa do Thor Ergo. A versão 1.0 era uma aplicação
-Linux/GTK para ArmadaOS, um fork independente do
+O Thor KBM é um fork Android nativo do
+[Thor Ergo](https://github.com/seekingalphacrawler/Thor-Ergo), a versão para
+ArmadaOS. Essa versão é um fork Linux/GTK do
 [Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input).
-A versão 2.0 foi reescrita em Kotlin e Jetpack Compose, com as mesmas
-disposições e o mesmo comportamento.
+Foi reescrito em Kotlin e Jetpack Compose, com as mesmas disposições e o mesmo
+comportamento.
 **Design gráfico e disposição do teclado: seekingalphacrawler.**
 
 [English](README.md) · [Arquitetura](docs/ARCHITECTURE.md) · [Créditos](CREDITS.md) · [Avisos de terceiros](THIRD_PARTY.md)
@@ -33,7 +34,7 @@ disposições e o mesmo comportamento.
   - clique direito com dois dedos;
   - scroll;
   - inércia.
-- **Apagar o ecrã inferior.** Substitui o botão AYN da versão 1.0. Desliga só o
+- **Apagar o ecrã inferior.** Substitui o botão AYN da versão para ArmadaOS. Desliga só o
   painel inferior; o jogo continua. Pode ser acionado pelo menu ou por uma tecla
   física associada.
 

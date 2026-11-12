@@ -1,0 +1,45 @@
+package jr.brian.thorkbm.feature.settings
+
+import jr.brian.thorkbm.core.model.Language
+import jr.brian.thorkbm.core.model.NumericSetting
+import jr.brian.thorkbm.core.model.Settings
+import jr.brian.thorkbm.core.model.ToggleSetting
+
+enum class SettingsTab { LANGUAGES, KEYBOARD, MOUSE, SCREEN, ABOUT }
+
+enum class LanguagePicker { KEYBOARD, INTERFACE }
+
+enum class SettingsNote { SAVED, SAVE_FAILED }
+
+data class SettingsUiState(
+    val settings: Settings = Settings(),
+    val tab: SettingsTab = SettingsTab.LANGUAGES,
+    val picker: LanguagePicker? = null,
+    val note: SettingsNote? = null,
+    val learningKey: Boolean = false,
+    /** A hardware key can be bound only through the accessibility service. */
+    val canBindKey: Boolean = false,
+    /** Real panel power-off needs Shizuku; without it the panel blacks out. */
+    val canPowerOff: Boolean = false,
+)
+
+sealed interface SettingsIntent {
+    data class SelectTab(val tab: SettingsTab) : SettingsIntent
+
+    data class Step(val setting: NumericSetting, val direction: Int) : SettingsIntent
+
+    data class Toggle(val setting: ToggleSetting) : SettingsIntent
+
+    data class OpenPicker(val picker: LanguagePicker) : SettingsIntent
+
+    /** `null` for the interface picker means "follow keyboard". */
+    data class ChooseLanguage(val language: Language?) : SettingsIntent
+
+    data object DismissPicker : SettingsIntent
+
+    data object LearnKey : SettingsIntent
+
+    data object ClearKey : SettingsIntent
+
+    data object TurnScreenOff : SettingsIntent
+}

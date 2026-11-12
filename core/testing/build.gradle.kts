@@ -1,9 +1,9 @@
 plugins {
-    alias(libs.plugins.thorergo.android.library)
+    alias(libs.plugins.thorkbm.android.library)
 }
 
 android {
-    namespace = "com.thorergo.core.testing"
+    namespace = "jr.brian.thorkbm.core.testing"
 }
 
 dependencies {

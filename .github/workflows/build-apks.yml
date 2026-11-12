@@ -78,9 +78,9 @@ jobs:
           set -e
           mkdir -p artifacts/debug artifacts/release
           version=$(tr -d '[:space:]' < VERSION)
-          cp app/build/outputs/apk/debug/app-debug.apk "artifacts/debug/ThorErgo-${version}-debug-${SHORT_SHA}.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk "artifacts/debug/ThorKBM-${version}-debug-${SHORT_SHA}.apk"
           release=$(ls app/build/outputs/apk/release/*.apk | head -1)
-          cp "$release" "artifacts/release/ThorErgo-${version}-$(basename "$release" .apk | sed 's/^app-//')-${SHORT_SHA}.apk"
+          cp "$release" "artifacts/release/ThorKBM-${version}-$(basename "$release" .apk | sed 's/^app-//')-${SHORT_SHA}.apk"
           {
             echo "### Built APKs"
             echo ""

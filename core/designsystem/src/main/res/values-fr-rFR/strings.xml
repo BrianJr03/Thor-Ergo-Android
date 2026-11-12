@@ -84,18 +84,18 @@
     <string name="screen_hint_keeps_running">L\'écran supérieur et le jeu continuent de fonctionner.</string>
     <string name="screen_hint_wake">Touchez l\'écran inférieur ou appuyez sur la touche associée pour le rallumer.</string>
     <string name="screen_hint_shizuku">Sans Shizuku, l\'écran est noirci au lieu d\'être éteint.</string>
-    <string name="screen_hint_accessibility">Associer une touche physique nécessite le service d\'accessibilité Thor Ergo.</string>
+    <string name="screen_hint_accessibility">Associer une touche physique nécessite le service d\'accessibilité Thor KBM.</string>
     <string name="setting_haptics">Vibrer à l\'appui des touches</string>
     <string name="setting_show_restore_button">Afficher le bouton « Ouvrir le clavier » une fois masqué</string>
-    <string name="restore_button_hint">Désactivé : Masquer retire entièrement le panneau. Ouvrez Thor Ergo ou utilisez la notification pour le réafficher.</string>
+    <string name="restore_button_hint">Désactivé : Masquer retire entièrement le panneau. Ouvrez Thor KBM ou utilisez la notification pour le réafficher.</string>
     <string name="setting_pointer_as_touch">Clics comme touchers d\'écran (jeux)</string>
     <string name="error_injection_failed">Impossible d\'envoyer la saisie. Vérifiez Shizuku ou le service d\'accessibilité.</string>
     <string name="about_android">Version Android : Jetpack Compose ; saisie via Shizuku ou l\'Accessibilité.</string>
     <string name="notification_channel">Panneau du clavier</string>
-    <string name="notification_title">Thor Ergo est actif</string>
+    <string name="notification_title">Thor KBM est actif</string>
     <string name="notification_text">Le clavier est actif. Touchez pour l\'afficher sur l\'écran inférieur.</string>
     <string name="action_stop">Arrêter</string>
-    <string name="setup_title">Configurer Thor Ergo</string>
+    <string name="setup_title">Configurer Thor KBM</string>
     <string name="setup_subtitle">Un clavier et un pavé tactile sur l\'écran inférieur qui saisissent dans l\'application de l\'écran supérieur.</string>
     <string name="step_overlay_title">Afficher par-dessus les autres applis</string>
     <string name="step_overlay_body">Affiche le panneau sur l\'écran inférieur sans retirer le focus au jeu.</string>
@@ -113,5 +113,5 @@
     <string name="stop_panel">Arrêter le panneau du clavier</string>
     <string name="setup_need_backend">Activez Shizuku ou le service d\'accessibilité pour envoyer des saisies.</string>
     <string name="setup_limited">Mode limité : sans Shizuku, touches et texte ne vont que dans les champs actifs.</string>
-    <string name="setup_no_second_display">Aucun écran inférieur détecté. Thor Ergo nécessite un second écran.</string>
+    <string name="setup_no_second_display">Aucun écran inférieur détecté. Thor KBM nécessite un second écran.</string>
 </resources>

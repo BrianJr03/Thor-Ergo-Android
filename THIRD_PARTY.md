@@ -1,4 +1,4 @@
-# Third-party components in Thor Ergo 2.0
+# Third-party components in Thor KBM
 
 * **Armada Dual Screen Input 0.1.7**: sa1utyeggs and contributors, MIT.
   Behaviour reimplemented in Kotlin. Its copyright is in `LICENSE`.

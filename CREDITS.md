@@ -2,7 +2,8 @@
 
 **Graphic design and keyboard layout: seekingalphacrawler.**
 
-Thor Ergo is an independent fork of
+Thor KBM is a native Android fork of Thor Ergo, the ArmadaOS version, which is
+itself an independent fork of
 [Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input).
 It is not an official release of AYN, ArmadaOS, Valve or the upstream projects.
 

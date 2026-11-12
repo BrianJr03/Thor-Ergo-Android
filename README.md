@@ -1,12 +1,13 @@
-# Thor Ergo 2.0 for Android
+# Thor KBM
 
 **A multilingual touchscreen keyboard and trackpad for the lower screen of the
 AYN Thor, typing into the game or app on the upper screen.**
 
-This is the native Android edition of Thor Ergo. Version 1.0 was a Linux/GTK app
-for ArmadaOS, an independent fork of
+Thor KBM is a native Android fork of
+[Thor Ergo](https://github.com/seekingalphacrawler/Thor-Ergo), the ArmadaOS
+version. That version is a Linux/GTK fork of
 [Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input).
-2.0 rebuilds it in Kotlin and Jetpack Compose with the same layouts and behavior.
+It is rebuilt in Kotlin and Jetpack Compose with the same layouts and behavior.
 **Graphic design and keyboard layout: seekingalphacrawler.**
 
 [Português](README-PT.md) · [Architecture](docs/ARCHITECTURE.md) · [Credits](CREDITS.md) · [Third-party notices](THIRD_PARTY.md)
@@ -37,7 +38,7 @@ for ArmadaOS, an independent fork of
   - inertial glide;
   - drag while holding a header mouse button.
 - Three views: keyboard + touchpad, keyboard only, touchpad only.
-- **Lower screen off.** This replaces 1.0's AYN-button feature. It powers off
+- **Lower screen off.** This replaces the ArmadaOS version's AYN-button feature. It powers off
   only the lower panel; the game keeps running. You can trigger it from the menu
   or from a hardware key you bind.
 
@@ -61,7 +62,7 @@ screen touches**.
    `./gradlew :app:assembleDebug`, then
    `adb install app/build/outputs/apk/debug/app-debug.apk`.
 2. Install and start **Shizuku**.
-3. Open **Thor Ergo** and work through the checklist:
+3. Open **Thor KBM** and work through the checklist:
    1. Display over other apps.
    2. Shizuku: allow.
    3. Accessibility service.
@@ -86,8 +87,8 @@ You need JDK 17 or later and the Android SDK (API 36).
 
 | | Debug | Release |
 |---|---|---|
-| App id | `com.thorergo.debug` | `com.thorergo` |
-| Name | Thor Ergo Debug | Thor Ergo |
+| App id | `jr.brian.thorkbm.debug` | `jr.brian.thorkbm` |
+| Name | Thor KBM Debug | Thor KBM |
 | Signed with | the Android debug key | your release key |
 | Build | `./gradlew :app:assembleDebug` | `./gradlew :app:assembleRelease` |
 
@@ -100,7 +101,7 @@ secrets `KEYSTORE_B64` (`base64 -i thor-ergo-release.jks`), `KEYSTORE_PASSWORD`
 and `KEY_ALIAS`; see `.github/workflows/`. Without a key, release builds are left unsigned.
 
 The keyboard, trackpad, Pinyin and dead-key logic are pure Kotlin modules. Their
-tests are ported from the 1.0 test suite.
+tests are ported from the ArmadaOS version's test suite.
 
 ## License
 
