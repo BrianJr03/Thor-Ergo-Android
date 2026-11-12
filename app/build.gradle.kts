@@ -62,13 +62,13 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            manifestPlaceholders["appLabel"] = "Thor KBM Debug"
+            manifestPlaceholders["appLabel"] = "ThorKBM Debug"
         }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
-            manifestPlaceholders["appLabel"] = "Thor KBM"
+            manifestPlaceholders["appLabel"] = "ThorKBM"
             signingConfig = signingConfigs.findByName("release")
         }
     }

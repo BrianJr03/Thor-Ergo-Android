@@ -1,9 +1,9 @@
-# Thor KBM
+# ThorKBM
 
 **Teclado tátil multilingue e trackpad para o ecrã inferior do AYN Thor. Escreve
 no jogo ou na aplicação do ecrã superior.**
 
-O Thor KBM é um fork Android nativo do
+O ThorKBM é um fork Android nativo do
 [Thor Ergo](https://github.com/seekingalphacrawler/Thor-Ergo), a versão para
 ArmadaOS. Essa versão é um fork Linux/GTK do
 [Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input).

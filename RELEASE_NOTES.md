@@ -1,6 +1,6 @@
-# Thor KBM
+# ThorKBM
 
-The first release of Thor KBM: a native Android fork of Thor Ergo, the ArmadaOS
+The first release of ThorKBM: a native Android fork of Thor Ergo, the ArmadaOS
 version, for the AYN Thor's dual screens. The ArmadaOS version remains in the
 Git history and on its own release page.
 

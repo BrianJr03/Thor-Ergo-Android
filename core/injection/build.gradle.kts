@@ -6,7 +6,7 @@ plugins {
 android {
     namespace = "jr.brian.thorkbm.core.injection"
     // The app sets the real label per build type; this default only serves the library's own builds.
-    defaultConfig.manifestPlaceholders["appLabel"] = "Thor KBM"
+    defaultConfig.manifestPlaceholders["appLabel"] = "ThorKBM"
     buildFeatures {
         aidl = true
         buildConfig = true

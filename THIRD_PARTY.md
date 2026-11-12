@@ -1,4 +1,4 @@
-# Third-party components in Thor KBM
+# Third-party components in ThorKBM
 
 * **Armada Dual Screen Input 0.1.7**: sa1utyeggs and contributors, MIT.
   Behaviour reimplemented in Kotlin. Its copyright is in `LICENSE`.

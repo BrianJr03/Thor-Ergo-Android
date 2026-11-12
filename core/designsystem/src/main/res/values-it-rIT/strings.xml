@@ -84,18 +84,18 @@
     <string name="screen_hint_keeps_running">Lo schermo superiore e il gioco continuano a funzionare.</string>
     <string name="screen_hint_wake">Tocca lo schermo inferiore o premi il tasto assegnato per riaccenderlo.</string>
     <string name="screen_hint_shizuku">Senza Shizuku lo schermo diventa nero invece di spegnersi.</string>
-    <string name="screen_hint_accessibility">Per assegnare un tasto fisico serve il servizio di accessibilità Thor KBM.</string>
+    <string name="screen_hint_accessibility">Per assegnare un tasto fisico serve il servizio di accessibilità ThorKBM.</string>
     <string name="setting_haptics">Vibra alla pressione dei tasti</string>
     <string name="setting_show_restore_button">Mostra il pulsante «Apri tastiera» quando nascosta</string>
-    <string name="restore_button_hint">Disattivo: Nascondi rimuove del tutto il pannello. Apri Thor KBM o usa la notifica per mostrarlo di nuovo.</string>
+    <string name="restore_button_hint">Disattivo: Nascondi rimuove del tutto il pannello. Apri ThorKBM o usa la notifica per mostrarlo di nuovo.</string>
     <string name="setting_pointer_as_touch">Clic come tocchi sullo schermo (giochi)</string>
     <string name="error_injection_failed">Impossibile inviare l\'input. Controlla Shizuku o il servizio di accessibilità.</string>
     <string name="about_android">Versione Android: Jetpack Compose; input tramite Shizuku o Accessibilità.</string>
     <string name="notification_channel">Pannello tastiera</string>
-    <string name="notification_title">Thor KBM è attivo</string>
+    <string name="notification_title">ThorKBM è attivo</string>
     <string name="notification_text">La tastiera è attiva. Tocca per mostrarla sullo schermo inferiore.</string>
     <string name="action_stop">Interrompi</string>
-    <string name="setup_title">Configura Thor KBM</string>
+    <string name="setup_title">Configura ThorKBM</string>
     <string name="setup_subtitle">Una tastiera e un touchpad sullo schermo inferiore che scrivono nell\'app dello schermo superiore.</string>
     <string name="step_overlay_title">Mostra sopra altre app</string>
     <string name="step_overlay_body">Mostra il pannello sullo schermo inferiore senza togliere il focus al gioco.</string>
@@ -113,5 +113,5 @@
     <string name="stop_panel">Ferma il pannello tastiera</string>
     <string name="setup_need_backend">Attiva Shizuku o il servizio di accessibilità per inviare input.</string>
     <string name="setup_limited">Modalità limitata: senza Shizuku tasti e testo arrivano solo ai campi di testo attivi.</string>
-    <string name="setup_no_second_display">Nessuno schermo inferiore rilevato. Thor KBM richiede un secondo schermo.</string>
+    <string name="setup_no_second_display">Nessuno schermo inferiore rilevato. ThorKBM richiede un secondo schermo.</string>
 </resources>

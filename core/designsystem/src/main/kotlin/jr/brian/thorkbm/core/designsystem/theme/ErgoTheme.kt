@@ -13,7 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-/** The slate-and-blue palette of the Thor KBM panel. The panel is always dark. */
+/** The slate-and-blue palette of the ThorKBM panel. The panel is always dark. */
 @Immutable
 data class ErgoColors(
     val background: Color = Color(0xFF161A21),

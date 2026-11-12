@@ -84,18 +84,18 @@
     <string name="screen_hint_keeps_running">La pantalla superior y el juego siguen funcionando.</string>
     <string name="screen_hint_wake">Toca la pantalla inferior o pulsa la tecla asignada para volver a encenderla.</string>
     <string name="screen_hint_shizuku">Sin Shizuku, la pantalla se oscurece en lugar de apagarse.</string>
-    <string name="screen_hint_accessibility">Asignar una tecla física requiere el servicio de accesibilidad de Thor KBM.</string>
+    <string name="screen_hint_accessibility">Asignar una tecla física requiere el servicio de accesibilidad de ThorKBM.</string>
     <string name="setting_haptics">Vibrar al pulsar teclas</string>
     <string name="setting_show_restore_button">Mostrar el botón «Abrir teclado» al ocultar</string>
-    <string name="restore_button_hint">Desactivado: Ocultar quita el panel por completo. Abre Thor KBM o usa la notificación para volver a mostrarlo.</string>
+    <string name="restore_button_hint">Desactivado: Ocultar quita el panel por completo. Abre ThorKBM o usa la notificación para volver a mostrarlo.</string>
     <string name="setting_pointer_as_touch">Clics como toques en pantalla (juegos)</string>
     <string name="error_injection_failed">No se pudo enviar la entrada. Comprueba Shizuku o el servicio de accesibilidad.</string>
     <string name="about_android">Versión Android: Jetpack Compose; entrada mediante Shizuku o Accesibilidad.</string>
     <string name="notification_channel">Panel del teclado</string>
-    <string name="notification_title">Thor KBM está activo</string>
+    <string name="notification_title">ThorKBM está activo</string>
     <string name="notification_text">El teclado está activo. Toca para mostrarlo en la pantalla inferior.</string>
     <string name="action_stop">Detener</string>
-    <string name="setup_title">Configurar Thor KBM</string>
+    <string name="setup_title">Configurar ThorKBM</string>
     <string name="setup_subtitle">Un teclado y un panel táctil en la pantalla inferior que escriben en la aplicación de la pantalla superior.</string>
     <string name="step_overlay_title">Mostrar sobre otras aplicaciones</string>
     <string name="step_overlay_body">Muestra el panel en la pantalla inferior sin quitar el foco al juego.</string>
@@ -113,5 +113,5 @@
     <string name="stop_panel">Detener el panel del teclado</string>
     <string name="setup_need_backend">Activa Shizuku o el servicio de accesibilidad para enviar entradas.</string>
     <string name="setup_limited">Modo limitado: sin Shizuku, las teclas y el texto solo llegan a campos de texto activos.</string>
-    <string name="setup_no_second_display">No se detecta pantalla inferior. Thor KBM necesita una segunda pantalla.</string>
+    <string name="setup_no_second_display">No se detecta pantalla inferior. ThorKBM necesita una segunda pantalla.</string>
 </resources>

@@ -1,9 +1,9 @@
-# Thor KBM
+# ThorKBM
 
 **A multilingual touchscreen keyboard and trackpad for the lower screen of the
 AYN Thor, typing into the game or app on the upper screen.**
 
-Thor KBM is a native Android fork of
+ThorKBM is a native Android fork of
 [Thor Ergo](https://github.com/seekingalphacrawler/Thor-Ergo), the ArmadaOS
 version. That version is a Linux/GTK fork of
 [Armada Dual Screen Input](https://github.com/sa1utyeggs/armada-dual-screen-input).
@@ -62,7 +62,7 @@ screen touches**.
    `./gradlew :app:assembleDebug`, then
    `adb install app/build/outputs/apk/debug/app-debug.apk`.
 2. Install and start **Shizuku**.
-3. Open **Thor KBM** and work through the checklist:
+3. Open **ThorKBM** and work through the checklist:
    1. Display over other apps.
    2. Shizuku: allow.
    3. Accessibility service.
@@ -88,7 +88,7 @@ You need JDK 17 or later and the Android SDK (API 36).
 | | Debug | Release |
 |---|---|---|
 | App id | `jr.brian.thorkbm.debug` | `jr.brian.thorkbm` |
-| Name | Thor KBM Debug | Thor KBM |
+| Name | ThorKBM Debug | ThorKBM |
 | Signed with | the Android debug key | your release key |
 | Build | `./gradlew :app:assembleDebug` | `./gradlew :app:assembleRelease` |
 
