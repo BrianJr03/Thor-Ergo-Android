@@ -130,4 +130,31 @@
     <string name="setup_no_second_display">No lower screen detected. ThorKBM needs a second display.</string>
     <string name="app_name" translatable="false">ThorKBM</string>
     <string name="step_shizuku_title" translatable="false">Shizuku</string>
+    <string name="setting_auto_check_updates">Check for updates on start</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="update_check">Check for updates</string>
+    <string name="update_checking">Checking for updates…</string>
+    <string name="update_view">View update</string>
+    <string name="update_up_to_date">You have the latest version.</string>
+    <string name="update_available_hint">Version %1$s is available.</string>
+    <string name="update_check_failed">Could not check for updates. Check the internet connection.</string>
+    <string name="update_auto_hint">Looks for a new release on GitHub each time ThorKBM opens.</string>
+    <string name="update_available_title">Update available</string>
+    <string name="update_no_notes">No release notes.</string>
+    <string name="update_later">Later</string>
+    <string name="update_download">Download and install</string>
+    <string name="update_open_release">Open release page</string>
+    <string name="update_permission_title">Allow ThorKBM to install updates</string>
+    <string name="update_permission_body">Android asks once before an app can install updates. Open settings, turn on “Allow from this source”, then come back and tap Retry.</string>
+    <string name="update_open_settings">Open settings</string>
+    <string name="update_retry">Retry</string>
+    <string name="update_cancel">Cancel</string>
+    <string name="update_downloading_title">Downloading update…</string>
+    <string name="update_progress">%1$s of %2$s</string>
+    <string name="update_ready_title">Update downloaded</string>
+    <string name="update_ready_body">Confirm in the installer. ThorKBM closes while it updates; open it again afterwards.</string>
+    <string name="update_install">Install</string>
+    <string name="update_failed_title">Update failed</string>
+    <string name="update_failed_body">The update could not be downloaded or opened.</string>
+    <string name="update_versions" translatable="false">%1$s → %2$s</string>
 </resources>

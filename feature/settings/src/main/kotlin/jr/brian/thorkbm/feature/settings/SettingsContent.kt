@@ -25,6 +25,8 @@ import jr.brian.thorkbm.core.model.Language
 import jr.brian.thorkbm.core.model.NumericSetting
 import jr.brian.thorkbm.core.model.Settings
 import jr.brian.thorkbm.core.model.ToggleSetting
+import jr.brian.thorkbm.core.update.CheckStatus
+import jr.brian.thorkbm.core.update.UpdateAction
 
 /**
  * The settings tabs. Hosts add their own actions in [footer]: the panel offers
@@ -57,7 +59,7 @@ fun SettingsContent(
                     SettingsTab.MOUSE -> MouseTab(state.settings, onIntent)
                     SettingsTab.SCREEN -> ScreenTab(state, onIntent)
                     SettingsTab.SETUP -> SetupTab(onIntent)
-                    SettingsTab.ABOUT -> AboutTab()
+                    SettingsTab.ABOUT -> AboutTab(state, onIntent)
                 }
             }
             state.note?.let {
@@ -173,13 +175,49 @@ private fun SetupTab(onIntent: (SettingsIntent) -> Unit) {
 }
 
 @Composable
-private fun AboutTab() {
+private fun AboutTab(state: SettingsUiState, onIntent: (SettingsIntent) -> Unit) {
+    UpdatesSection(state, onIntent)
     for (line in listOf(
         R.string.about_design, R.string.about_base, R.string.about_input,
         R.string.about_pinyin, R.string.about_swipe, R.string.about_android, R.string.about_independent,
     )) {
         Text(stringResource(line), style = MaterialTheme.typography.bodyLarge, color = ErgoTheme.colors.text, modifier = Modifier.padding(vertical = 6.dp))
     }
+}
+
+/** Installed version, the update check and its result, and the start-up check toggle. */
+@Composable
+private fun UpdatesSection(state: SettingsUiState, onIntent: (SettingsIntent) -> Unit) {
+    val update = state.update
+    val release = update.release
+    Text(
+        stringResource(R.string.about_version, update.installedVersion),
+        style = MaterialTheme.typography.titleMedium,
+        color = ErgoTheme.colors.text,
+        modifier = Modifier.padding(vertical = 6.dp),
+    )
+    val available = update.check == CheckStatus.AVAILABLE && release != null
+    ErgoButton(
+        text = stringResource(
+            when {
+                update.check == CheckStatus.CHECKING -> R.string.update_checking
+                available -> R.string.update_view
+                else -> R.string.update_check
+            },
+        ),
+        onClick = { onIntent(SettingsIntent.Update(if (available) UpdateAction.SHOW else UpdateAction.CHECK)) },
+        modifier = Modifier.fillMaxWidth(),
+        tone = KeyTone.ACCENT,
+        enabled = update.check != CheckStatus.CHECKING,
+    )
+    when (update.check) {
+        CheckStatus.UP_TO_DATE -> Hint(stringResource(R.string.update_up_to_date))
+        CheckStatus.AVAILABLE -> release?.let { Hint(stringResource(R.string.update_available_hint, it.version)) }
+        CheckStatus.FAILED -> Hint(stringResource(R.string.update_check_failed))
+        CheckStatus.IDLE, CheckStatus.CHECKING -> Unit
+    }
+    Toggle(ToggleSetting.AUTO_CHECK_UPDATES, state.settings, onIntent)
+    Hint(stringResource(R.string.update_auto_hint))
 }
 
 @Composable

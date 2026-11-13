@@ -22,3 +22,4 @@ Thumbs.db
 # Python helper (tools/pinyin)
 __pycache__/
 *.py[cod]
+CLAUDE.md

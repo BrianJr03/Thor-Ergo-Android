@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Reads the latest GitHub release and downloads its APK. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Hands the downloaded APK to the package installer; the user allows it once in system settings. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application>
+        <provider
+            android:name=".UpdateFileProvider"
+            android:authorities="${applicationId}.updates"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+    </application>
+</manifest>

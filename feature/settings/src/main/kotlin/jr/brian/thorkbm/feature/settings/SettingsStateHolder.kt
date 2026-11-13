@@ -5,6 +5,7 @@ import jr.brian.thorkbm.core.injection.InputInjector
 import jr.brian.thorkbm.core.injection.PanelPowerController
 import jr.brian.thorkbm.core.injection.accessibility.AccessibilityBridge
 import jr.brian.thorkbm.core.model.Settings
+import jr.brian.thorkbm.core.update.AppUpdater
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -28,6 +29,7 @@ class SettingsStateHolder @AssistedInject constructor(
     private val bridge: AccessibilityBridge,
     private val power: PanelPowerController,
     private val actions: AppActions,
+    private val updater: AppUpdater,
     injector: InputInjector,
 ) {
     private data class Local(
@@ -39,7 +41,7 @@ class SettingsStateHolder @AssistedInject constructor(
 
     private val local = MutableStateFlow(Local())
 
-    val state: StateFlow<SettingsUiState> = combine(repository.settings, local, injector.status) { settings, ui, status ->
+    val state: StateFlow<SettingsUiState> = combine(repository.settings, local, injector.status, updater.state) { settings, ui, status, update ->
         SettingsUiState(
             settings = settings,
             tab = ui.tab,
@@ -48,6 +50,7 @@ class SettingsStateHolder @AssistedInject constructor(
             learningKey = ui.learningKey,
             canBindKey = status.accessibility,
             canPowerOff = status.canPowerOffPanel,
+            update = update,
         )
     }.stateIn(scope, SharingStarted.Eagerly, SettingsUiState())
 
@@ -74,6 +77,7 @@ class SettingsStateHolder @AssistedInject constructor(
             SettingsIntent.TurnScreenOff -> scope.launch { power.turnOff() }
             SettingsIntent.OpenSetup -> actions.openSetup()
             SettingsIntent.StopPanel -> actions.stopPanel()
+            is SettingsIntent.Update -> updater.perform(intent.action)
         }
     }
 

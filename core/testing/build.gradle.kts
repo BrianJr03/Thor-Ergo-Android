@@ -11,6 +11,7 @@ dependencies {
     api(project(":core:data"))
     api(project(":core:injection"))
     api(project(":core:display"))
+    api(project(":core:update"))
     api(libs.kotlinx.coroutines.test)
     api(libs.junit)
 }

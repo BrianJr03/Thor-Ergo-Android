@@ -37,8 +37,12 @@ import jr.brian.thorkbm.core.designsystem.component.ErgoButton
 import jr.brian.thorkbm.core.designsystem.component.KeyTone
 import jr.brian.thorkbm.core.designsystem.theme.ErgoTheme
 import jr.brian.thorkbm.feature.panel.service.PanelControl
+import jr.brian.thorkbm.core.update.AppUpdater
+import jr.brian.thorkbm.core.update.UpdateAction
 import jr.brian.thorkbm.feature.settings.SettingsContent
+import jr.brian.thorkbm.feature.settings.SettingsIntent
 import jr.brian.thorkbm.feature.settings.SettingsViewModel
+import jr.brian.thorkbm.feature.settings.UpdateSheet
 import jr.brian.thorkbm.feature.setup.SetupRoute
 import jr.brian.thorkbm.feature.setup.SetupViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -58,6 +62,7 @@ import jr.brian.thorkbm.R as AppR
 class MainActivity : ComponentActivity() {
     @Inject lateinit var settings: SettingsRepository
     @Inject lateinit var panel: PanelControl
+    @Inject lateinit var updater: AppUpdater
 
     private var screen by mutableStateOf(Screen.SETUP)
     private var oledBlack by mutableStateOf(false)
@@ -72,6 +77,8 @@ class MainActivity : ComponentActivity() {
             applyAppearance(savedInstanceState.getBoolean(STATE_OLED_BLACK))
             return showUi()
         }
+        // A newer release opens the update sheet on the panel or on this screen.
+        updater.checkOnStart()
         var deciding = true
         splash.setKeepOnScreenCondition { deciding }
         lifecycleScope.launch {
@@ -103,6 +110,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        updater.checkOnStart()
         if (intent.wantsSetup()) {
             screen = Screen.SETUP
             showUi()
@@ -171,9 +179,20 @@ private fun ThorKbmApp(screen: Screen, oledBlack: Boolean, onScreen: (Screen) ->
                         SettingsScreen(onBack = { onScreen(Screen.SETUP) })
                     }
                 }
+                UpdatePrompt()
             }
         }
     }
+}
+
+/** The update sheet over setup or settings; the same one the panel shows, from the shared updater. */
+@Composable
+private fun UpdatePrompt(viewModel: SettingsViewModel = hiltViewModel()) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val update = state.update
+    val onAction = { action: UpdateAction -> viewModel.onIntent(SettingsIntent.Update(action)) }
+    BackHandler(enabled = update.step != null) { onAction(UpdateAction.DISMISS) }
+    UpdateSheet(update, onAction)
 }
 
 @Composable

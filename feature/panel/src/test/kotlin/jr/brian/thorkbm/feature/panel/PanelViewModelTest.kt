@@ -12,6 +12,7 @@ import jr.brian.thorkbm.core.pinyin.PinyinComposer
 import jr.brian.thorkbm.core.pinyin.PinyinDictionary
 import jr.brian.thorkbm.core.swipe.SwipeDecoder
 import jr.brian.thorkbm.core.swipe.SwipeLexicon
+import jr.brian.thorkbm.core.testing.FakeAppUpdater
 import jr.brian.thorkbm.core.testing.FakeDisplayRepository
 import jr.brian.thorkbm.core.testing.FakeInputInjector
 import jr.brian.thorkbm.core.testing.FakePanelPowerController
@@ -63,7 +64,7 @@ class PanelViewModelTest {
         displays = FakeDisplayRepository(),
         router = OutputRouter(PinyinComposer(PinyinDictionary(emptyMap(), emptyMap()))),
         settingsFactory = object : SettingsStateHolder.Factory {
-            override fun create(scope: CoroutineScope) = SettingsStateHolder(scope, repository, bridge, power, NoAppActions, injector)
+            override fun create(scope: CoroutineScope) = SettingsStateHolder(scope, repository, bridge, power, NoAppActions, FakeAppUpdater(), injector)
         },
         background = main.dispatcher,
     ).also {

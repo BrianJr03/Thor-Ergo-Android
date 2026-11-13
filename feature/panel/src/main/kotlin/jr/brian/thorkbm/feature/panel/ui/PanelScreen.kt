@@ -51,6 +51,8 @@ import jr.brian.thorkbm.feature.panel.PanelTouch
 import jr.brian.thorkbm.feature.panel.PanelUiState
 import jr.brian.thorkbm.feature.panel.PanelViewModel
 import jr.brian.thorkbm.feature.settings.SettingsContent
+import jr.brian.thorkbm.feature.settings.SettingsIntent
+import jr.brian.thorkbm.feature.settings.UpdateSheet
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -114,6 +116,7 @@ private fun ExpandedPanel(state: PanelUiState, onIntent: (PanelIntent) -> Unit) 
             }
         }
         if (keyboard.overlay == Overlay.MENU) ModeMenu(keyboard.view, scale, onIntent)
+        UpdateSheet(state.settings.update, { onIntent(PanelIntent.Settings(SettingsIntent.Update(it))) })
     }
 }
 

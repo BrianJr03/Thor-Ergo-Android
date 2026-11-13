@@ -40,6 +40,8 @@ data class Settings(
     val screenToggleEnabled: Boolean = false,
     /** Android key code bound to the lower-screen toggle, or `null` for on-screen control only. */
     val screenToggleKeyCode: Int? = null,
+    /** Look for a newer GitHub release each time the app starts. */
+    val autoCheckUpdates: Boolean = true,
 ) {
     val effectiveUiLanguage: Language get() = uiLanguage ?: language
 
@@ -116,4 +118,5 @@ enum class ToggleSetting(
     SHOW_RESTORE_BUTTON({ it.showRestoreButton }, { s, v -> s.copy(showRestoreButton = v) }),
     SCREEN_TOGGLE({ it.screenToggleEnabled }, { s, v -> s.copy(screenToggleEnabled = v) }),
     OLED_BLACK({ it.oledBlack }, { s, v -> s.copy(oledBlack = v) }),
+    AUTO_CHECK_UPDATES({ it.autoCheckUpdates }, { s, v -> s.copy(autoCheckUpdates = v) }),
 }

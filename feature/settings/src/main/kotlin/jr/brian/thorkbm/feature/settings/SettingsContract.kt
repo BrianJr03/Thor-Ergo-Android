@@ -4,6 +4,8 @@ import jr.brian.thorkbm.core.model.Language
 import jr.brian.thorkbm.core.model.NumericSetting
 import jr.brian.thorkbm.core.model.Settings
 import jr.brian.thorkbm.core.model.ToggleSetting
+import jr.brian.thorkbm.core.update.UpdateAction
+import jr.brian.thorkbm.core.update.UpdateState
 
 enum class SettingsTab { LANGUAGES, KEYBOARD, MOUSE, SCREEN, SETUP, ABOUT }
 
@@ -21,6 +23,7 @@ data class SettingsUiState(
     val canBindKey: Boolean = false,
     /** Real panel power-off needs Shizuku; without it the panel blacks out. */
     val canPowerOff: Boolean = false,
+    val update: UpdateState = UpdateState(),
 )
 
 sealed interface SettingsIntent {
@@ -50,6 +53,9 @@ sealed interface SettingsIntent {
     data object OpenSetup : SettingsIntent
 
     data object StopPanel : SettingsIntent
+
+    /** Checking for, downloading and installing a new release. */
+    data class Update(val action: UpdateAction) : SettingsIntent
 }
 
 /** App-level actions settings can trigger; implemented by the app module. */

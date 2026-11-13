@@ -38,6 +38,7 @@ internal fun ToggleSetting.label(): String = stringResource(
         ToggleSetting.SHOW_RESTORE_BUTTON -> R.string.setting_show_restore_button
         ToggleSetting.SCREEN_TOGGLE -> R.string.setting_screen_toggle
         ToggleSetting.OLED_BLACK -> R.string.setting_oled_black
+        ToggleSetting.AUTO_CHECK_UPDATES -> R.string.setting_auto_check_updates
     },
 )
 

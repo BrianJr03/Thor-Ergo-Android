@@ -14,6 +14,9 @@ import jr.brian.thorkbm.core.model.KeyCode
 import jr.brian.thorkbm.core.model.Modifier
 import jr.brian.thorkbm.core.model.MouseButton
 import jr.brian.thorkbm.core.model.Settings
+import jr.brian.thorkbm.core.update.AppUpdater
+import jr.brian.thorkbm.core.update.UpdateAction
+import jr.brian.thorkbm.core.update.UpdateState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -103,6 +106,21 @@ class FakePanelPowerController : PanelPowerController {
 
     override suspend fun turnOn() {
         _power.value = PanelPower.ON
+    }
+}
+
+/** Records the update actions it is asked for; [state] is set directly by tests. */
+class FakeAppUpdater(initial: UpdateState = UpdateState(installedVersion = "2.1")) : AppUpdater {
+    override val state = MutableStateFlow(initial)
+    val actions = mutableListOf<UpdateAction>()
+    var startChecks = 0
+
+    override fun checkOnStart() {
+        startChecks++
+    }
+
+    override fun perform(action: UpdateAction) {
+        actions += action
     }
 }
 

@@ -79,6 +79,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:injection"))
+    implementation(project(":core:update"))
     implementation(project(":feature:panel"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:setup"))

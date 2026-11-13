@@ -10,9 +10,13 @@ import jr.brian.thorkbm.core.model.NumericSetting
 import jr.brian.thorkbm.core.model.Settings
 import jr.brian.thorkbm.core.model.ScreenCorner
 import jr.brian.thorkbm.core.model.ToggleSetting
+import jr.brian.thorkbm.core.testing.FakeAppUpdater
 import jr.brian.thorkbm.core.testing.FakeInputInjector
 import jr.brian.thorkbm.core.testing.FakePanelPowerController
 import jr.brian.thorkbm.core.testing.FakeSettingsRepository
+import jr.brian.thorkbm.core.update.CheckStatus
+import jr.brian.thorkbm.core.update.UpdateAction
+import jr.brian.thorkbm.core.update.UpdateState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -26,6 +30,7 @@ class SettingsStateHolderTest {
     private val repository = FakeSettingsRepository(Settings(language = Language.PT_PT))
     private val bridge = AccessibilityBridge()
     private val power = FakePanelPowerController()
+    private val updater = FakeAppUpdater()
     private val injector = FakeInputInjector(InjectorStatus(ShizukuState.NotRunning, accessibility = true))
 
     private val actions = object : AppActions {
@@ -40,7 +45,24 @@ class SettingsStateHolderTest {
         }
     }
 
-    private fun TestScope.holder() = SettingsStateHolder(backgroundScope, repository, bridge, power, actions, injector)
+    private fun TestScope.holder() = SettingsStateHolder(backgroundScope, repository, bridge, power, actions, updater, injector)
+
+    @Test
+    fun `update actions go to the updater and its state is shown`() = runTest(UnconfinedTestDispatcher()) {
+        val holder = holder()
+        holder.onIntent(SettingsIntent.Update(UpdateAction.CHECK))
+        assertThat(updater.actions).containsExactly(UpdateAction.CHECK)
+        updater.state.value = UpdateState(installedVersion = "2.1", check = CheckStatus.UP_TO_DATE)
+        assertThat(holder.state.value.update.check).isEqualTo(CheckStatus.UP_TO_DATE)
+    }
+
+    @Test
+    fun `checking for updates on start is a toggle that defaults to on`() = runTest(UnconfinedTestDispatcher()) {
+        val holder = holder()
+        assertThat(repository.current.autoCheckUpdates).isTrue()
+        holder.onIntent(SettingsIntent.Toggle(ToggleSetting.AUTO_CHECK_UPDATES))
+        assertThat(repository.current.autoCheckUpdates).isFalse()
+    }
 
     @Test
     fun `steppers persist and clamp`() = runTest(UnconfinedTestDispatcher()) {
