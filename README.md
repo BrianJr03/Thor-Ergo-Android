@@ -25,9 +25,6 @@ It is rebuilt in Kotlin and Jetpack Compose with the same layouts and behavior.
 *Rendered by the app's own Compose code at the Thor's lower-screen size
 (1240 × 1080). These are screenshot-test images, not device photos.*
 
-> **Status:** builds and passes its automated tests. It has **not yet been
-> tried on an AYN Thor**. See [Support](SUPPORT.md) for what that means.
-
 ## Features
 
 - Large keys, a trackpad in the bottom-right corner, header mouse buttons, and
