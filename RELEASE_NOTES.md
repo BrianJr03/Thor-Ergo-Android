@@ -1,5 +1,10 @@
 # ThorKBM
 
+## 2.2.1
+
+- Fixed a crash when an update finished downloading. On 2.2, install this
+  version by hand once; after that, updates install from inside the app.
+
 ## 2.2
 
 - **In-app updates:** ThorKBM tells you when a new version is out, shows
