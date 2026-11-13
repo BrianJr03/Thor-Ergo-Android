@@ -169,12 +169,14 @@ internal class GitHubAppUpdater @Inject constructor(
     private fun install() {
         val file = File(File(context.cacheDir, CACHE_DIR), APK_FILE)
         if (!file.exists()) return download()
-        val uri = FileProvider.getUriForFile(context, "${context.packageName}.updates", file)
-        val opened = start(
-            Intent(Intent.ACTION_VIEW)
-                .setDataAndType(uri, APK_MIME)
-                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
-        )
+        // A failure here must never take the keyboard down with it; the sheet shows it instead.
+        val opened = try {
+            val uri = FileProvider.getUriForFile(context, "${context.packageName}.updates", file)
+            start(Intent(Intent.ACTION_VIEW).setDataAndType(uri, APK_MIME).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION))
+        } catch (e: RuntimeException) {
+            Log.w(TAG, "Could not open the installer", e)
+            false
+        }
         if (!opened) _state.update { it.copy(step = UpdateStep.Failed(null)) }
     }
 

@@ -11,6 +11,11 @@
             android:name=".UpdateFileProvider"
             android:authorities="${applicationId}.updates"
             android:exported="false"
-            android:grantUriPermissions="true" />
+            android:grantUriPermissions="true">
+            <!-- FileProvider.getUriForFile reads the paths from here, not from the constructor. -->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/update_paths" />
+        </provider>
     </application>
 </manifest>
