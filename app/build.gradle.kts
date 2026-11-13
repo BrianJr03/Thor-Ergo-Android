@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         applicationId = "jr.brian.thorkbm"
-        versionCode = 3
+        versionCode = 4
         versionName = rootProject.file("VERSION").readText().trim()
     }
 
