@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import jr.brian.thorkbm.core.designsystem.R
 import jr.brian.thorkbm.core.model.NumericSetting
+import jr.brian.thorkbm.core.model.ScreenCorner
 import jr.brian.thorkbm.core.model.SettingUnit
 import jr.brian.thorkbm.core.model.ToggleSetting
 import java.util.Locale
@@ -37,6 +38,16 @@ internal fun ToggleSetting.label(): String = stringResource(
         ToggleSetting.SHOW_RESTORE_BUTTON -> R.string.setting_show_restore_button
         ToggleSetting.SCREEN_TOGGLE -> R.string.setting_screen_toggle
         ToggleSetting.OLED_BLACK -> R.string.setting_oled_black
+    },
+)
+
+@Composable
+internal fun ScreenCorner.label(): String = stringResource(
+    when (this) {
+        ScreenCorner.TOP_LEFT -> R.string.corner_top_left
+        ScreenCorner.TOP_RIGHT -> R.string.corner_top_right
+        ScreenCorner.BOTTOM_LEFT -> R.string.corner_bottom_left
+        ScreenCorner.BOTTOM_RIGHT -> R.string.corner_bottom_right
     },
 )
 

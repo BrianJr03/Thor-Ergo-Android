@@ -8,6 +8,7 @@ import jr.brian.thorkbm.core.injection.accessibility.AccessibilityBridge
 import jr.brian.thorkbm.core.model.Language
 import jr.brian.thorkbm.core.model.NumericSetting
 import jr.brian.thorkbm.core.model.Settings
+import jr.brian.thorkbm.core.model.ScreenCorner
 import jr.brian.thorkbm.core.model.ToggleSetting
 import jr.brian.thorkbm.core.testing.FakeInputInjector
 import jr.brian.thorkbm.core.testing.FakePanelPowerController
@@ -75,6 +76,16 @@ class SettingsStateHolderTest {
     fun `toggles flip the stored value`() = runTest(UnconfinedTestDispatcher()) {
         holder().onIntent(SettingsIntent.Toggle(ToggleSetting.GLIDE))
         assertThat(repository.current.glide).isFalse()
+    }
+
+    @Test
+    fun `the open keyboard button cycles through the corners`() = runTest(UnconfinedTestDispatcher()) {
+        val holder = holder()
+        assertThat(repository.current.restoreButtonCorner).isEqualTo(ScreenCorner.BOTTOM_RIGHT)
+        holder.onIntent(SettingsIntent.CycleRestoreCorner)
+        assertThat(repository.current.restoreButtonCorner).isEqualTo(ScreenCorner.TOP_LEFT)
+        holder.onIntent(SettingsIntent.CycleRestoreCorner)
+        assertThat(repository.current.restoreButtonCorner).isEqualTo(ScreenCorner.TOP_RIGHT)
     }
 
     @Test

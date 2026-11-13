@@ -89,6 +89,11 @@
     <string name="setting_haptics">Vibra alla pressione dei tasti</string>
     <string name="setting_show_restore_button">Mostra il pulsante «Apri tastiera» quando nascosta</string>
     <string name="restore_button_hint">Disattivo: Nascondi rimuove del tutto il pannello. Apri ThorKBM o usa la notifica per mostrarlo di nuovo.</string>
+    <string name="setting_restore_button_corner">Posizione del pulsante «Apri tastiera»</string>
+    <string name="corner_top_left">In alto a sinistra</string>
+    <string name="corner_top_right">In alto a destra</string>
+    <string name="corner_bottom_left">In basso a sinistra</string>
+    <string name="corner_bottom_right">In basso a destra</string>
     <string name="tab_setup">Configurazione</string>
     <string name="open_setup">Apri configurazione e permessi</string>
     <string name="setup_tab_hint">Permesso di sovrapposizione, Shizuku, servizio di accessibilità e notifiche.</string>

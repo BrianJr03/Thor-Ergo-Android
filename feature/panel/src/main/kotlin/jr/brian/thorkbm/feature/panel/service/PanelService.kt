@@ -70,8 +70,8 @@ class PanelService : LifecycleService() {
 
         lifecycleScope.launch { displays.displays.collect(::attach) }
         lifecycleScope.launch {
-            viewModel.state.map { it.windowMode() }.distinctUntilChanged().collect { mode ->
-                panel?.setMode(mode, (COLLAPSED_HEIGHT_DP * resources.displayMetrics.density).toInt())
+            viewModel.state.map { it.windowMode() to it.keyboard.settings.restoreButtonCorner }.distinctUntilChanged().collect { (mode, corner) ->
+                panel?.setMode(mode, handleSizePx(), corner)
             }
         }
         lifecycleScope.launch {
@@ -102,12 +102,14 @@ class PanelService : LifecycleService() {
             pointer = OverlayWindow(this, upper, owner, touchable = false) { CursorOverlay(cursor) }
                 .also { if (viewModel.state.value.showsPointer()) it.show() }
             panel = OverlayWindow(this, lower, owner, touchable = true) { PanelRoute(viewModel) }
-                .also { it.setMode(viewModel.state.value.windowMode(), (COLLAPSED_HEIGHT_DP * resources.displayMetrics.density).toInt()) }
+                .also { it.setMode(viewModel.state.value.windowMode(), handleSizePx(), viewModel.state.value.keyboard.settings.restoreButtonCorner) }
         } catch (e: RuntimeException) {
             Log.e("ThorKBM", "Could not show the panel windows", e)
             detach()
         }
     }
+
+    private fun handleSizePx() = (HANDLE_WINDOW_DP * resources.displayMetrics.density).toInt()
 
     private fun detach() {
         panel?.remove()
@@ -152,7 +154,8 @@ class PanelService : LifecycleService() {
         private const val NOTIFICATION_ID = 1
         private const val ACTION_STOP = "jr.brian.thorkbm.action.STOP_PANEL"
         private const val ACTION_SHOW = "jr.brian.thorkbm.action.SHOW_PANEL"
-        private const val COLLAPSED_HEIGHT_DP = 96
+        /** The collapsed button plus a small margin from the screen edges; see CollapsedHandle. */
+        private const val HANDLE_WINDOW_DP = 64
 
         internal fun stopIntent(context: Context) = Intent(context, PanelService::class.java).setAction(ACTION_STOP)
 

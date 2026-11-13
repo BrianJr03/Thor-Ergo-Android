@@ -112,7 +112,11 @@ private fun KeyboardTab(settings: Settings, onIntent: (SettingsIntent) -> Unit) 
     Toggle(ToggleSetting.HAPTICS, settings, onIntent)
     Toggle(ToggleSetting.SWIPE_TYPING, settings, onIntent)
     Toggle(ToggleSetting.SHOW_RESTORE_BUTTON, settings, onIntent)
-    if (!settings.showRestoreButton) Hint(stringResource(R.string.restore_button_hint))
+    if (settings.showRestoreButton) {
+        ValueRow(stringResource(R.string.setting_restore_button_corner), settings.restoreButtonCorner.label(), { onIntent(SettingsIntent.CycleRestoreCorner) })
+    } else {
+        Hint(stringResource(R.string.restore_button_hint))
+    }
     Hint(stringResource(R.string.keyboard_hint_accents))
     Hint(stringResource(R.string.keyboard_hint_shift))
     Hint(stringResource(R.string.keyboard_hint_arrows))

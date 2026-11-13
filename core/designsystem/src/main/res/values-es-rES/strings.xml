@@ -89,6 +89,11 @@
     <string name="setting_haptics">Vibrar al pulsar teclas</string>
     <string name="setting_show_restore_button">Mostrar el botón «Abrir teclado» al ocultar</string>
     <string name="restore_button_hint">Desactivado: Ocultar quita el panel por completo. Abre ThorKBM o usa la notificación para volver a mostrarlo.</string>
+    <string name="setting_restore_button_corner">Posición del botón «Abrir teclado»</string>
+    <string name="corner_top_left">Arriba a la izquierda</string>
+    <string name="corner_top_right">Arriba a la derecha</string>
+    <string name="corner_bottom_left">Abajo a la izquierda</string>
+    <string name="corner_bottom_right">Abajo a la derecha</string>
     <string name="tab_setup">Configuración</string>
     <string name="open_setup">Abrir configuración y permisos</string>
     <string name="setup_tab_hint">Permiso de superposición, Shizuku, servicio de accesibilidad y notificaciones.</string>

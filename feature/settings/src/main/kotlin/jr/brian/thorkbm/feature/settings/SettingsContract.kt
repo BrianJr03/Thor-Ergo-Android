@@ -30,6 +30,9 @@ sealed interface SettingsIntent {
 
     data class Toggle(val setting: ToggleSetting) : SettingsIntent
 
+    /** Moves the "Open keyboard" button to the next corner. */
+    data object CycleRestoreCorner : SettingsIntent
+
     data class OpenPicker(val picker: LanguagePicker) : SettingsIntent
 
     /** `null` for the interface picker means "follow keyboard". */

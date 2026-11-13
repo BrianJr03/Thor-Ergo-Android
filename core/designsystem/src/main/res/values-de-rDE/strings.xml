@@ -89,6 +89,11 @@
     <string name="setting_haptics">Vibration bei Tastendruck</string>
     <string name="setting_show_restore_button">Schaltfläche „Tastatur öffnen“ beim Ausblenden zeigen</string>
     <string name="restore_button_hint">Aus: Ausblenden entfernt das Feld vollständig. Öffne ThorKBM oder nutze die Benachrichtigung, um es zurückzuholen.</string>
+    <string name="setting_restore_button_corner">Position der Schaltfläche „Tastatur öffnen“</string>
+    <string name="corner_top_left">Oben links</string>
+    <string name="corner_top_right">Oben rechts</string>
+    <string name="corner_bottom_left">Unten links</string>
+    <string name="corner_bottom_right">Unten rechts</string>
     <string name="tab_setup">Einrichtung</string>
     <string name="open_setup">Einrichtung und Berechtigungen öffnen</string>
     <string name="setup_tab_hint">Überlagerungsberechtigung, Shizuku, Bedienungshilfendienst und Benachrichtigungen.</string>

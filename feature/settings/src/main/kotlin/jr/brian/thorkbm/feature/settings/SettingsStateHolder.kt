@@ -56,6 +56,7 @@ class SettingsStateHolder @AssistedInject constructor(
             is SettingsIntent.SelectTab -> local.update { it.copy(tab = intent.tab, picker = null, note = null) }
             is SettingsIntent.Step -> save { it.stepped(intent.setting, intent.direction) }
             is SettingsIntent.Toggle -> save { it.toggled(intent.setting) }
+            SettingsIntent.CycleRestoreCorner -> save { it.copy(restoreButtonCorner = it.restoreButtonCorner.next()) }
             is SettingsIntent.OpenPicker -> local.update { it.copy(picker = intent.picker) }
             SettingsIntent.DismissPicker -> local.update { it.copy(picker = null) }
             is SettingsIntent.ChooseLanguage -> {

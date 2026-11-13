@@ -89,6 +89,11 @@
     <string name="setting_haptics">Vibrate on key press</string>
     <string name="setting_show_restore_button">Show “Open keyboard” button when hidden</string>
     <string name="restore_button_hint">When off, Hide removes the panel completely. Open ThorKBM or use the notification to bring it back.</string>
+    <string name="setting_restore_button_corner">Open keyboard button position</string>
+    <string name="corner_top_left">Top left</string>
+    <string name="corner_top_right">Top right</string>
+    <string name="corner_bottom_left">Bottom left</string>
+    <string name="corner_bottom_right">Bottom right</string>
     <string name="tab_setup">Setup</string>
     <string name="open_setup">Open setup and permissions</string>
     <string name="setup_tab_hint">Overlay permission, Shizuku, the accessibility service and notifications.</string>

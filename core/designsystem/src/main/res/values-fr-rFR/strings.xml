@@ -89,6 +89,11 @@
     <string name="setting_haptics">Vibrer à l\'appui des touches</string>
     <string name="setting_show_restore_button">Afficher le bouton « Ouvrir le clavier » une fois masqué</string>
     <string name="restore_button_hint">Désactivé : Masquer retire entièrement le panneau. Ouvrez ThorKBM ou utilisez la notification pour le réafficher.</string>
+    <string name="setting_restore_button_corner">Position du bouton « Ouvrir le clavier »</string>
+    <string name="corner_top_left">En haut à gauche</string>
+    <string name="corner_top_right">En haut à droite</string>
+    <string name="corner_bottom_left">En bas à gauche</string>
+    <string name="corner_bottom_right">En bas à droite</string>
     <string name="tab_setup">Configuration</string>
     <string name="open_setup">Ouvrir la configuration et les autorisations</string>
     <string name="setup_tab_hint">Autorisation de superposition, Shizuku, service d\'accessibilité et notifications.</string>

@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,13 +28,18 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jr.brian.thorkbm.core.designsystem.LocalizedContent
 import jr.brian.thorkbm.core.designsystem.R
 import jr.brian.thorkbm.core.designsystem.component.ErgoButton
+import jr.brian.thorkbm.core.designsystem.component.KeyCap
 import jr.brian.thorkbm.core.designsystem.component.KeyTone
+import jr.brian.thorkbm.core.designsystem.icon.ErgoIcons
 import jr.brian.thorkbm.core.designsystem.theme.ErgoTheme
 import jr.brian.thorkbm.core.injection.PanelPower
 import jr.brian.thorkbm.core.keyboard.Overlay
@@ -192,10 +199,21 @@ private fun Blackout(onTouch: (PanelTouch) -> Unit) {
     )
 }
 
+/** A small + key in a corner-sized window (see PanelService); tapping it brings the panel back. */
 @Composable
 private fun CollapsedHandle(onExpand: () -> Unit) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        ErgoButton(stringResource(R.string.open_keyboard), onExpand, Modifier.width(260.dp), tone = KeyTone.ACCENT)
+        val label = stringResource(R.string.open_keyboard)
+        KeyCap(
+            Modifier
+                .size(44.dp)
+                .semantics { contentDescription = label }
+                .clickable(role = Role.Button, onClick = onExpand),
+            tone = KeyTone.ACCENT,
+            corner = 22.dp,
+        ) {
+            Icon(ErgoIcons.Plus, contentDescription = null, tint = ErgoTheme.colors.text, modifier = Modifier.size(24.dp))
+        }
     }
 }
 

@@ -20,6 +20,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import jr.brian.thorkbm.core.model.ScreenCorner
 
 internal enum class PanelWindowMode { FULL, HANDLE, GONE }
 
@@ -93,13 +94,20 @@ internal class OverlayWindow(
 
     fun show() = add()
 
-    /** Full display, a handle-sized strip at the bottom, or no window at all. */
-    fun setMode(mode: PanelWindowMode, handleHeightPx: Int) {
+    /**
+     * Full display, a small handle-sized square in [corner], or no window at all. The handle
+     * window covers only the button, so touches everywhere else reach whatever is below.
+     */
+    fun setMode(mode: PanelWindowMode, handleSizePx: Int, corner: ScreenCorner) {
         if (mode == PanelWindowMode.GONE) return remove()
-        val height = if (mode == PanelWindowMode.HANDLE) handleHeightPx else WindowManager.LayoutParams.MATCH_PARENT
-        val resized = params.height != height
-        params.height = height
-        if (!added) add() else if (resized) windowManager.updateViewLayout(view, params)
+        val handle = mode == PanelWindowMode.HANDLE
+        val size = if (handle) handleSizePx else WindowManager.LayoutParams.MATCH_PARENT
+        val gravity = if (handle) corner.gravity() else Gravity.BOTTOM or Gravity.START
+        val changed = params.width != size || params.height != size || params.gravity != gravity
+        params.width = size
+        params.height = size
+        params.gravity = gravity
+        if (!added) add() else if (changed) windowManager.updateViewLayout(view, params)
     }
 
     fun remove() {
@@ -116,5 +124,7 @@ internal class OverlayWindow(
 
     private companion object {
         const val PASS_THROUGH_ALPHA = 0.8f
+
+        fun ScreenCorner.gravity() = (if (isTop) Gravity.TOP else Gravity.BOTTOM) or (if (isLeft) Gravity.START else Gravity.END)
     }
 }

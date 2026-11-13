@@ -33,6 +33,8 @@ data class Settings(
     val oledBlack: Boolean = false,
     /** Show the small "Open keyboard" button while the panel is hidden; off means reopen from the app. */
     val showRestoreButton: Boolean = true,
+    /** Which corner of the lower screen the "Open keyboard" button sits in. */
+    val restoreButtonCorner: ScreenCorner = ScreenCorner.BOTTOM_RIGHT,
     /** Set once the panel has been started from setup; the launcher icon then opens the keyboard directly. */
     val setupCompleted: Boolean = false,
     val screenToggleEnabled: Boolean = false,
@@ -56,6 +58,17 @@ data class Settings(
 
     /** Clamps every numeric value; use after reading untrusted storage. */
     fun normalized(): Settings = NumericSetting.entries.fold(this) { acc, s -> acc.with(s, s.read(acc)) }
+}
+
+enum class ScreenCorner {
+    TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT;
+
+    val isTop: Boolean get() = this == TOP_LEFT || this == TOP_RIGHT
+
+    val isLeft: Boolean get() = this == TOP_LEFT || this == BOTTOM_LEFT
+
+    /** The next corner in [entries] order, wrapping around; the settings row cycles with it. */
+    fun next(): ScreenCorner = entries[(ordinal + 1) % entries.size]
 }
 
 enum class SettingUnit { NONE, MILLIS, TIMES }

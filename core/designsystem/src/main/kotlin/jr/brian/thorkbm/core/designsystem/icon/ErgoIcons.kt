@@ -20,6 +20,7 @@ object ErgoIcons {
     val Down: ImageVector by lazy { icon("down", "M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z") }
     val Right: ImageVector by lazy { icon("right", "M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z") }
     val Dropdown: ImageVector by lazy { icon("dropdown", "M7 10l5 5 5-5z") }
+    val Plus: ImageVector by lazy { icon("plus", "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z") }
     val Gear: ImageVector by lazy {
         icon(
             "gear",

@@ -89,6 +89,11 @@
     <string name="setting_haptics">按键振动</string>
     <string name="setting_show_restore_button">隐藏后显示“打开键盘”按钮</string>
     <string name="restore_button_hint">关闭后，“隐藏”会完全移除面板。打开 ThorKBM 或使用通知即可重新显示。</string>
+    <string name="setting_restore_button_corner">“打开键盘”按钮位置</string>
+    <string name="corner_top_left">左上</string>
+    <string name="corner_top_right">右上</string>
+    <string name="corner_bottom_left">左下</string>
+    <string name="corner_bottom_right">右下</string>
     <string name="tab_setup">初始设置</string>
     <string name="open_setup">打开初始设置与权限</string>
     <string name="setup_tab_hint">悬浮窗权限、Shizuku、无障碍服务和通知。</string>
