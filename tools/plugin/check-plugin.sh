@@ -88,8 +88,11 @@ wait_log "MSG_CLOSED reason=2" 2 && pass "version 99 closes with an error" || fa
 echo "== Hide key"
 start_session
 # The Hide key sits at the top right of the 1240 x 1080 layout, around (1119, 61).
-size=$("${ADB[@]}" shell wm size -d "$DISPLAY_ID" | grep -o '[0-9]*x[0-9]*' | tail -1)
-w=${size%x*}; h=${size#*x}
+# Logical size (after rotation); `wm size` gives the panel's physical, portrait size.
+frame=$("${ADB[@]}" shell dumpsys display | grep -o "displayId=$DISPLAY_ID, [^}]*logicalFrame=Rect([^)]*)" | head -1)
+w=$(sed -E 's/.*logicalFrame=Rect\(0, 0 - ([0-9]+), ([0-9]+)\).*/\1/' <<<"$frame")
+h=$(sed -E 's/.*logicalFrame=Rect\(0, 0 - ([0-9]+), ([0-9]+)\).*/\2/' <<<"$frame")
+size="${w}x${h}"
 "${ADB[@]}" logcat -c
 "${ADB[@]}" shell input -d "$DISPLAY_ID" tap $((w * 1119 / 1240)) $((h * 61 / 1080))
 wait_log "MSG_CLOSED reason=0" 2 && pass "Hide sends MSG_CLOSED(by user)" || fail "no MSG_CLOSED(by user) after Hide (tapped $size display)"
