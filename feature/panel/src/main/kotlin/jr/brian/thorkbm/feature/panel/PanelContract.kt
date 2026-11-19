@@ -17,6 +17,8 @@ data class PanelUiState(
     val status: InjectorStatus = InjectorStatus(),
     /** False until the stored settings arrive; the panel draws nothing before then, never the default theme or language. */
     val settingsLoaded: Boolean = false,
+    /** Shown by Command Panel: Hide hands the lower screen back, and Command Panel owns its power. */
+    val pluginMode: Boolean = false,
 )
 
 /** Raw multi-touch in logical panel units (1240 × 1080). */

@@ -110,6 +110,15 @@ internal class OverlayWindow(
         if (!added) add() else if (changed) windowManager.updateViewLayout(view, params)
     }
 
+    /** Runs [action] once a frame with the current content has reached the screen. */
+    fun doOnNextFrame(action: () -> Unit) {
+        // post waits for the view to be attached; invalidate makes sure a frame is drawn at all.
+        view.post {
+            view.viewTreeObserver.registerFrameCommitCallback { action() }
+            view.invalidate()
+        }
+    }
+
     fun remove() {
         if (!added) return
         added = false

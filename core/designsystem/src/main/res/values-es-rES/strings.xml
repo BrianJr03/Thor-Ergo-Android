@@ -86,6 +86,7 @@
     <string name="screen_hint_wake">Toca la pantalla inferior o pulsa la tecla asignada para volver a encenderla.</string>
     <string name="screen_hint_shizuku">Sin Shizuku, la pantalla se oscurece en lugar de apagarse.</string>
     <string name="screen_hint_accessibility">Asignar una tecla física requiere el servicio de accesibilidad de ThorKBM.</string>
+    <string name="screen_hint_command_panel">Mientras Command Panel muestra el teclado, controla el encendido de esta pantalla.</string>
     <string name="setting_haptics">Vibrar al pulsar teclas</string>
     <string name="setting_show_restore_button">Mostrar el botón «Abrir teclado» al ocultar</string>
     <string name="restore_button_hint">Desactivado: Ocultar quita el panel por completo. Abre ThorKBM o usa la notificación para volver a mostrarlo.</string>

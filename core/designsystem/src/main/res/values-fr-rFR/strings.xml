@@ -86,6 +86,7 @@
     <string name="screen_hint_wake">Touchez l\'écran inférieur ou appuyez sur la touche associée pour le rallumer.</string>
     <string name="screen_hint_shizuku">Sans Shizuku, l\'écran est noirci au lieu d\'être éteint.</string>
     <string name="screen_hint_accessibility">Associer une touche physique nécessite le service d\'accessibilité ThorKBM.</string>
+    <string name="screen_hint_command_panel">Tant que Command Panel affiche le clavier, il gère l\'alimentation de cet écran.</string>
     <string name="setting_haptics">Vibrer à l\'appui des touches</string>
     <string name="setting_show_restore_button">Afficher le bouton « Ouvrir le clavier » une fois masqué</string>
     <string name="restore_button_hint">Désactivé : Masquer retire entièrement le panneau. Ouvrez ThorKBM ou utilisez la notification pour le réafficher.</string>

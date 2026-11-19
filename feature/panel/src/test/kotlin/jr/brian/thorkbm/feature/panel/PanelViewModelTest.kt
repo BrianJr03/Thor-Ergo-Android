@@ -21,10 +21,13 @@ import jr.brian.thorkbm.core.testing.FakeSettingsRepository
 import jr.brian.thorkbm.core.testing.MainDispatcherRule
 import jr.brian.thorkbm.feature.panel.di.MonotonicClock
 import jr.brian.thorkbm.feature.panel.input.CursorController
+import jr.brian.thorkbm.feature.panel.plugin.PluginMode
 import jr.brian.thorkbm.feature.settings.AppActions
+import jr.brian.thorkbm.feature.settings.SettingsIntent
 import jr.brian.thorkbm.feature.settings.SettingsStateHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.currentTime
@@ -39,6 +42,15 @@ private object NoAppActions : AppActions {
     override fun stopPanel() = Unit
 }
 
+private class FakePluginMode : PluginMode {
+    override val active = MutableStateFlow(false)
+    var closedByUser = 0
+
+    override fun closeByUser() {
+        closedByUser++
+    }
+}
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class PanelViewModelTest {
     @get:Rule val main = MainDispatcherRule()
@@ -49,6 +61,7 @@ class PanelViewModelTest {
     private val bridge = AccessibilityBridge()
     private val cursor = CursorController()
     private val pointerMode = FakePointerModeConfig()
+    private val plugin = FakePluginMode()
     private var nextPointer = 0L
 
     private fun TestScope.viewModel() = PanelViewModel(
@@ -61,6 +74,7 @@ class PanelViewModelTest {
         clock = MonotonicClock { currentTime },
         dictionary = PinyinDictionary(emptyMap(), emptyMap()),
         swipeDecoder = SwipeDecoder(SwipeLexicon(listOf("hello" to 10L, "help" to 5L))),
+        plugin = plugin,
         displays = FakeDisplayRepository(),
         router = OutputRouter(PinyinComposer(PinyinDictionary(emptyMap(), emptyMap()))),
         settingsFactory = object : SettingsStateHolder.Factory {
@@ -145,6 +159,30 @@ class PanelViewModelTest {
         assertThat(injector.calls).contains("releaseAll")
         vm.onIntent(PanelIntent.Expand)
         assertThat(vm.state.value.collapsed).isFalse()
+    }
+
+    @Test
+    fun `shown by Command Panel, hide ends the session instead of collapsing`() = runTest(main.dispatcher) {
+        plugin.active.value = true
+        val vm = viewModel()
+        assertThat(vm.state.value.pluginMode).isTrue()
+        vm.tapKey("header:hide")
+        runCurrent()
+        assertThat(plugin.closedByUser).isEqualTo(1)
+        assertThat(vm.state.value.collapsed).isFalse()
+    }
+
+    @Test
+    fun `shown by Command Panel, the lower screen can't be turned off`() = runTest(main.dispatcher) {
+        repository.update { it.copy(screenToggleEnabled = true, screenToggleKeyCode = 131) }
+        power.setOwnedElsewhere(true)
+        val vm = viewModel()
+        vm.onIntent(PanelIntent.TurnScreenOff)
+        vm.onIntent(PanelIntent.Settings(SettingsIntent.TurnScreenOff))
+        bridge.onHardwareKey(131)
+        runCurrent()
+        assertThat(vm.state.value.power).isEqualTo(PanelPower.ON)
+        assertThat(vm.state.value.settings.powerOwnedElsewhere).isTrue()
     }
 
     @Test

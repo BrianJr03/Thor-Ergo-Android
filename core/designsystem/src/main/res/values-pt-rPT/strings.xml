@@ -86,6 +86,7 @@
     <string name="screen_hint_wake">Toca no ecrã inferior ou prime a tecla associada para o voltar a ligar.</string>
     <string name="screen_hint_shizuku">Sem Shizuku, o ecrã fica preto em vez de desligado.</string>
     <string name="screen_hint_accessibility">Associar uma tecla física requer o serviço de acessibilidade ThorKBM.</string>
+    <string name="screen_hint_command_panel">Enquanto o Command Panel mostra o teclado, controla a energia deste ecrã.</string>
     <string name="setting_haptics">Vibrar ao premir teclas</string>
     <string name="setting_show_restore_button">Mostrar o botão “Abrir teclado” ao ocultar</string>
     <string name="restore_button_hint">Desligado: Ocultar retira o painel por completo. Abre o ThorKBM ou usa a notificação para o voltar a mostrar.</string>

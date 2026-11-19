@@ -97,15 +97,22 @@ class FakePanelPowerController : PanelPowerController {
     private val _power = MutableStateFlow(PanelPower.ON)
     override val power: StateFlow<PanelPower> = _power
     var hardwareAvailable = true
+    override val ownedElsewhere = MutableStateFlow(false)
 
     override suspend fun toggle(nowMs: Long) = if (_power.value == PanelPower.ON) turnOff() else turnOn()
 
     override suspend fun turnOff() {
+        if (ownedElsewhere.value) return
         _power.value = if (hardwareAvailable) PanelPower.OFF else PanelPower.BLACKOUT
     }
 
     override suspend fun turnOn() {
         _power.value = PanelPower.ON
+    }
+
+    override fun setOwnedElsewhere(owned: Boolean) {
+        ownedElsewhere.value = owned
+        if (owned) _power.value = PanelPower.ON
     }
 }
 

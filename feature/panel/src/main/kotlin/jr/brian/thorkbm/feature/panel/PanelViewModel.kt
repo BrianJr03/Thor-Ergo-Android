@@ -37,6 +37,7 @@ import jr.brian.thorkbm.feature.panel.input.TouchOwner
 import jr.brian.thorkbm.feature.panel.input.TouchRouter
 import jr.brian.thorkbm.feature.panel.output.OutputPipeline
 import jr.brian.thorkbm.feature.panel.output.PanelMessage
+import jr.brian.thorkbm.feature.panel.plugin.PluginMode
 import jr.brian.thorkbm.feature.settings.SettingsStateHolder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
@@ -68,6 +69,7 @@ class PanelViewModel @Inject constructor(
     private val clock: MonotonicClock,
     private val dictionary: PinyinDictionary,
     private val swipeDecoder: SwipeDecoder,
+    private val plugin: PluginMode,
     displays: DisplayRepository,
     router: OutputRouter,
     settingsFactory: SettingsStateHolder.Factory,
@@ -107,6 +109,7 @@ class PanelViewModel @Inject constructor(
         viewModelScope.launch { repository.settings.collect(::applySettings) }
         viewModelScope.launch { settingsHolder.state.collect { s -> _state.update { it.copy(settings = s) } } }
         viewModelScope.launch { injector.status.collect { s -> _state.update { it.copy(status = s) } } }
+        viewModelScope.launch { plugin.active.collect { active -> _state.update { it.copy(pluginMode = active) } } }
         viewModelScope.launch {
             displays.displays.collect { pair -> pair?.upper?.let { cursor.setBounds(it.width, it.height) } }
         }
@@ -216,7 +219,8 @@ class PanelViewModel @Inject constructor(
                 output.reset()
                 _state.update { it.copy(message = null) }
             }
-            KeyboardCommand.Hide -> _state.update { it.copy(collapsed = true) }
+            // Shown by Command Panel, Hide gives the lower screen back instead of leaving the small button.
+            KeyboardCommand.Hide -> if (plugin.active.value) plugin.closeByUser() else _state.update { it.copy(collapsed = true) }
             KeyboardCommand.KeyFeedback -> effects.trySend(PanelEffect.KeyFeedback)
         }
     }

@@ -86,6 +86,7 @@
     <string name="screen_hint_wake">触摸下屏幕或按下绑定的按键即可重新点亮。</string>
     <string name="screen_hint_shizuku">未连接 Shizuku 时，屏幕只会变黑而不会断电。</string>
     <string name="screen_hint_accessibility">绑定实体按键需要启用 ThorKBM 无障碍服务。</string>
+    <string name="screen_hint_command_panel">Command Panel 显示键盘时，由它控制此屏幕的电源。</string>
     <string name="setting_haptics">按键振动</string>
     <string name="setting_show_restore_button">隐藏后显示“打开键盘”按钮</string>
     <string name="restore_button_hint">关闭后，“隐藏”会完全移除面板。打开 ThorKBM 或使用通知即可重新显示。</string>

@@ -86,6 +86,7 @@
     <string name="screen_hint_wake">Touch the lower screen or press the bound key to turn it back on.</string>
     <string name="screen_hint_shizuku">Without Shizuku the screen is blacked out instead of powered off.</string>
     <string name="screen_hint_accessibility">Binding a hardware key needs the ThorKBM accessibility service.</string>
+    <string name="screen_hint_command_panel">Command Panel controls this screen\'s power while it shows the keyboard.</string>
     <string name="setting_haptics">Vibrate on key press</string>
     <string name="setting_show_restore_button">Show “Open keyboard” button when hidden</string>
     <string name="restore_button_hint">When off, Hide removes the panel completely. Open ThorKBM or use the notification to bring it back.</string>

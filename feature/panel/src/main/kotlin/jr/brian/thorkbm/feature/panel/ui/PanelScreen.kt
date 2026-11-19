@@ -115,7 +115,7 @@ private fun ExpandedPanel(state: PanelUiState, onIntent: (PanelIntent) -> Unit) 
                 }
             }
         }
-        if (keyboard.overlay == Overlay.MENU) ModeMenu(keyboard.view, scale, onIntent)
+        if (keyboard.overlay == Overlay.MENU) ModeMenu(keyboard.view, scale, canTurnOff = !state.pluginMode, onIntent)
         UpdateSheet(state.settings.update, { onIntent(PanelIntent.Settings(SettingsIntent.Update(it))) })
     }
 }
@@ -143,7 +143,7 @@ private fun StatusLine(state: PanelUiState, scale: LogicalScale) {
 }
 
 @Composable
-private fun ModeMenu(current: PanelView, scale: LogicalScale, onIntent: (PanelIntent) -> Unit) {
+private fun ModeMenu(current: PanelView, scale: LogicalScale, canTurnOff: Boolean, onIntent: (PanelIntent) -> Unit) {
     val density = LocalDensity.current
     Box(
         Modifier
@@ -175,7 +175,8 @@ private fun ModeMenu(current: PanelView, scale: LogicalScale, onIntent: (PanelIn
                     tone = if (view == current) KeyTone.ACCENT else KeyTone.NORMAL,
                 )
             }
-            ErgoButton(stringResource(R.string.screen_turn_off), { onIntent(PanelIntent.TurnScreenOff) }, Modifier.fillMaxWidth())
+            // Command Panel owns the lower screen's power while it shows the panel.
+            if (canTurnOff) ErgoButton(stringResource(R.string.screen_turn_off), { onIntent(PanelIntent.TurnScreenOff) }, Modifier.fillMaxWidth())
             ErgoButton(stringResource(R.string.menu_reconnect), { onIntent(PanelIntent.Reconnect) }, Modifier.fillMaxWidth())
             ErgoButton(stringResource(R.string.menu_release), { onIntent(PanelIntent.ReleaseAll) }, Modifier.fillMaxWidth())
         }

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -38,13 +39,19 @@ interface PanelPowerController {
     suspend fun turnOff()
 
     suspend fun turnOn()
+
+    /** True while another app (Command Panel) shows the panel and owns the lower screen's power: [turnOff] and [toggle] do nothing. */
+    val ownedElsewhere: StateFlow<Boolean>
+
+    /** Hands the lower screen's power to another app, or takes it back. Handing it over first undoes ThorKBM's own power-off. */
+    fun setOwnedElsewhere(owned: Boolean)
 }
 
 @Singleton
 internal class ShizukuPanelPowerController @Inject constructor(
     private val shizuku: ShizukuConnection,
     displays: DisplayRepository,
-    @ApplicationScope scope: CoroutineScope,
+    @ApplicationScope private val scope: CoroutineScope,
     @InjectionDispatcher private val dispatcher: CoroutineDispatcher,
 ) : PanelPowerController {
     private val _power = MutableStateFlow(PanelPower.ON)
@@ -53,23 +60,32 @@ internal class ShizukuPanelPowerController @Inject constructor(
     private val lowerDisplay: StateFlow<Int?> = displays.displays.map { it?.lower?.id }
         .stateIn(scope, SharingStarted.Eagerly, null)
 
+    private val _ownedElsewhere = MutableStateFlow(false)
+    override val ownedElsewhere: StateFlow<Boolean> = _ownedElsewhere.asStateFlow()
+
     private val mutex = Mutex()
     private var lastToggle = Long.MIN_VALUE / 2
 
     override suspend fun toggle(nowMs: Long) {
+        if (_ownedElsewhere.value) return
         if (nowMs - lastToggle < DEBOUNCE_MS) return
         lastToggle = nowMs
         if (_power.value == PanelPower.ON) turnOff() else turnOn()
     }
 
     override suspend fun turnOff() = mutex.withLock {
-        if (_power.value != PanelPower.ON) return@withLock
+        if (_power.value != PanelPower.ON || _ownedElsewhere.value) return@withLock
         _power.value = if (setHardwarePower(on = false)) PanelPower.OFF else PanelPower.BLACKOUT
     }
 
     override suspend fun turnOn() = mutex.withLock {
         if (_power.value == PanelPower.OFF) setHardwarePower(on = true)
         _power.value = PanelPower.ON
+    }
+
+    override fun setOwnedElsewhere(owned: Boolean) {
+        _ownedElsewhere.value = owned
+        if (owned && _power.value != PanelPower.ON) scope.launch { turnOn() }
     }
 
     private suspend fun setHardwarePower(on: Boolean): Boolean = withContext(dispatcher) {

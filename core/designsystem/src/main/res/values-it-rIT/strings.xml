@@ -86,6 +86,7 @@
     <string name="screen_hint_wake">Tocca lo schermo inferiore o premi il tasto assegnato per riaccenderlo.</string>
     <string name="screen_hint_shizuku">Senza Shizuku lo schermo diventa nero invece di spegnersi.</string>
     <string name="screen_hint_accessibility">Per assegnare un tasto fisico serve il servizio di accessibilità ThorKBM.</string>
+    <string name="screen_hint_command_panel">Mentre Command Panel mostra la tastiera, controlla l\'accensione di questo schermo.</string>
     <string name="setting_haptics">Vibra alla pressione dei tasti</string>
     <string name="setting_show_restore_button">Mostra il pulsante «Apri tastiera» quando nascosta</string>
     <string name="restore_button_hint">Disattivo: Nascondi rimuove del tutto il pannello. Apri ThorKBM o usa la notifica per mostrarlo di nuovo.</string>

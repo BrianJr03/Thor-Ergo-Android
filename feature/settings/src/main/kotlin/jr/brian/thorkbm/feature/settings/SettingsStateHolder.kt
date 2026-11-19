@@ -41,7 +41,7 @@ class SettingsStateHolder @AssistedInject constructor(
 
     private val local = MutableStateFlow(Local())
 
-    val state: StateFlow<SettingsUiState> = combine(repository.settings, local, injector.status, updater.state) { settings, ui, status, update ->
+    val state: StateFlow<SettingsUiState> = combine(repository.settings, local, injector.status, updater.state, power.ownedElsewhere) { settings, ui, status, update, ownedElsewhere ->
         SettingsUiState(
             settings = settings,
             tab = ui.tab,
@@ -50,6 +50,7 @@ class SettingsStateHolder @AssistedInject constructor(
             learningKey = ui.learningKey,
             canBindKey = status.accessibility,
             canPowerOff = status.canPowerOffPanel,
+            powerOwnedElsewhere = ownedElsewhere,
             update = update,
         )
     }.stateIn(scope, SharingStarted.Eagerly, SettingsUiState())

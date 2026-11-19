@@ -7,6 +7,12 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- Command Panel, to check that panel plugin messages really come from it. -->
+    <queries>
+        <package android:name="jr.brian.commandpannel" />
+        <package android:name="jr.brian.commandpannel.debug" />
+    </queries>
+
     <application>
         <service
             android:name=".service.PanelService"
@@ -15,6 +21,19 @@
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="On-screen keyboard and touchpad shown on a secondary display, sending input to the app on the main display." />
+        </service>
+
+        <!-- Lets Command Panel show the panel in place of its own (PanelPluginContract). No icon: its tile uses the app's. -->
+        <service
+            android:name=".plugin.PanelPluginService"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="jr.brian.commandpanel.plugin.action.PANEL_PLUGIN" />
+            </intent-filter>
+            <meta-data
+                android:name="jr.brian.commandpanel.plugin.VERSION"
+                android:value="1" />
         </service>
     </application>
 </manifest>

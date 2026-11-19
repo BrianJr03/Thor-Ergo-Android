@@ -7,6 +7,9 @@ import jr.brian.thorkbm.core.pinyin.PinyinDictionary
 import jr.brian.thorkbm.core.swipe.SwipeDecoder
 import jr.brian.thorkbm.core.swipe.SwipeLexicon
 import jr.brian.thorkbm.feature.panel.PanelViewModel
+import jr.brian.thorkbm.feature.panel.plugin.PluginHost
+import jr.brian.thorkbm.feature.panel.plugin.PluginMode
+import jr.brian.thorkbm.feature.panel.plugin.PluginSession
 import jr.brian.thorkbm.feature.panel.service.PanelControl
 import jr.brian.thorkbm.feature.panel.service.PanelLauncher
 import dagger.Binds
@@ -29,6 +32,12 @@ fun interface MonotonicClock {
 internal abstract class PanelBindings {
     @Binds
     abstract fun panelControl(impl: PanelLauncher): PanelControl
+
+    @Binds
+    abstract fun pluginHost(impl: PanelLauncher): PluginHost
+
+    @Binds
+    abstract fun pluginMode(impl: PluginSession): PluginMode
 }
 
 @Module

@@ -86,6 +86,7 @@
     <string name="screen_hint_wake">Tippe auf den unteren Bildschirm oder drücke die zugewiesene Taste, um ihn wieder einzuschalten.</string>
     <string name="screen_hint_shizuku">Ohne Shizuku wird der Bildschirm nur schwarz statt ausgeschaltet.</string>
     <string name="screen_hint_accessibility">Für eine Hardwaretaste wird der Thor-Ergo-Bedienungshilfendienst benötigt.</string>
+    <string name="screen_hint_command_panel">Solange Command Panel die Tastatur anzeigt, steuert es, ob dieser Bildschirm an oder aus ist.</string>
     <string name="setting_haptics">Vibration bei Tastendruck</string>
     <string name="setting_show_restore_button">Schaltfläche „Tastatur öffnen“ beim Ausblenden zeigen</string>
     <string name="restore_button_hint">Aus: Ausblenden entfernt das Feld vollständig. Öffne ThorKBM oder nutze die Benachrichtigung, um es zurückzuholen.</string>

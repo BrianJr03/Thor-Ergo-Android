@@ -23,6 +23,8 @@ data class SettingsUiState(
     val canBindKey: Boolean = false,
     /** Real panel power-off needs Shizuku; without it the panel blacks out. */
     val canPowerOff: Boolean = false,
+    /** Command Panel shows the panel and owns the lower screen's power, so ThorKBM can't turn it off. */
+    val powerOwnedElsewhere: Boolean = false,
     val update: UpdateState = UpdateState(),
 )
 

@@ -88,6 +88,14 @@ class PanelScreenshotTest {
         capture("settings-screen-de", PanelUiState(keyboard = keyboard(Language.DE_DE).copy(overlay = Overlay.SETTINGS), settings = screen))
     }
 
+    /** Shown by Command Panel: no way to turn the lower screen off, since Command Panel owns its power. */
+    @Test
+    fun pluginMode() {
+        capture("mode-menu-plugin", PanelUiState(keyboard = keyboard(Language.EN_US).copy(overlay = Overlay.MENU), pluginMode = true))
+        val screen = SettingsUiState(settings = Settings(), tab = SettingsTab.SCREEN, canBindKey = true, canPowerOff = true, powerOwnedElsewhere = true)
+        capture("settings-screen-plugin", PanelUiState(keyboard = keyboard(Language.EN_US).copy(overlay = Overlay.SETTINGS), settings = screen, pluginMode = true))
+    }
+
     @Test
     fun oledBlack() {
         val oled = KeyboardState(settings = Settings(oledBlack = true))

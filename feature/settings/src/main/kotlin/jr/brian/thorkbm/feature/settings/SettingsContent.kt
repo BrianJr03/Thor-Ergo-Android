@@ -140,7 +140,11 @@ private fun MouseTab(settings: Settings, onIntent: (SettingsIntent) -> Unit) {
 @Composable
 private fun ScreenTab(state: SettingsUiState, onIntent: (SettingsIntent) -> Unit) {
     val settings = state.settings
-    ErgoButton(stringResource(R.string.screen_turn_off), { onIntent(SettingsIntent.TurnScreenOff) }, Modifier.fillMaxWidth(), tone = KeyTone.ACCENT)
+    if (state.powerOwnedElsewhere) {
+        Hint(stringResource(R.string.screen_hint_command_panel))
+    } else {
+        ErgoButton(stringResource(R.string.screen_turn_off), { onIntent(SettingsIntent.TurnScreenOff) }, Modifier.fillMaxWidth(), tone = KeyTone.ACCENT)
+    }
     Toggle(ToggleSetting.OLED_BLACK, settings, onIntent)
     ValueRow(
         ToggleSetting.SCREEN_TOGGLE.label(),
